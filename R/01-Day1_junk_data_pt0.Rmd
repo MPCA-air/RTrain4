@@ -1,0 +1,845 @@
+---
+title: "R Training | Day 1"
+output: 
+  html_document: 
+    toc: true   
+    toc_depth: 2
+    toc_float: true
+    theme: readable
+    highlight: tango
+    css: css/camp_style.css
+    number_sections: true
+    self_contained: false
+fontsize: 15pt
+monofont: Source Code Pro
+monofontoptions: Scale = 1.2
+---
+
+
+```{r setup, include=FALSE}
+library("rmarkdown")
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+
+# Welcome to R Camp {-}
+<hr>
+
+![](images/day1_bb8_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: -10px;"}
+
+<br><br><br><br><br>
+
+### Please power on your droid {-}
+
+<a href="https://github.com/MPCA-air/RTrain/blob/master/data/starwars_scrap_jakku.zip?raw=true">
+<span class = "btn_code_blue"> __DOWNLOAD__  </span></a> —  Day 1 data files
+
+
+
+<br><br><br><br>
+
+
+#| A new day
+<hr>
+
+Welcome to Jakku! You’ve just in time. The Junk boss Unkar is being an awful meany-pants and has started skimping on rations. Rey needs money for food and parts to build a star ship to escape Jakku and fight with the New Republic. Luckily for us, BB8 was able snag a transfer log from Unkar’s droid showing all of his recent shipments. Let’s power on our Datapad and see if we can’t make some trouble for Unkar, and while we’re at it, find some great recycled star ship parts for ourselves.
+
+<br>
+
+__Start a new project__
+
+- In _Rstudio_ select _File_ from the top menu bar
+- Choose _New Project..._ > _New Directory_ > _New Project_
+- Enter a project name such as `"junk data"`
+- Select _Browse..._ and choose a folder where you store your data work
+- Ignore the rest and jump down to click _Create Project_
+
+
+__Get the data__
+
+- Create a new `data` folder in your project folder
+- Move the data you downloaded above to it
+
+
+## R scripts
+
+An R _script_ is where you write R code and document your work. They’re like recipes or prescriptions that tell the computer what you want to happen to your data.
+
+__Open a new R script__
+
+- In the upper left, click on the white file icon with the green (+) sign. 
+- Select _R Script_.
+
+![](http://docplayer.net/docs-images/25/5462802/images/10-0.png){width=450}
+
+<br>
+
+__Save script__
+
+- Click on the floppy disk icon
+- Enter a file name such as `starwars_code.R`
+
+
+## A tour of RStudio
+
+<img src="http://www.sthda.com/sthda/RDoc/images/rstudio.png" width="580">
+
+<br>
+
+__1. Code editor__ 
+
+This is where you can edit your R scripts. The tabs at the top of the code editor allow you to view scripts and data sets you have open. You can press __CTRL+ENTER__ to run a block of code in your R script. We’ll spend most of our time here. It’s the homebase in RStudio.
+ 
+__2. Console__ 
+
+This is where code is executed by the computer. It shows code that you have run and any errors, warnings, or other messages that result. You can input code directly into the console and run it, but it won’t be saved for later. That’s why we like to run all of our code directly from a script in the code editor anove.
+ 
+__3. Workspace__ 
+
+This pane shows all of the objects and functions that you’ve created, as well as a history of the code you’ve run during your current session. The environment tab shows all of the data, objects and functions that you’ve loaded. Note the _broom_ icon below the Connections tab. This cleans shop and allows you to clear out all of the objects in your workspace.
+ 
+__4. Plots and files__ 
+
+These tabs allow you to view and open files in your current directory, view plots and other visual objects like maps, view installed packages, and access the Help window. If at anytime you’re unsure what a function or package does, enter it’s name after a question mark in the console. For example, try typing `?mean` in the console and then pressing __ENTER__.
+
+
+
+## Make it your own
+
+![](images/font_change.png){width="410" style="margin-left: 20px; float: right;"}
+
+Let’s add some of our own style so we feel more at home. Follow these steps to change the font-size and color scheme: 
+
+
+1. Go to __Tools__ on the top navigation bar. 
+2. Choose `Global Options...`
+3. Choose `Appearance` with the paint bucket.
+4. Find something you like. 
+5. Try 'solarized dark' when you’re ready to embrace winter.
+6. The default font and theme are 'Lucida Console' and 'TextMate'. 
+
+<br><br><br><br><br>
+
+
+
+#| First steps
+<hr>
+
+You can create objects and assign values to them using the "left arrow" `<- `, and more officially known as the _assignment operator_. Try adding the code below to your R script and creating an object called `wookie`.
+
+To run a line of code, move the cursor to that line and press __CTRL+ENTER__.
+
+```{r names, eval = F}
+# Create a new object
+droid <- "bb8"
+
+droid 
+
+wookie <- "Chewbacca"
+
+wookie
+
+
+# To save text to a character object you need quotation marks: "text"
+# Try this:
+wookie <- Chewbacca
+
+
+# Without quotes, R looks for an object called Chewbacca, and then lets you know that it couldn’t find one. 
+```
+
+
+```{r names2, eval = F}
+# To copy an object save it to a new name.
+wookie2 <- wookie
+
+
+# Or overwrite an object
+wookie <- "Tarfful"
+  
+wookie
+
+
+# Did this change the value stored in wookie2?
+wookie2  
+
+```
+
+
+<br>
+
+### Drop and remove data {-}
+
+You can drop objects with the remove function `rm() `. Try it out on some of your wookies.
+
+```{r, eval = F}
+
+# Delete objects to clean-up your environment
+rm(wookie)
+
+rm(wookie2)
+
+
+# How can we get the 'wookie' object back?
+# Hint: The UP arrow is your friend.
+
+```
+
+<br>
+
+<details>
+<summary class = "btn_code_green"> **GOOD NEWS: ** Deleting data is okay </summary>
+<p>
+
+<div class="tip">
+Don’t worry about deleting data or making mistakes . When R loads data files it only copies the contents. All your original data files remain safe and won’t suffer from any accidental changes. If something disappears or goes wrong in R, it’s okay. You can always reload the data using your script. 
+</div>
+</p></details>
+
+
+## Give it a name
+
+Everything has a name in R and you can name things almost anything you like. You can even name your data `TOP_SECRET_shhhhhh...` or `Luke_I_am_your_father` or `data_McData_face`.
+
+Sadly, there are a _few_ minor restrictions. Names cannot include spaces or special characters that might be found in math equations, like `+`, `-`, `*`, `\`, `/`, `=`, `!`, or `)`. 
+
+
+### Your turn! {-}
+
+Try running some of these examples in your R console. Find new ways to create errors. The more broken the more better!
+```{r, eval = F}
+
+n wookies <- 5
+
+n*wookies <- 5
+
+n_wookies <- 5
+
+n.wookies <- 5
+
+
+all_the_wookies! <- "Everyone on Kashyyyk"
+
+```
+
+
+
+```{r, eval = F}
+# You can add one wookie
+n_wookies <- n_wookies + 1
+
+
+# But what if you have 10,000 wookies?
+n_wookies <- 10,000
+
+
+# They also cannot begin with a number.
+1st_wookie <- "Chewbacca"
+
+88b <- "droid"
+
+# But they can contain numbers!
+wookie1    <- "Chewbacca"
+
+bb8 <- "droid"
+```
+
+
+<br>
+
+
+<details>
+<summary class = "btn_code_blue"> __EXPLORE:__ What happens when we create __n_wookies__ the second time? </summary>
+<p>
+
+> When we create a new object that has the same name as something that already exists, the new object replaces the old one. Sometimes we’ll want to update an existing object and replace the old version. Other times we may want to copy an object to a new name to preserve the original. This is similar to choosing between _Save_ and _Save As_ when we save a file.
+>
+
+</p></details>
+
+## Multiple items
+
+We can add multiple values inside `c()` to make a vector of items. It’s like a chain of items, where each additional item is connected by a comma. The `c` stands for to conCATenate or to combine values into a vector.
+  
+Let’s use `c()` to create a few vectors of names.
+
+```{r vectors}
+
+# Create a character vector and name it starwars_names
+starwars_names <- c("Luke", "Leia", "Han Solo")
+
+# Print starwars_names to the console
+starwars_names
+
+# Create a numeric vector and name it starwars_ages
+starwars_ages  <- c(19,18,25)
+
+# Print the ages to the console
+starwars_ages
+```
+
+
+## Make a table
+
+A table in R is known as a __data frame__. We can think of it as a group of columns, where each column is made from a vector. Data frames in R have columns of data that are all the same length. 
+
+![](images/vector_to_dataframe.png){width="510" style="margin-left: 100px;"}
+
+<br>
+
+
+Let’s make a data frame with two columns to hold the names and ages of our characters from above.
+```{r table}
+
+# Create table with columns "names" and "ages" with values from the starwars_names and starwars_ages vectors
+starwars_df <- data.frame(names = starwars_names,
+                          ages  = starwars_ages)
+
+# Print the starwars_df data frame to the console
+starwars_df
+
+```
+
+
+<br>
+
+### Your turn {-}
+
+> Create the same table above with a 3rd column showing their father’s names: `c("Darth", "Darth", "Unknown")`
+
+<br>
+
+### Get values from a `$column_name`  {-}
+
+Use the `$` sign after the name of your table to see the values in one of your columns.
+
+```{r columns}
+
+# View the "ages" column in starwars_df
+starwars_df$ages
+
+```
+
+
+<div class="quiz">
+### Pop Quiz, hotshot! {-}
+
+__Which of these names are valid for a new object?__ _(Hint: You can test them.)_
+
+<input type="radio"> _my starwars fandom_  <br> 
+<input type="radio"> _my_wookies55_        <br> 
+<input type="radio"> _5wookies_            <br> 
+<input type="radio"> _my-wookie_           <br> 
+<input type="radio"> _Wookies!!!_          <br>
+
+<br>
+
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+<p>
+
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `my_wookies55`  
+
+_Yes!! The FORCE is strong with you!_
+
+</p>
+</details>
+</div>
+
+
+## Leave a `#comment`
+
+The text in the scripts with the `#` in front are called comments. A line that starts with a `#` is ignored and won’t be run as R code. You can use the `#` to add notes in your script to make it easier for others and yourself to understand what is happening and why. You can also use comments to add warnings or instructions for others using your code.
+
+
+
+## Functions
+
+Now that you know what objects are and how to create them, let’s learn how to use them in functions. Functions take one or more inputs called "arguments". They perform steps based on the arguments and usually return an output object. 
+
+
+<details>
+<summary class = "btn_code_blue">_Clone Trooper function_</summary>
+<p>
+
+You can think of a function like a plan for making Clone Troopers.
+
+![](images/clonetrooper_fathead.png){width="220" style="float: left; margin-right: 36px; margin-top: -2px;"}
+
+<br>
+
+```{r, eval=F} 
+
+create_clone(host  = "Jango Fett", 
+             modifications = c("accelerated growth", 
+                               "absolute loyalty", 
+                               "enhanced aggression"), 
+             opponents     = "Confederacy of Independent Systems")
+```
+
+<br><br>
+
+The function above creates instructions to create Clone Troopers and provides several arguments: `genetic host`, `genetic modifications`, and assumed `opponents`). When we have more than one argument, we use a comma to separate them. With some luck, the function will sucessfully return a new object (an army of Clone Troopers).
+
+<br><br><br><br>
+
+<hr>
+
+</p></details>
+
+
+<br>
+
+### The `sum()` function  {-}
+
+We already covered two functions: `c()` and `data.frame()`. Now let’s use the `sum()` function to find the sum age of our Star Wars characters.
+```{r}
+
+# Call the sum function with starwars_ages as input
+ages_sum <- sum(starwars_ages) # Assigns the output to starwars_ages_sum
+
+# Print the starwars_ages_sum value to the console
+ages_sum
+
+```
+
+<br>
+
+The `sum()` function takes the _starwars_ages_ vector as input, performs some calculations, and returns a single numeric object. Note that we assigned the output object to the name `ages_sum`. If we don’t assign the output object it will be printed to the console and won’t be saved. Sometimes that’s what we want, especially when we’re exploring the data. 
+
+```{r}
+# Alternative without assigning output
+sum(starwars_ages) 
+```
+
+<br>
+
+
+```{r}
+starwars_ages
+```
+
+
+> __NOTE:__ The original `starwars_ages` vector hasn’t changed. Each function has its own "environment" and its calculations happen inside a bubble. In general, what happens inside a function won’t change your objects outside of the function. 
+
+
+
+### Function summary {-}
+
+There are functions in R that are more complex but most boil down to the same general setup:
+
+```{r, eval=F}
+new_output <- function(argument_input1, argument_input2)
+```
+
+We call a function and then add input arguments inside the parentheses. In exchange, the funciton returns an output object. You can make your own functions in R and name them almost anything you like, even `my_amazing_starwars_function()`.
+
+
+<details>
+<summary class = "btn_code_blue"> __EXPLORE:__ What __arguments__ does my function have? </summary>
+<p>
+
+
+For `read_csv()`, the character object argument _my_scrap_file_ is what the function uses to know where to find the data file. Functions often have more than one argument. Type `?read_csv` into your console to see help in the lower-right pane that describes all of the function’s arguments and what they do. 
+
+Many of the options have default arguments (such as `col_names = TRUE`) that the function uses if you don’t provide an alternative. A short scroll down in the help window will show you more details about the arguments and the values they take.
+
+> `function(arg1 = input1, arg2 = input2, arg3...)`
+
+The _file_ argument tells us that the function expects a path to a file. It can be given many types of files, even a _ZIP_ file. Below that, you’ll see the _col_names_ argument. This argument takes either `TRUE`, `FALSE`, or a character vector of column names. The default is `TRUE`, which means the first row in the CSV will be used for the column names of your table. 
+
+</p></details>
+
+
+<div class="quiz">
+### Pop Quiz!   {-}
+
+__Which of these is a valid function call?__
+
+<input type="radio"> _train("concentrate" "Force")_           <br> 
+<input type="radio"> _shoot, "lightsaber", "Death Ray"_       <br> 
+<input type="radio"> _replicate(100000000, "clones")_         <br> 
+<input type="radio"> _fight(until   Empire    conquered)_     <br> 
+<input type="radio"> _scrap(100 Datapads, "Hyperdrives")_     <br>
+
+<br>
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+<p>
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `replicate(100000000, "clones")`  
+
+_Correct! You are ready to audit a Junk dealer._
+
+
+</p></details></div>
+
+
+#| Read data
+<hr>
+
+The first step of a good scrap audit is reading/loading some data and figuring out where all the scrap is going. Here is a small dataset showing the scrap from Jakku. It was salvaged from a crash site and the transfer was incomplete.
+
+```{r ex-data1, echo=F, message=F, warning=F}
+library("readr")
+library("tibble")
+library("knitr")
+
+options(scipen = 999)
+
+scrap <- data.frame(source = c("Coruscant", "Tatooine", "Naboo", "Endor"), 
+                    destination = c("Jakuu", "Jakuu", "Jakuu", "Jakuu"), 
+                    item = c("hyperdrives", "datapads", "hyperdrives", "hyperdrives"), 
+                    quantity = c(3, 100, 45, 1), 
+                    price = c(300, 25, 45, 10000000))
+
+kable(scrap)
+```
+
+
+## New Message _(1)_ {-}
+
+<details>
+<summary class = "btn_code_green">_Incoming..._ _BB8_</summary>
+<p>
+
+<div class="tip">
+__BB8:__ _Beep boop. Beep._
+
+__BB8:__ _I intercepted a large scrapper data set from droid 4 of Junk Boss Plutt._   
+
+<br>
+
+Receiving data now...
+
+<details>
+<summary class = "btn_code_green"> View data </summary><p>
+
+__scrap_records.csv__ 
+
+```{r, eval=F}
+Salvage,Origin,Dest,Amount,Units,Price_per_Ton  
+Flight recorder,Outskirts,Niima Outpost,887,Tons,590.93  
+Proximity sensor,Outskirts,Raiders,7081,Tons,1229.03  
+Aural sensor,Tuanul,Raiders,707,Tons,145.27  
+Electromagnetic filter,Tuanul,Niima Outpost,107,Tons,188.2  
+...  
+```
+
+<br>
+
+__You:__ _This looks like a mess! What do I do with this BB8?_
+
+</p></details></p></details>
+</tip>
+
+
+
+## CSV to the rescue 
+
+The main data format used in R is the __CSV__ _(comma-separated values)_. A __CSV__ is a simple text file that can be opened in R and most other stats software, including Excel. It looks squished together as plain text, but that’s okay! When opened in R, the text becomes a familiar looking table with columns and rows. But before we launch ahead, let’s add a _package_ to R that will help us read __CSV__ files.
+
+<br>
+
+<details><summary class = "btn_code_blue"> How to save a CSV from Excel </summary>
+<p>
+
+__Step 1:__ Open your Excel file.
+
+__Step 2:__ 
+
+- Go to _File_  
+- _Save As_  
+- _Browse_ to your project folder  
+- Save as type: _CSV (Comma Delimited) (*.csv)_  
+    - Any of the _CSV_ options will work    
+- Click __Yes__      
+- Close Excel (Click "Don’t Save" as much as you need to. Seriously, we just saved it. Why won’t Excel just leave us alone?)   
+
+
+Return to RStudio and open your project. Look at your _Files_ tab in the lower right window. Click on the _CSV_ file you savd and choose __View File__. Success!
+
+<br>
+
+<hr>
+</p></details>
+
+
+#| A new package &#x1F4E6;
+<hr>
+
+A _package_ is a small add-on for R like a phone App for your phone. Packages add capabilities like statistical functions, mapping powers, and special charts. In order to use a new package we first need to install it. 
+
+
+## _readr_ 
+<hr>
+
+![](https://d21ii91i3y6o6h.cloudfront.net/gallery_images/from_proof/9289/medium/1447092171/readr-hexbin-sticker-from-rstudio.png){align="left" width="145" style="margin-right:18px;"}
+
+<br>
+
+The _readr_ package helps import data into R in different formats. It does extra work for you like cleaning the data of extra white space and formatting tricky dates. Your packages are stored in your R _library_. 
+
+<br><br>
+
+__Add a package to your library__  
+
+1. Open _RStudio_ 
+1. Type ` install.packages("readr") ` in the lower left console
+1. Press Enter
+1. _Wait two seconds_
+1. Open the `Packages` tab in the lower right window of RStudio to see the packages in your _library_
+    - Use the search bar to find the `readr` package
+
+<br>
+
+The packages tab only shows the available packages that are installed. To use one of them, you will need to load it. Loading a package is like opening an App on your phone. To load a package we need to use the `library()` function. After loading the _readr_ package you can read the Jakku scrap data with the brand new function `read_csv() `. 
+
+<br>
+
+
+## Read the data
+<hr>
+
+```{r starwars_read, eval = T}
+
+library("readr")
+
+read_csv("data/starwars_scrap_jakku.csv")
+```
+
+<br>
+
+__NOTE:__ When your project is open, RStudio sets the working directory to your project folder. When reading in files or data from a folder outside of your project, you will need to use the full file path location. For example: `X://Programs/Air_Quality_Programs/Traffic_data.csv`
+
+
+### Name that Data Frame {-}
+
+Where did the data go after you read it into R? If we want to work with the data in R, we need to give it a name with the assignment operator: `<-`. 
+
+```{r starwars_csv_name, eval = T, message = F}
+
+# Read in scrap data and set name to "scrap"
+scrap <- read_csv("data/starwars_scrap_jakku.csv")
+
+# Type the name of the table to view it in the console
+scrap
+
+```
+
+
+<br>
+
+
+### <i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
+Did you notice the row of <three> letter abbreviations under the column names? These describe the data type of each column.
+
+> `chr` stands for __character__ vector, or a string of characters. Examples: _"apple"_, _"apple5"_, _"5 red apples"_  
+> `int` stands for __integer__. Examples: _5_, _34_, _1071_  
+> `dbl` stands for __double__. Examples: _5.0000_, _3.4E-6_, _10.7106_
+
+We will discover more data types later on, such as `dates` and `logical` (TRUE/FALSE).
+
+
+<div class="quiz">
+### Pop Quiz! {-}
+
+__What data type is the `Dest` column?__
+
+<input type="radio"> _letters_        <br> 
+<input type="radio"> _character_      <br> 
+<input type="radio"> _words_          <br> 
+<input type="radio"> _numbers_        <br> 
+<input type="radio"> _integer_        <br>
+
+<br>
+
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+<p>
+
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `character`  
+
+```{r}
+#  
+```
+
+</p></summary></div>
+
+<br>
+
+
+### Don’t like the column names? {-}
+
+We can give new column names to the _col_names_ argument in `read_csv()` like this:
+
+```{r, message=F}
+
+# Assign desired column names as a character vector named my_header_names
+my_header_names <- c("scrap_type", "source", "destination", "count", "units", "price_per_ton")
+
+scrap <- read_csv("data/starwars_scrap_jakku.csv", col_names = my_header_names)
+```
+
+
+
+###  Skip a row {-}
+
+We now have the column names we want, but the original column names in our CSV file show up as a row in our data. We want `read_csv` to ignore the first row. Let’s look through the help window and try to find an argument that can help us. The `skip` argument looks like it could be helpful. Sure enough, the description is exactly what we’re looking for here. The default is `skip = 0` (read every line), but we can skip the first line by providing `skip = 1`.
+
+```{r, eval = F}
+my_header_names <- c("scrap_type", "source", "destination", "count", "units", "price_per_ton")
+
+read_csv("data/starwars_scrap_jakku.csv", my_header_names, skip = 1)
+
+```
+
+<br>
+
+<details>
+<summary class = "btn_code_blue"> __EXPLORE:__ Does the order of arguments matter? </summary>
+<p>
+
+You may be wondering why we included `skip =` for the skip argument, but only provided the objects for the other two arguments. When you pass inputs to a function, R assumes you’ve entered them in the same order that is shown on the ?help page. Let’s say you had a function called `feed_creatures()` with 3 arguments:
+
+> `feed_creatures(porg = "small fish", ewok = "vegetables", tauntaun = "lichen")`.
+
+A shorthand way to write this would be `feed_creatures("small fish", "vegetables", "lichen")`. If we write `feed_creatures("vegetables", "lichen", "small fish")`, the function will send _vegetables_ to the porgs and _lichen_ to the Ewoks. No good. If you really wanted to write "lichen" second, you would need to tell R which food item belongs to each animal, such as `feed_creatures("small fish", tauntaun = "lichen", ewok = "vegetables")`.
+
+The same thing goes for `read_csv()`. In `read_csv(my_scrap_file, column_names, skip = 1)`, R assumes the file is `my_scrap_file` and that the col_names should be set to `column_names`. The `skip =` argument has to be included explicitly because _skip_ is the __10th__ argument in `read_csv()`. If we don’t include `skip = `, R assumes the value we entered is meant for the function’s __3rd__ argument. 
+
+</p></details>
+
+
+<br>
+
+
+### <i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
+A shortcut to see all possible function arguments is to enter its name in the console followed by the first parenthesis, such as ` read_csv( `. Now press `TAB` on the keyboard. This will bring up a drop-down menu of all the available arguments for that function.
+
+
+
+## Saving file paths
+<hr>
+
+You can also save file paths as objects, such as `scrap_file_path <- "data/starwars_scrap.csv"`. Now you can use it as a shortcut to the location of your data. When you want to load the scrap table you can write `read.csv(scrap_file_path)`. This handy trick makes it easier for you or your coworker to update your code and use it with new data.
+
+```{r, message=F}
+
+# Save the file path to an object you can use later
+scrap_file_path <- "data/starwars_scrap_jakku.csv"
+
+scrap <- read_csv(scrap_file_path)
+```
+
+
+
+<div class="quiz">
+### Pop Quiz!   {-}
+
+<br>
+
+__What package does `read_csv()` come from?__
+
+<input type="radio"> _dinosaur_     <br> 
+<input type="radio"> _get_data_     <br> 
+<input type="radio"> _readr_        <br> 
+<input type="radio"> _dplyr_        <br> 
+<input type="radio"> _tidyr_        <br>
+
+<br>
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+<p>
+
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `readr`  
+
+_Great job! You are Jedi worthy!_
+
+</p></details></div>
+
+<div class="quiz" style="margin-top: -15px;">
+<br>
+
+__How would you load the package `junkfinder`?__
+
+<input type="radio"> _junkfinder()_              <br> 
+<input type="radio"> _library("junkfinder")_     <br> 
+<input type="radio"> _load("junkfinder")_        <br> 
+<input type="radio"> _package("junkfinder")_     <br> 
+
+<br>
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+<p>
+
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `library("junkfinder")`  
+
+_Excellent! Keep the streak going._
+
+</p></details></div>
+
+
+
+#| ggplot2
+<hr>
+
+#### _Plot the data, Plot the data, Plot the data_ {-}
+
+
+![](https://images.duckduckgo.com/iu/?u=https%3A%2F%2Fd21ii91i3y6o6h.cloudfront.net%2Fgallery_images%2Ffrom_proof%2F9296%2Fmedium%2F1447173871%2Frstudio-hex-ggplot2-dot-psd.png&f=1){width="164" style="float: left; margin-right: 26px; margin-top: 10px;  margin-left: 0;"}
+
+<br>
+
+In data analysis it is really important to look at your data early and often. For that, let’s add a new package called  __ggplot2__! 
+<br><br>
+
+Install it using: `install.packages("ggplot2")`
+
+<br><br><br>
+
+__NOTE:__ You can also install packages from the `Packages` tab on the lower right window of RStudio.
+
+
+## A first plot {-}
+
+Here’s a quick chart of how many of each item we have in the dataset.
+
+```{r, fig.width=12}
+library(ggplot2)
+
+ggplot(scrap, aes(x = Origin, y = Amount)) + geom_col()
+
+```
+
+Hmmm... Looks like there is an _All_ category that we should look into more.
+
+
+## Introductions _(first things last)_ {-}
+<hr>
+
+Let’s introduce ourselves and the data we love.
+
+<br>
+
+![](images/robot_1.jpg){align="left" width="272" style="margin-right:34px;"}
+
+
+> __Possible topics:__  
+>
+> - Your name.  
+> - Your fave Star Wars character.  
+> - What’s the messiest part of your environmental data? Or something you keep having to do over and over again? __Hint!__ _This is something we can work to automate on the third day._ 
+
+
+# <i class="fa fa-rocket" aria-hidden="true"></i> Blast off to [Part 2](01-Day1_junk_data_pt1.html) {-}
+
+
+# Key terms {-}
+<hr>
+
+`package  ` — An add-on for R that contains new functions that someone created to help you. It’s like an App for R.  
+`library  ` — The name of the folder that stores all your packages, and the function used to load a package.
+

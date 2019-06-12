@@ -1,0 +1,300 @@
+---
+title: "R Training | Intro"
+output: 
+  html_document:
+    toc: false
+    toc_depth: 2
+    toc_float: true
+    theme: readable
+    highlight: tango
+    css: css/camp_style.css
+    number_sections: false
+    self_contained: false
+fontsize: 17pt
+monofont: Source Code Pro
+monofontoptions: Scale = 1.4
+---
+
+
+```{r setup, include=FALSE}
+library(rmarkdown)
+library(tidyverse)
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+
+# Welcome! 
+<hr>
+
+![](images/day1_bb8_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: -10px;"}
+
+<br><br>
+
+__Please connect to your droid__
+
+- Open the __Start menu__  (_Click the Windows logo on the bottom left of the screen_)
+- Select ` Remote Desktop Connection `
+- Enter ` w7-your7digit# ` or ` R32-your7digit# `
+- Press _Connect_
+- Open RStudio
+- Relax...
+
+<br><br><br><br><br><br><br>
+<br><br><br>
+
+
+# Good morning! 
+<hr>
+
+<div class="row3">
+
+<div class="column4" style="border: 0px solid grey;">
+<img src="images/barbara.png" height="220" width="200">
+</div>
+
+<div class="column4" style="border: 0px solid grey;">
+<img src="images/kristie.jpeg" height="240" width="200">
+</div>
+
+<div class="column4" style="border: 0px solid grey;">
+<img src="images/dorian.jpg" height="220" width="200">
+</div>
+
+<div class="column4" style="border: 0px solid grey;">
+<img src="images/derek.jpg" height="200" width="200">
+</div>
+
+</div>
+
+<br>
+
+We are __Barbara__, __Kristie__, __Dorian__, and __Derek__.   
+
+We like __R__.
+
+We are not computer scientists. 
+
+We make lots of mistakes. You will see us make mistakes. Feel free to laugh at them. It's okay. Really.
+
+We aren't related.
+
+<br><br>
+
+
+### You are the great cohort of &nbsp; <span style="font-size: 1.6em;"><i class="fa fa-group" aria-hidden="true" style="color: steelblue;"></i></span> <span style="font-size: 2em;">2018</span><span style="font-size: 1.6em;"><i class="fa fa-group" aria-hidden="true" style="color: steelblue;"></i></span> {-}
+
+
+```{r wordcloud, include=F, eval=F}
+library("yarrr")
+library("wordcloud")
+library("wordcloud2")
+library("dplyr")
+
+set.seed(2)
+
+names <- c("Derek", "Kristie", "Barbara", "Dorian", "Daniel", "Nate", 
+           "Kristen", "Mark", "Bruce", "Eric", "Katie", "Hongming", 
+           "Jean", "Scott", "David", "James", "R", "2018")
+
+frequency <- c(as.numeric(sample(8:12, 16, replace = T)), 24,18)
+
+pirates <- piratepal("info2") 
+
+wordcloud(names, 
+          random.order = F, 
+          random.color = TRUE, 
+          scale        = c(4,1), 
+          freq         = frequency, 
+          colors       = pirates, 
+          vfont        = c("sans serif","bold"), 
+          rot.per      = 0.2,
+          size         = 0.1)
+
+wordcloud2(data.frame(word = names, freq = frequency), size = 1, color = 'random-dark')
+
+#letterCloud(data.frame(word = names, freq = frequency), word = "R", color = 'random-light', wordSize = 10)
+
+```
+
+![](images/name_cloud.png){width=79%}
+
+
+## Introductions {-}
+<hr>
+
+Let’s introduce ourselves and the data we love or don't.
+
+<br>
+
+![](images/robot_1.jpg){align="left" width="272" style="margin-right:34px;"}
+
+
+> __Possible topics:__  
+>
+> - Your name  
+> - Your fave Star Wars character
+> - Type of data you have
+> - Messiest/weirdest/funniest part of your data? Or something you have to do over and over again? __Hint!__ _This is something we can automate._ 
+
+
+<br>
+
+You are the all in this together. Use each other as a resource. Share ideas, share code, collaborate. Make bad jokes. 
+
+<br>
+
+__Here's one:__  _What program do Jedi use to open PDF files?_
+
+<br>
+
+![](images/obi_wan.jpg){width="230"}
+
+
+> __A:__ _Adobe Wan Kenobi?_
+
+# Why R? 
+<hr>
+
+## Data analysis in 7 steps 
+
+> 1. Read the data
+> 1. Plot the data
+> 1. Clean the data
+> 1. View the data closer
+> 1. Summarize the data
+> 1. Save the results
+> 1. __Share__ your work with the world
+
+
+```{r, include=F, eval=F}
+# <div class="alert alert-info"></div>
+```
+
+
+## Data analysis in R
+
+```{r create, include=F, eval=F}
+library(readxl)
+library(tidyverse)
+
+# Prepare example data
+aqs <- read_excel("data/2014_AQS_FondduLac.xlsx") %>%
+       mutate(Date = as.Date(Date))
+
+met <- read_csv("data/COQ 2014 Processed MET -ASOS.csv") %>% 
+       mutate(Date = as.Date(paste(Year, Month, Day, sep = "-")),
+              Month = as.numeric(Month),
+              Hour = as.numeric(Hour)) %>% 
+       group_by(Date, Month, Day, Hour) %>% 
+       summarize(TEMP_F = mean(TempF, na.rm = T))
+
+aqs <- left_join(aqs, met)
+
+aqs <- filter(aqs, Parameter == 88101, !is.na(TEMP_F))
+
+aqs <- rename(aqs, OZONE = Conc, YEAR = Year, SITE = site_catid) %>%
+       rowwise() %>%
+       mutate(YEAR = 2017 - sample(-1:1, 1),
+              Date = as.Date(paste(YEAR, Month, Day, sep = "-")))
+
+aqs <- aqs %>%
+       select(SITE, Date, Hour, OZONE, TEMP_F, everything()) %>%
+       filter(Month > 3, Month < 11) %>% 
+       group_by(SITE, Date) %>%
+       mutate(OZONE  = max(OZONE, na.rm = T),
+              TEMP_F = max(TEMP_F, na.rm = T)) %>% 
+       slice(1)
+
+write_csv(aqs, "data/OZONE_samples.csv")
+```
+
+
+### 1. Read the data
+```{r data}
+air_data <- read_csv("data/OZONE_samples.csv")
+```
+
+```{r tbl, include=F}
+air_data %>% sample_n(5) %>% select(SITE, Date, OZONE, TEMP_F) %>% kable()
+```
+
+
+### 2. Plot the data
+```{r view, message = F, fig.width=12, fig.height=4}
+ggplot(air_data, aes(x = TEMP_F, y = OZONE)) + 
+    geom_point(alpha = 0.2) +
+    geom_smooth(method = "lm")
+```
+
+
+### 3. Clean the data
+```{r clean, eval=FALSE}
+# Drop values out of range
+air_data <- air_data %>% filter(OZONE > 0, TEMP_F < 199) 
+
+# Convert all samples to PPB
+air_data <- air_data %>% 
+            mutate(OZONE = ifelse(UNITS == "PPM", OZONE * 1000, 
+                                  OZONE)) 
+```
+
+
+
+### 4. View the data closer
+```{r, fig.width=12, fig.height=4}
+ggplot(air_data, aes(x = TEMP_F, y = OZONE)) + 
+    geom_point(alpha = 0.2, size = 3) +
+    geom_smooth(method = "lm") + 
+    facet_wrap(~SITE) +
+    labs(title = "Ozone increases with temperature", 
+         subtitle = "Observations from 2015-2017")
+```
+
+
+### 5. Summarize the data
+```{r summary}
+air_data <- air_data %>% 
+            group_by(SITE, YEAR) %>% 
+            summarize(AVG_OZONE = mean(OZONE) %>% round(2),
+                      AVG_TEMP  = mean(TEMP_F) %>% round(2))
+```
+
+```{r, include=F}
+air_data %>% kable()
+```
+
+
+###  6. Save the results
+
+__Save the final data table__
+```{r save-csv}
+air_data %>% write_csv("results/2015-17_ozone_summary.csv")
+```
+
+
+<br>
+
+__Save the site plot__
+```{r save-ch, message=F}
+ggsave("results/2015-2017 - Ozone vs Temp.pdf")
+```
+
+
+
+### 7. Share it with the world
+
+<a href = "https://github.com/dKvale/ex__OZONE__Project">
+![](images/github_example_ozone.png){style="width: 95%;"}
+</a>
+
+<br><br>
+
+
+
+
+### Let's go! Jump to [R Training](https://mpca-air.github.io/RTrain/) 
+
+
+##

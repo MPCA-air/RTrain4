@@ -1,0 +1,111 @@
+---
+title: "R Camp | day 3"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: readable
+    highlight: tango
+    css: css/camp_style.css
+    number_sections: true
+    self_contained: false
+fontsize: 14pt
+monofont: Source Code Pro
+monofontoptions: Scale = 1.1
+---
+
+
+```{r setup, include=FALSE}
+library("rmarkdown")
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+
+# <i class="fa fa-star" style="color:#ffff00"></i> <i class="fa fa-star" style="color:#ffff00"></i> Bonus level!! <i class="fa fa-star" style="color:#ffff00"></i> <i class="fa fa-star" style="color:#ffff00"></i> {-}
+
+R wasn't made to only look at cat data, but if that's your thing there's certainly more great cat data to be found. Other free data sets are also available online and in R packages _(try typing `starwars` after you've loaded the __dplyr__ package)_. One big advantage of CSVs is that you can easily share them online. Once there, researchers and collaborators can easily read your data directly into their own R session using the data's URL.
+
+Kaggle [datasets](https://www.kaggle.com/datasets) is one great resource for interesting data. The example below shows a data set of the top 5,000 rated movies on IMDB.
+
+
+```{r read-url, eval = F}
+
+library("readr")
+
+# Below is a IMDB movie file stored on the internet as a CSV
+movie_url <- "https://raw.githubusercontent.com/MPCA-air/RCamp/master/data/movies/IMDB.csv"
+
+
+# Read the IMDB movie data and save as `movies`
+movies <- read_csv(movie_url)
+
+```
+
+<br>
+
+Your challenge is to load the movie data (or use one of your own) and to practice using the `filter()`, `arrange()`, `mutate()`, and `summarize()` functions. When you've run out of time, save your script as "my_name.R" to this folder — ```X:\Agency_Files\Data_Services\DAU\Data Analytics User Group\Shared\r\training\RCamp\Day1\Student scripts```.
+
+> Add your data file as well if it isn't already on the X-drive.
+
+<br>
+
+__Create a new R script that answers a few questions about your data set: __
+
+1. How many rows are in your data set?
+1. What are the column names?
+1. Find a mean of a single column.
+1. Use `group_by()` to summarize()` the values of a column based on a group it's in. 
+1. Use `mutate()` to convert one of your columns into a different unit (e.g. `lbs` to `Millions of lbs` or `grams` to `kilograms`).
+1. `filter()` your data to a single category.
+1. Use `%in%` to filter your data to include only a few categories. 
+1. Make up a question of your own.
+
+
+> _Did answering these questions raise new questions about your data?_
+
+
+
+
+__Some additional questions: __
+
+1. What were the highest and lowest values?
+1. What type or category shows up most frequently in the data?
+
+
+<br>
+
+
+## Question 1 {-}
+
+<details><summary class = "btn_code">_Show solution_</summary>
+<p>
+
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `my_CAT55`  
+
+_Yes!!_
+
+</p>
+</details>
+
+
+## Survey says {-}
+<hr>
+
+On the __front__ of your sticky note answer one of these:
+
+- Something you really liked learning today?
+- A useful thing you learned?
+- A new skill you are you excited about using?
+
+On the __back__:
+
+- A lingering question you have about the material.
+- A topic that was confusing and could use more clarification?
+
+
+We will compile the questions and send out answers before next class. If you think of something later, please e-mail us any questions you have. If you’re uncertain about something I guarantee someone else is as well. So help a friend, and ask a question.
+
+
+

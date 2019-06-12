@@ -1,0 +1,1246 @@
+---
+title: "R Training | Day 3"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: readable
+    highlight: tango
+    css: css/camp_style.css
+    number_sections: true
+    self_contained: false
+    fontsize: 18pt
+    monofont: Source Code Pro
+    monofontoptions: Scale = 1.4
+---
+
+
+```{r setup, include=F}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
+knitr::opts_chunk$set(fig.width = 11, fig.height = 6) 
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+# Welcome back Jedis! {-}
+<hr>
+
+![](images/day3_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: 8px;"}
+
+<br>
+
+### Please connect to your droid {-}
+
+- Open the __Start menu__  (_Click the Windows logo on the bottom left of the screen_)
+- Select ` Remote Desktop Connection `
+- Enter ` R32-your7digit# ` or ` w7-your7digit# `
+- Press _Connect_
+
+<br>
+
+__Open your RStudio project__
+
+- __Open__ your project folder from last week
+- Double click the __.Rproj__ file to open RStudio
+
+__Open a New script__
+
+- __File > New File > R Script__
+
+- Click the _floppy disk_ save icon
+- Give it a name: `03_day.R` or `jakku_plots.R` will work well
+
+
+
+## Schedule  {-}
+
+<div class="well">
+
+- Review
+- Where's Finn?
+- Join 2 tables
+- Conditional mutate! 
+    - `ifelse()`
+    - Yes/No decisions
+- Summarize by group
+- More plots
+    - New geoms
+    - Reference lines
+    - Faceting
+    - Colors
+    - Titles 
+    
+</div>   
+    
+
+## Porg review {-}
+
+The _poggle_ of porgs has returned to help us review the `dplyr` functions. Follow along by downloading the __porg__ data from the URL below.
+
+```{r, eval = F}
+library(readr)
+porgs <- read_csv("https://itep-r.netlify.com/data/porg_data.csv")
+```
+
+<br>
+
+```{r porg-tabs, results='asis', echo=F}
+cat(readLines("porg_tabs.txt"))
+```
+
+<br>
+
+
+__So where were we? Oh right, we we're enjoying our time on beautiful lush Endor. But aren't we missing somebody?__
+
+
+# | Finn needs us! {-}
+
+That's enough _scuttlebutting_ around on Endor, Finn needs us back on Jakku. It turns out we forgot to pick-up Finn when we left. Now he's being held ransom by Junk Boss Plutt. We'll need to act fast to get to him before the Empire does. __Blast off!__ 
+
+<br>
+
+![](images/finn_run.gif){style="margin-left: 18%; width: 60%; margin-top: 6px;"}
+
+<br>
+
+
+# More data {-}
+
+<div class="tip"> 
+<h3 style="margin-top: 13px;"> Update from BB8! </h3>
+
+BB8 was busy on our flight back to Jakku, and was able to recover a __full__ set of scrap records from the notorious Unkar Plutt. Let's take a look.
+
+
+```{r full-scrap, eval=T, echo=T}
+library(readr)
+library(dplyr)
+
+# Read in the full scrap database
+scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv")
+```
+</div>
+
+<br>
+
+# | Jakku re-visited
+<hr>
+
+Okay, so we're back on the ol' dust bucket. Let's try not to forget anything while were here this time. We're quickly running out of friends on this planet.
+
+## A scrappy ransom {-}
+
+Mr. Baddy Plutt is demanding __10,000 items__ of scrap for Finn. Sounds expensive, but lucky for us he didn't clarify the exact items. Let's find the scrap that weighs the least per shipment and try to make this transaction as light as possible. 
+
+Take a look at our __NEW__ scrap data and see if we have the weight of all the items.
+
+```{r fullscrap-units, eval=T}
+# What unit types are in the data?
+unique(scrap$units)
+```
+
+__Or return results as a data frame__
+```{r distinct-units, eval=T}
+distinct(scrap, units)
+```
+
+<br>
+
+
+_Hmmm...._ So how much does a cubic yard of `Hull Panel` weigh? 
+
+_A lot? 32? Maybe..._ 
+
+I think we're going to need some more data. 
+
+<br>
+
+<div class="tip">
+__"Hey BB8!"__ 
+
+__"Please do your magic data finding thing."__
+
+</div>
+
+## Get the weights {-}
+
+![](images/rey_bb8.jpg){align="right" style="width: 35%; margin-top: 0px; margin-left: 15px; margin-right: 0px;"}
+
+It took a while, but with a few droid bribes BB8 was able to track down a _Weight conversion table_ from his old droid buddies. Our current data shows the total cubic yards for some scrap shipments, but not how much the shipment weighs. 
+
+### Read the weight conversion table {-}
+```{r read-convert, eval = T, message = F}
+# The data's URL
+convert_url <- "https://rtrain.netlify.com/data/conversion_table.csv"
+
+# Read the conversion data
+convert <- read_csv(convert_url)
+
+head(convert, 3)
+```
+
+<br>
+
+Stars! A cubic yard of `Hull Panel` weighs __641 lbs__. That's what I thought!
+
+Let's join this new conversion table to the scrap data to make our calculations easier. To do that we need to make a new friend.
+
+__Say "Hello" to `left_join()`!__  
+
+
+# | Join tables
+
+![](images/leftjoin_scrap.png){style="width: 55%; margin-left: 18%;"}
+
+<br><br>
+<hr>
+
+`left_join()` works like a zipper and combines two tables based on one or more variables. It's called "left"-join because the entire table on the left side is retained. Anything that matches from the right table gets to join the party, but the rest will be ignored.
+
+
+## Join 2 tables {-}
+
+### `left_join(table1, table2, by = c("columns to join by"))` {-}
+
+<br>
+
+
+### Adding porg names {-}
+
+Remember our porg friends? How rude of us not to share their names. __Wups!__
+
+Here they are:
+
+<div style="margin-left: 10px; margin-top: 24px; width: 37%; margin-bottom: 34px;">
+![](images/porgs/porg_names_tbl.png)
+</div>
+
+<div style="clear: both;"></div>
+
+__Hey now!__ That's not very helpful. Who's who? Let's join their names to the rest their data.
+
+<br>
+
+
+![](images/porgs/porg_join.png){style="width: 85%;"}
+
+<br>
+
+### __The result__ {-}
+
+<div class="well">
+![](images/porgs/porgs_and_names.png){style="width: 85%; max-width: 85%;"}
+</div>
+
+<br>
+
+## Back to scrap land{-}
+
+Let's apply our new `left_join()` skills to the scrap data.
+
+<br>
+
+### Join the conversion table to the scrap {-}
+
+Look at the tables. What columns in both tables do we want to join __by__?
+
+
+<br>
+
+```{r join-convert, eval=T}
+scrap <- left_join(scrap, convert, 
+                   by = c("item" = "item", "units" = "units"))
+```
+
+<br>
+
+> Want to skimp on typing?
+
+<br>
+
+When the 2 tables share column names that are the same, `left_join()` will automatically search for matching columns. Nice! So the code below does the same as above.
+
+```{r join-convert2, eval=F}
+scrap <- left_join(scrap, convert)
+
+head(scrap, 4)
+```
+
+```{r join-convert3, eval=T, echo=F}
+head(scrap, 4)
+```
+
+<br>
+
+__Want more details?__ 
+
+You can type `?left_join` to see all the arguments and options.
+
+<br>
+
+## Total pounds per shipment {-}
+
+Let's mutate! 
+
+Now that we have pounds per unit we can use `mutate` to calculate the total pounds for each shipment.
+
+<br>
+
+```{r, echo=F}
+scrap <- scrap %>% 
+         mutate(total_pounds = amount * pounds_per_unit)
+         
+```
+
+__Fill in the blank__
+```{r, eval=F}
+scrap <- scrap %>% 
+         mutate(total_pounds = amount *  _____________ )
+         
+```
+
+<details>
+<summary class = "btn_code">_Show code_</summary>
+<p>
+```{r}
+scrap <- scrap %>% 
+         mutate(total_pounds = amount * pounds_per_unit)
+         
+```
+</p></details>
+
+
+## Total price per shipment {-}
+
+<div class="note">
+
+### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE {-}
+
+```{r exer-tabs, results='asis', echo=F}
+source("insert_tabs.R")
+
+tabs <- c("Total price", "Show hint", "Show code")
+
+content <- c(Exercise = "<h4> Total price </h4>
+
+We need to do some serious multiplication. We now have the total amount shipped in pounds, and the price per pound, but we want to know the total price for each transaction. 
+
+How do we calculate that? 
+
+code_start
+
+# Calculate the total price for each shipment
+scrap <- scrap %>% 
+         mutate(credits = ________ * ________ )
+         
+code_end",
+
+show_hint = '<h4> Total price </h4>
+
+We need to do some serious multiplication. We now have the total amount shipped in pounds, and the price per pound, but we want to know the total price for each transaction. 
+
+How do we calculate that?
+
+code_start
+
+# Calculate the total price for each shipment
+scrap <- scrap %>% 
+         mutate(credits = total_pounds  * ________ )
+
+code_end',
+
+show_code = '<h4> Total price </h4>
+
+We need to do some serious multiplication. We now have the total amount shipped in pounds, and the price per pound, but we want to know the total price for each transaction. 
+
+How do we calculate that?
+
+code_start
+
+# Calculate the total price for each shipment
+scrap <- scrap %>% 
+         mutate(credits = total_pounds * price_per_pound)
+         
+code_end')
+
+tab_html <- add_tabs(tabs, content)
+
+cat(paste0(tab_html, collapse = "\n"))
+```
+
+</div>
+
+<br>
+
+```{r, echo=F}
+# Calculate the total price for each shipment
+scrap <- scrap %>% 
+         mutate(credits = total_pounds * price_per_pound)
+```
+
+
+## Price per item {-}
+
+__Great!__ Let's add one last column. We can divide the shipment's _credits_ by the _amount_ of items to get the `price_per_unit`.
+
+```{r}
+# Calculate the price per unit
+scrap <- scrap %>% 
+         mutate(price_per_unit = credits / amount)
+```
+
+<br>
+
+<div class="note" style="line-height: 1.6;">
+
+Data analysts often get asked summary questions such as:
+
+- What's the highest or worst? 
+- What's the lowest number? 
+- Is that worse than average?
+    - What's the average tonnage of scrap from Cratertown this year? 
+- What city is making the most money?
+
+</div>
+
+
+### On to `summarize()`! {-}
+
+
+# | `summarize()` this!
+<hr>
+
+![](images/summarize_diagram.png){width="500"}
+
+`summarize()` allows you to apply a summary function like `median()` to a column and collapse your data down to a single row. To really dig into `summarize` you'll want to know some common summary functions, such as `sum()`, `mean()`, `median()`, `min()`, and `max()`.
+
+
+
+## `sum()` {-}
+
+Use `summarize()` and `sum()` to find the total credits of __all__ the scrap.
+
+```{r, eval=F}
+summarize(scrap, total_credits = sum(credits))
+```
+
+
+## `mean()` {-}
+Use `summarize()` and `mean()` to calculate the _mean_ `price_per_pound` in the scrap report.
+
+```{r, eval=F}
+summarize(scrap, mean_price = mean(price_per_pound, na.rm = T))
+```
+
+<br>
+
+> Note the `na.rm = TRUE` in the `mean()` function. This tells R to ignore empty cells or missing values that show up in R as `NA`. If you leave `na.rm` out, the _mean_ function will return 'NA' if it finds a missing value in the data.
+
+
+## `median()` {-}
+Use summarize to calculate the _median_ price_per_pound in the scrap report.
+
+```{r, eval=F}
+summarize(scrap, median_price = median(price_per_pound, na.rm = T))
+```
+
+## `max()` {-}
+Use summarize to calculate the _maximum_ price per pound any scrapper got for their scrap.
+
+```{r, eval=F}
+summarize(scrap, max_price = max(price_per_pound, na.rm = T))
+```
+
+## `min()` {-}
+Use summarize to calculate the _minimum_ price per pound any scrapper got for their scrap.
+
+```{r, eval=F}
+summarize(scrap, min_price = min(price_per_pound, na.rm = T))
+```
+
+## `nth()` {-}
+Use `summarize()` and `nth(Origin, 12)` to find the name of the Origin City that had the  _12th_ highest scrapper haul.   
+
+_Hint: Use `arrange()` first._
+
+```{r, eval=F}
+arrange(scrap, desc(credits)) %>% summarize(price_12 = nth(origin, 12))
+```
+
+
+## `quantile()` {-}
+
+Quantiles are great for finding the upper or lower range of a column. Use the `quantile()` function to find the the 5th and 95th quantile of the prices.
+
+```{r quants, eval=F}
+
+summarize(scrap, 
+          price_5th_pctile  = quantile(price_per_pound, 0.05, na.rm = T),
+          price_95th_pctile = quantile(price_per_pound, 0.95))
+```
+
+
+__Hint:__ Add `na.rm = T` to `quantile()`.
+
+<br>
+
+<div class="tip">
+
+### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE {-}
+
+Create a summary of the scrap data that includes 3 of the summary functions above. The following is one example.
+
+```{r, eval = F}
+summary <- scrap %>% 
+             summarize(max_credits      =  __________ ,
+                       mean_credits     =  __________ ,
+                       min_pounds       =  __________  )
+                     
+```
+
+</div>
+
+<br>
+
+
+## `n()` {-}
+
+`n()` stands for _count_. It has the smallest function name I know of, but is super useful.
+
+Use summarize and `n()` to count the number of reported scrap records going to `Niima outpost`. 
+
+<br>
+
+__Hint:__ Use `filter()` first.
+
+```{r, eval=F}
+niima_scrap <- filter(scrap, destination == "Niima Outpost") 
+```
+
+
+```{r, eval=F}
+niima_scrap <- summarize(niima_scrap, scrap_records = n())
+```
+
+
+<br>
+
+Ok. That was fun. Now let's do a summary for Cratertown. And then for Blowback Town. And then for Tuanul. And then for...
+
+<br>
+
+
+### __Wait!__ {-}
+
+> Do we really need to `filter` to the _origin_ city that we're interested in every single time? 
+>
+> How about you just give me the mean price for every _origin_ city. Then I could use that to answer a question about any city I want.
+>
+> Okay. Fine. It's time we talk about __`group_by()`.__ 
+>
+
+
+# | `group_by()`
+<hr>
+
+## The junk Capital of Jakku
+
+> Which origin city had the most shipments of junk?
+
+<br>
+
+Use `group_by` with the column _origin_, and then use`summarize` to count the __number__ of records at each origin city. 
+
+<br>
+
+__Fill in the blank__
+```{r total-shipped, eval=F}
+
+scrap_shipments <- group_by(scrap, ______ ) %>% 
+                     summarize(shipments =  ______ ) 
+
+```
+
+<details>
+<summary class = "btn_code">_Show code_</summary>
+<p>
+```{r count-ships, eval=F}
+
+scrap_shipments <- group_by(scrap, origin ) %>% 
+                     summarize(shipments =  n() ) 
+
+```
+</p></details>
+
+
+<div class="quiz">
+### Pop Quiz! {-}
+
+__Which city had the most scrap shipments?__
+
+<input type="radio"> _Tuanul_         <br> 
+<input type="radio"> _Outskirts_      <br> 
+<input type="radio"> _Reestki_        <br> 
+<input type="radio"> _Cratertown_     <br> 
+<br>
+
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+
+<p>
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `Cratertown`  
+
+_You've got the POWER!_
+
+</p>
+</details></div>
+
+
+## Bargain hunters {-}
+
+Who's selling goods for cheap? 
+
+Use `group_by` with the column _origin_, and then use`summarize` to find the `mean(price_per_unit)` at each origin city. 
+
+
+<details>
+<summary class = "btn_code">_Show code_</summary>
+<p>
+```{r mean_price-by-origin, eval=F}
+
+mean_prices <- group_by(scrap, origin) %>% 
+                 summarize(mean_price = mean(price_per_unit, na.rm = T)) %>%
+                 ungroup()
+
+```
+</p></details>
+
+<br>
+
+
+<details>
+<summary class="btn_code_blue"> EXPLORE: Rounding digits </summary>
+
+<div class="note" style="margin-top: -9px;">
+<p>
+You can round the prices to a certain number of digits using the `round()` function. We can finish by adding the `arrange()` function to sort the table by our new column.
+
+```{r mean_price-by-Origin-round, eval = F}
+
+mean_prices <- group_by(scrap, origin) %>% 
+                 summarize(mean_price       = mean(price_per_unit, na.rm = T),
+                           mean_price_round = round(mean_price, digits = 2)) %>%  
+                 arrange(mean_price_round) %>%
+                 ungroup()
+
+```
+
+<br>
+
+
+__Special note__ 
+
+The `round()` function in R does not automatically round values ending in 5 up. Instead it uses scientific rounding, which rounds values ending in 5 to the nearest even number. So 2.5 rounded to the nearest whole number rounds down to 2, and 3.5 rounded to the nearest whole number rounds up 4.
+
+</p>
+</div>
+</details>
+
+
+<br>
+
+
+<div class="tip">
+### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
+Ending with `ungroup()` is good practice. This prevents your data from staying grouped after the summarizing has been completed.
+</div>
+
+
+# | Save files
+<hr>
+
+Let's save the mean price summary table we created to a _CSV_. That way we can transfer it to a _droid courier_ for delivery to Rey. To save a data frame we use the `write_csv()` function from our favorite `readr` package. 
+
+```{r, eval=F}
+
+# Write the file to your results folder
+write_csv(mean_prices, "results/prices_by_origin.csv")
+
+```
+
+<br>
+
+<div class="red-note">
+
+##### <i class="fas fa-exclamation-triangle" style="color: #040707;"></i> __WARNING!__ {-}
+
+By default, when saving files R will overwrite a file if the file already exists in the same folder. It will not ask for confirmation. To be safe, save processed data to a new folder called `results/` and not to your raw `data/` folder.
+
+</div>
+
+
+# | `ifelse()`
+
+### `[If this thing is true]`, `"Do this"`, `"Otherwise do this"` {-}
+
+<br>
+
+
+![](images/yoda_lightsaber.jpg){style="width: 46%; margin-left: 26.5%; margin-top: -8px; margin-bottom: 12px;"}
+
+<br>
+
+Here's a handy `ifelse` statement to help you identify lightsabers.
+
+<div class="well" style="margin-top: 10px:">
+`ifelse( `__Is lightsaber__ <span style="color: green;">__GREEN__?</span>, __Yes!__ ` Then it's Yoda's,` __No!__ ` Then it's not Yoda's)`
+
+</div>
+
+<br>
+
+Say you want to label all the porgs over _60 cm_ as tall, and everyone else as short. In other words, we want to add a column where the value depends on the value found in the height column. We use `ifelse()` for this.
+
+Or maybe you have a list of prices for scrap, and you want to flag only the ones that cost less than 500 credits. 
+
+## `mutate()` + `ifelse()` is powerful! {-}
+
+![](images/yoda_rise_sm.png){style="width: 74%; margin-left: 12%"}
+
+<br>
+
+
+### On the cheap {-}
+
+Bad news. We're on a budget people. Rey can't afford anything over 500 credits per item. 
+
+Let's add a column that labels the items as "Cheap" __if__ the price is less than 500.
+
+__Add an affordable column__
+```{r ifelse, message=F, warning=F}
+library(dplyr)
+library(readr)
+
+# Add an affordable column
+scrap <- scrap %>% 
+         mutate(affordable = ifelse(price_per_unit < 500, "Cheap", "Expensive"))
+
+```
+
+
+
+<div class="tip">
+
+#### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
+
+Use `filter()` to create a new `cheap_scrap` table.
+
+</div>
+
+
+
+<div class="quiz">
+### Pop Quiz! {-}
+
+__What is the cheapest item?__
+
+<input type="radio"> _Black box_         <br> 
+<input type="radio"> _Electrotelescope_  <br> 
+<input type="radio"> _Atomic drive_      <br> 
+<input type="radio"> _Enviro filter_     <br> 
+<input type="radio"> _Main drive_        <br>
+<br>
+
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+
+<p>
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `Black box`  
+
+_You win! _
+
+</p>
+</details></div>
+
+
+
+<br>
+
+> __CONGRATULATIONS__ of galactic proportions to you. 
+>
+>We now have a clean and tidy data set. If BB8 receives new data to append, we can re-run this script and in 5 seconds we'll have cleaned up data again!
+>
+
+<br>
+
+# | Plots with _ggplot2_
+<hr>
+
+#### _Plot the data, Plot the data, Plot the data_ {-}
+
+<br>
+
+![](images/ggplot2_hex.png){align="right" width="180" style="margin-right: 70px; margin-top: -124px;"}
+
+
+## The `ggplot()` sandwich {-}
+
+
+![](images/auto_plot.gif){style="margin-top: -22px; margin-left: -40px; max-width: 110%;"}
+
+<h5 style="font-size: 28px; font-weight: bold; margin-top: -42px;"> A `ggplot` has 3 ingredients. </h5>
+
+
+## 1. The base plot {-}
+```{r, echo = T, eval = T}
+library(ggplot2)
+```
+
+
+```{r, echo=F}
+library(dplyr)
+library(readr)
+
+# Read in the conversion data
+convert <- read_csv("https://rtrain.netlify.com/data/conversion_table.csv")
+
+# Read in scrap data
+scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv")
+
+# Join the scrap to the conversion table
+scrap <- left_join(scrap, convert)
+
+# Calculate the total price
+scrap <- scrap %>% 
+         mutate(total_pounds = amount * pounds_per_unit,
+                credits      = total_pounds * price_per_pound)
+
+# Calculate the price per unit
+scrap <- scrap %>% 
+         mutate(price_per_unit = credits / amount)
+
+
+```
+
+```{r, echo=T, eval=T}
+ggplot(scrap)
+```
+
+<br>
+
+> we load the package `library (ggplot2)`, but the function to make a plot is `ggplot(scrap)`. 
+
+
+## 2. The the X, Y _aesthetics_  {-}
+
+The _aesthetics_ assign the components from the data that you want to use in the chart. These also determine the dimensions of the plot.
+
+```{r, eval = T}
+ggplot(scrap, aes(x = origin, y = credits)) 
+```
+
+
+## 3. The layers or _geometries_  {-}
+```{r, eval = T}
+ggplot(scrap, aes(x = origin, y = credits)) + geom_point()
+```
+
+<br>
+
+<div class="tip">
+#### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
+
+Try making a scatterplot of any two columns.
+
+_Hint: Numeric variables will be more informative._
+
+```{r, eval = F, echo = T}
+ggplot(scrap, aes(x = column1, y = column2 )) + geom_point()
+```
+</div>
+
+
+## Colors {-}
+<hr>
+
+
+Now let's use color to show the destination of the scrap
+```{r, eval = T}
+ggplot(scrap, aes(x = origin, y = credits, color = destination)) +
+  geom_point()
+```
+
+
+## Columns charts {-}
+
+Yikes! That point chart had too much detail. Let's make a column chart and add up the sales to make it easier to understand. Note that we used `fill =` instead of `color =`. Try using color instead and see what happens.
+
+
+```{r, eval = T, echo = T}
+ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
+  geom_col()
+```
+
+<br>
+
+We can change the position of the bars to make it easier to compare sales by destination for each origin. For that we'll use the -- _drum roll please_ -- `position` argument. Remember, you can use `help(geom_col)` to learn about the different options for that type of plot. 
+
+```{r, eval = T, echo = T}
+ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
+  geom_col(position = "dodge")
+```
+
+
+
+<div class="tip">
+
+### <i class="fa fa-user-bicycle" aria-hidden="true" style="color:#040707;"></i> EXERCISE {-}
+
+An easy way to experiment with colors is to add layers like `+ scale_fill_viridis()` or `+ scale_fill_brewer()` to your plot, which will link to RcolorBrewer so you can have accessible color schemes.
+
+Try adding one of thse to your column plot above.
+
+</div>
+
+
+## Facet wrap {-}
+
+Does the chart feel crowded to you? Let's use `facet wrap` to put each origin in a separate chart.
+
+```{r, eval = T, echo = T}
+ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
+  geom_col(position = "dodge") +
+  facet_wrap("destination")
+```
+
+
+# It's Finn time
+
+Seriously. Let's pay that ransom already. 
+
+> __Where should we go to get our 10,000 Black boxes?__
+
+<br>
+
+__Step 1:__ Filter the scrap data to only `Black box`.
+
+```{r, eval=F}
+cheap_scrap <- filter(scrap, ______    ==   _____   )
+
+```
+
+```{r, echo=F}
+cheap_scrap <- filter(scrap,item    ==   "Black box"  )
+```
+
+<br>
+
+__Step 2:__ Make a `geom_col()` plot of the total pounds of Black boxes shipped to each destination. 
+
+```{r, eval=F}
+
+ggplot(cheap_scrap, aes(x =   , y =    ) ) + 
+   geom_
+
+```
+
+<details>
+<summary class = "btn_code">_Show code_</summary>
+
+<div class="quiz" style="margin-top: -9px;">
+<p>
+
+```{r}
+ggplot(cheap_scrap, aes(x = destination, y = total_pounds) ) + 
+   geom_col()
+
+```
+
+</p></div></details>
+
+
+
+<div class="quiz">
+### Pop Quiz! {-}
+
+__Which destination has the most pounds of the cheapest item?__
+
+<input type="radio"> _Trade caravan_  <br> 
+<input type="radio"> _Niima Outpost_  <br> 
+<input type="radio"> _Raiders_        <br> 
+<br>
+
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+
+<p>
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `Raiders`  
+
+_Woop! Go get em! So long Jakku - see you never!_
+
+</p>
+</details></div>
+
+
+<br><br>
+
+
+# <i class="fa fa-star" aria-hidden="true" style="color: gold"></i> CONCATULATIONS! <i class="fa fa-star" aria-hidden="true" style="color: gold"></i> {-}
+<hr>
+
+> __Clap your hands. You have earned a great award.__
+
+
+<br>
+
+
+# | Plot extras
+<hr>
+
+## Themes {-}
+
+Want to shake up the appearance of your plots? `ggplot2` uses `theme` functions to change the general appearance of a plot. Try some different themes out. Here's `theme_dark()`.
+
+```{r, eval = T, echo = T}
+ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
+  geom_col(position = "dodge") +
+  facet_wrap("destination") +
+  theme_dark()
+```
+
+
+## Labels {-}
+
+You can set the axis and title labels using the `labs` function.
+
+```{r, eval = T, echo = T}
+ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
+  geom_col(position = "dodge") +
+  facet_wrap("destination") +
+  labs(title    = "Scrap sales by origin and destination", 
+       subtitle = "Planet Jakku",
+       x        = "Origin", 
+       y        = "Total sales",
+       caption  = "Data gracefully provided by BB8")
+```
+
+<br>
+
+
+## Drop ` 1.0e+10` scientific notation {-}
+
+Is your boss scared of scientific notation? To hide it we can use `options(scipen = 999)`. Note that this is a general setting in R. Once you use `options(scipen = 999)` in your current session you won't have to use it again. Like loading a package, you only need to run the line once when you start RStudio.
+
+<br>
+
+```{r, eval = T, echo = T}
+options(scipen = 999)
+
+ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
+  geom_col(position = "dodge") +
+  facet_wrap("destination") +
+  theme_bw() +
+  labs(title = "Scrap sales by origin and destination", 
+       x     = "Origin", 
+       y     = "Total sales")
+```
+
+<br>
+
+<div class="note">
+__CHALLENGE__
+
+Let's say we don't like printing so many zeros and want the labels to be in __Millions__ of credits. How can you make it happen?
+
+<br>
+
+<details><summary> [Click here for a HINT] </summary>
+<p>
+
+_Sorry, the hint is missing. You're on your own._
+
+</p>
+</details>
+
+</div>
+
+
+<br>
+
+
+<div class="tip">
+
+### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE {-}
+
+Be brave and make a boxplot. We've covered how to do a scatterplot with `geom_point` and a bar chart with `geom_col`, but how would you make a boxplot showing the prices at each destination? You're on your own here. Feel free to add `color` ,`facet_wrap`, `theme`, and `labs` to your boxplots. 
+
+_May the force be with you._
+</div>
+
+
+## Save plots {-}
+
+You've hopefully made some plots you're proud of, so let's learn to save them so we can cherish them forever. There's a function called `ggsave` to do just that. How do we `ggsave` our plots? HELP! Let's type `help(ggsave)`.
+
+```{r ggsave, eval = F, echo = T}
+# Get help
+help(ggsave)
+?ggsave
+
+# Copy and paste the r code of your favorite plot here
+ggplot(data, aes()) +
+   .... +
+   ....
+
+
+# Save your plot to a png file of your choosing
+ggsave("your_results_folder/plot_name.png")
+```
+
+
+<br>
+
+
+### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+<div class="note">
+
+Sometimes you may want to make a plot and save it for later. For that, you give your plot a name. Any name will do.
+
+```{r ggsave-objects, eval = F, echo = T}
+
+# The ggplot you want to save
+my_plot <- ggplot(...)
+  
+# The name of the file the chart will be saved to.
+where_to_save_it <- "___.png"
+
+# Save it!
+ggsave(filename = where_to_save_it, plot = my_plot)
+```
+
+<br>
+
+_Learn more about saving plots at_ [http://stat545.com/](http://stat545.com/block017_write-figure-to-file.html)
+
+<br>
+
+</div>
+
+
+
+
+# | Glossary
+
+__Table of `aesthetics`__
+
+| aes()         |    
+|:--------------|  
+| `x = `        |     
+| `y = `        |      
+| `alpha = `    |     
+| `fill = `     |      
+| `color = `    |    
+| `size = `     |     
+| `linetype = ` |      
+
+
+<br>
+
+__Table of `geoms`__
+
+![](images/geoms_1var.png)
+
+![](images/geoms_diagram.png)
+
+<br>
+
+__Table of `themes`__
+
+You can customize the look of your plot by adding a `theme()` function.
+
+![](images/ggplot_themes.png)
+
+
+
+# Homeworld training {-}
+
+![](images/porg.png){style="float: right; margin-top: -34px;"}
+
+1. Load one of the data sets below into R
+    - Porg contamination on Ahch-To
+        - `https://rtrain.netlify.com/data/porg_samples.csv`
+    - Planet Endor air samples
+        - `https://rtrain.netlify.com/data/air_endor.csv`
+    - Or use data from a recent project of yours   
+
+
+2. Create 2 plots using the data.
+
+
+3. _If you make something really_ __strange__. _Feel free to share! Consider it art and keep going._ 
+
+
+<div class="note">
+
+### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
+When you add more layers using `+` remember to place it at the end of each line.
+
+```{r, eval=F, echo=T}
+# This will work
+ggplot(scrap, aes(x = origin, y = credits)) +
+  geom_point()
+
+# So will this
+ggplot(scrap, aes(x = origin, y = credits)) + geom_point()
+
+# But this won't
+ggplot(scrap, aes(x = origin, y = credits))
+  + geom_point()
+
+```
+
+</div>
+
+<br><br>
+
+<details>
+<summary class = "btn_code"><h4> <i class="far fa-question-circle" aria-hidden="true"></i> Plots Q+A </h4> </summary>
+<div class="quiz" style="margin-top: -9px; background-color: white; font-size: 16px;">
+<p>
+<br>
+
+- How to modify the gridlines behind your chart?
+    - Try the different themes at the end of this lesson: `theme_light()` or `theme_bw()`
+    - Or modify the color and size with `theme(panel.grid.minor = element_line(colour = "white", size = 0.5))`
+    - There's even `theme_excel()`
+- How do you set the x and y scale manually?
+    - Here is an example with a scatter plot: `ggplot() + geom_point() + xlim(beginning, end) + ylim(beginning, end)`
+    - __Warning:__ Values above or below the limits you set will not be shown. This is another great way to lie with data. 
+- How do you get rid of the legend if you don't need it?
+    - `geom_point(aes(color = facility_name), show.legend = FALSE)`
+    - The [R Cookbook](http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/) shows a number of ways to get rid of legends.
+- I only like dashed lines. How do you change the linetype to a _dashed_ line? 
+    - `geom_line(aes(color = facility_name), linetype = "dashed")`
+    - You can also try `"dotted"` and `"dotdash"`, or even`"twodash"`
+  
+- How many colors are there in R? How does R know `hotpink` is a color?
+    - There is an [R color cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf)  
+    - As well as a list of [R color names](http://www.r-graph-gallery.com/42-colors-names/)
+    - `library(viridis)` provides some great default color palettes for charts and maps.
+    - This [Color web tool](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) has palette ideas and color codes you can use in your plots
+- Keyboard shortcuts for RStudio
+    - There is a [Shortcut cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf)
+    - In RStudio you can go to _Help_ > _Keyboard Shortcuts Help_
+
+</p>
+</div></details>
+
+
+<br>
+
+# <i class="fa fa-rocket" aria-hidden="true"></i> Return to [Homebase](index.html) {-}
+
+<br>

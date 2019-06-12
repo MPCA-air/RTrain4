@@ -1,0 +1,932 @@
+---
+title: "R Camp | day 3"
+output: 
+ html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: readable
+    highlight: tango
+    self_contained: false
+    css: css/camp_style.css
+fontsize: 14pt
+monofont: Source Code Pro
+monofontoptions: Scale = 1.1
+---
+
+<style> code {color: #535353 !important;} </style>
+
+```{r setup, include = F}
+knitr::opts_chunk$set(echo = T, error = T, message = F, warning = F, fig.width = 9)
+
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+
+dt_options <- list(scrollX = T, autoWidth = T, searching = F, ordering = F, lengthChange = F, paginate = F, info = F)
+```
+
+<br>
+
+
+# Good morning, Adventurers!
+
+<img src="http://i0.kym-cdn.com/photos/images/original/001/210/794/4e1.jpg" width="308" align="right" style="margin-top: -57px; margin-left: 35px;">
+
+
+This tutorial is online at 
+
+> https://mpca-air.github.io/RCamp
+
+
+#### Please _remote_ connect to your desktop computer
+
+1. __Open__ the Start menu  \ \*_Click the Window’s logo on the bottom left of the screen_
+1. Select ` Remote Desktop Connection `
+1. Enter ` w7-your7digit# `
+1. Press _Connect_
+
+<br>
+
+#### Open your _RStudio_ project
+
+1. __Open__ your project folder from last week.
+1. Double click the __.Rproj__ file to open RStudio.
+1. Ready yourself for an adventure.
+
+<br><br><br><br>
+
+
+## CAMP schedule
+
+<br>
+
+<div class="toggle"><button class = "btn_code">_Show schedule_</button>
+<br>
+
+__Day 3__
+<div style = "background-color: #9df1ff; border-radius: 78px; padding: 20px;">
+
+1. Finish plotting
+    - Line charts.
+    - Add titles and axis labels.
+    - Boxplots.
+    - Log transform your chart axis. 
+    - Bar charts.
+    - Save plots in different formats: `ggsave()` 
+
+2. Tidy your data with _tidyr_ 
+    - Replace missing values.
+    - Flip your table from wide to tall format. 
+    - Join tables together.
+    
+3. Connect to data sources
+    -	Excel
+    -	SQL databases (e.g. TEMPO / delta / CEDR / EQUIS)
+    - GIS Shapefiles
+    -	Web data (URL or FTP site)
+    -	Access
+    - Tableau
+  
+</div>
+
+<br><br>
+
+</div>
+
+
+## Day 2 review
+
+> __Reminder:__ Add your packages to the top of each new script.
+
+```{r, eval = F}
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+# Your code starts here.
+
+```
+
+
+<br>
+
+### 1. Table summary functions
+
+- `summary()`
+- `names()`
+- `nrow()`
+- `ncol()`
+- `glimpse()`
+
+
+### 2. Completed data transformation
+
+- Save your data with `write_csv()`.
+- Add a column with `mutate()`.
+- Summarize your data with `summarize()` (or _summarise_ if you're from New Zealand).
+    - `mean()`
+    - `median()`
+    - `max()`
+    - `min()`
+    - `nth()`
+    - `sd()`
+    - `n()`
+    - `quantile(data, 0.05)`
+- __Add__ `na.rm = T` to ignore missing values: `mean(data, na.rm = T)`.     
+- Summarize by different categories in a group with `group_by()`.
+- Connect multiple functions with the __pipe__ operator ` %>% `.
+
+
+### 3. Made awesome charts
+
+- `ggplot()` from the _ggplot2_ package.
+- Different geometries: 
+    - `geom_point()`
+    - `geom_smooth()`
+    - `geom_histogram()`
+- Modified histogram bar position: `position = "dodge"`. 
+- Set plot colors to vary based on a column in the data.
+    - `geom_point(aes(color = content_rating))`
+
+<br>
+
+
+
+```{r, eval = F, echo = F}
+
+### 4. Show and tell | <i class="fa  fa-rocket fa-spin fa-2x"></i>
+
+<br> 
+
+> Share some homework plots.
+
+<br>
+
+Connect the dots.
+![](X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/Homework Examples/Connect the dots.png)
+
+<br>
+
+![](X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/Homework Examples/Question44_PCAonly_plot.png)
+
+<br>
+
+![](X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/Homework Examples/plot3.png)
+
+<br>
+
+![Cat alien](X:/Agency_Files/Outcomes/Risk_Eval_Air_Mod/_Air_Risk_Evaluation/R/R_Camp/Homework Examples/cat_alien.JPG){width="50%"}
+
+<br>
+
+```
+
+
+# Plotting with ggplot2 _...continued_
+
+
+### Let's load the IMDB movie data again.
+
+__Surprise!__ The data is now in an _Excel_ file.
+
+
+# Excel files
+
+![](https://www.rstudio.com/wp-content/uploads/2017/05/readxl-259x300.png){width="180" align="right" style="margin-top: -46px; margin-left: 20px;"}
+
+_Excel_ files are complicated. Let's install the _readxl_ package!
+
+```{r, eval=F}
+install.packages("readxl")
+```
+
+<br>
+
+Now we can use the `read_excel()` function to load data from any tab we want in an Excel file. 
+
+As an example, download the movie data as an _XLSX_ file from [HERE](https://github.com/MPCA-air/RCamp/raw/master/data/movies/IMDB%20movie%20data.xlsx) and save it to your `data` folder.
+
+_Now you can use `read_excel()` to load the data into R._
+```{r, warning = F, eval = T}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+
+movie_file <- "data/movies/IMDB movie data.xlsx"
+
+# Read Excel file
+movies <- read_excel(movie_file)
+```
+
+<br>
+
+Show the sheet names in the Excel file.
+```{r, warning = F, eval = T}
+
+# Show sheet names in file
+excel_sheets(movie_file)
+
+# The default is the first tab/sheet. 
+# Pick the second sheet using `sheet = 2`
+movies <- read_excel(movie_file, sheet = 2)
+
+# Or, pick the "use_this" tab
+movies <- read_excel(movie_file, sheet = "use_this")
+
+# Column names start on the 3rd row
+# Skip the top 2 rows of random info
+movies <- read_excel(movie_file, sheet = "use_this", skip = 2)
+
+# Rename the 'color' column
+movies <- rename(movies, movie_color = color)
+
+# Check column types
+glimpse(movies)
+
+# Convert character numbers to numeric()
+movies <- mutate(movies, 
+                 budget = as.numeric(budget), 
+                 aspect_ratio = as.numeric(aspect_ratio))
+
+```
+
+
+
+## Line charts
+
+Now let's look at the total `gross` of movies over time in millions of dollars.
+
+```{r}
+gross_by_year <- movies %>% 
+                         group_by(title_year) %>% 
+                         summarize(total_gross = sum(gross_mil, na.rm = T)) %>% 
+                         ungroup()
+
+ggplot(gross_by_year, aes(x = title_year, y = total_gross)) + 
+  geom_line() 
+
+```
+
+
+### Let's use a different `color` line for each `content_rating`
+```{r}
+gross_by_year <- movies %>% 
+                   group_by(title_year, content_rating) %>% 
+                   summarize(total_gross = sum(gross_mil, na.rm = T)) %>% 
+                   ungroup()
+
+ggplot(gross_by_year, aes(x = title_year, y = total_gross)) + 
+  geom_line(aes(color = content_rating)) 
+
+```
+
+
+This would be even better with a title and better axis labels. Let's add some using the `labs()` function.
+
+## Title and axis labels
+```{r}
+ggplot(gross_by_year, aes(x = title_year, y = total_gross, color = content_rating)) + 
+  geom_line() +
+  labs(title = "Is the movie industry making more money now?",
+       x     = "Year",
+       y     = "Gross in millions of U.S. $$$$")
+```
+
+
+### Better! But it would look even better with a subtitle and a caption.
+```{r}
+ggplot(gross_by_year, aes(x = title_year, y = total_gross, color = content_rating)) + 
+  geom_line() +
+  labs(title = "The movie industry is making more money over time",
+       subtitle = "What happened in 2012? Netflix? YouTube? New books?",
+       x        = "Year",
+       y        = "Gross in millions of U.S. $$$$",
+       caption  = "Awesome chart made by Derek. December 2017.")
+```
+
+
+#### Exercise <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> {-}
+
+Make a line chart showing the total `budget` of all the movies each year.
+
+
+# Boxplots
+
+Use `geom_boxplot()` to make a boxplot.
+
+## Let's compare how much money movies made by content rating. Use `y = gross_mil` for the y-axis.
+```{r}
+ggplot(movies, aes(x = content_rating, y = gross_mil)) +
+  geom_boxplot()
+
+```
+
+## Transform to Log scale.
+```{r}
+ggplot(movies, aes(x = content_rating, y = gross_mil)) +
+  geom_boxplot() +
+  scale_y_log10()
+```
+
+
+### Make the outliers stand out. Rotten tomatoes.
+```{r}
+ggplot(movies, aes(x = content_rating, y = gross_mil)) +
+  geom_boxplot(outlier.color = "tomato") + 
+  scale_y_log10()
+```
+
+
+### Add another sandwich showing the points on top of the boxplots.
+```{r}
+ggplot(movies, aes(x = content_rating, y = gross_mil)) +
+  geom_boxplot(outlier.color = "tomato") + 
+  scale_y_log10() + 
+  geom_point(alpha = 0.1)
+```
+
+
+### Use `jitter()` to spread out the points. This makes a snowfall plot.
+```{r}
+ggplot(movies, aes(x = content_rating, y = gross_mil)) +
+  geom_boxplot(outlier.color = NA) + 
+  scale_y_log10() + 
+  geom_jitter(alpha = 0.1)
+
+```
+
+
+### Rearrange the layer order to put the boxplots on top.
+```{r}
+ggplot(movies, aes(x = content_rating, y = gross_mil)) +
+  scale_y_log10() + 
+  geom_jitter(alpha = 0.1) + 
+  geom_boxplot(outlier.color = NA, alpha = 0.8)
+
+```
+
+<br>
+
+#### Exercise 
+
+Make boxplots comparing the range of `gross_mil` between `movie_color` (black and white films vs. color films).
+
+<br>
+
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+<p>
+```{r}
+ggplot(movies, aes(x = movie_color, y = gross_mil)) +
+  scale_y_log10() + 
+  geom_jitter(alpha = 0.1) + 
+  geom_boxplot(outlier.color = NA, alpha = 0.8)
+
+```
+</p></details>
+
+
+
+## Johnny Depp movies
+
+![](http://www.baldingbeards.com/wp-content/uploads/2017/03/Johhny-Depp-Jack-Sparrow-Beard.png){width="25%"}
+
+> We received questions about creating a new column with `mutate()` based on the values of an existing column. 
+
+To learn how to do this, let's make a boxplot of how much movies make that starred Johnny Depp vs. those that didn't (big mistake!). First we need to learn about `ifelse()`.
+
+`ifelse()` makes a comparison and then returns a value depending on the result of the comparison. The comparison below looks to see whether a movie's #1 actor was Johnny Depp, if it was then `ifelse()` returns _Yes_, if not it returns _No_.
+
+```{r}
+movies <- movies %>%
+          mutate(stars_johnny_depp = ifelse(actor_1_name == "Johnny Depp", "Yes", "No"))
+
+ggplot(movies, aes(x = stars_johnny_depp, y = gross_mil)) +
+  geom_boxplot() +
+  scale_y_log10()
+
+```
+
+
+# Bar charts
+
+### Use a bar chart to compare `imdb_score` by `content_rating`
+```{r}
+imdb_score_by_content <- movies %>% 
+                           group_by(content_rating) %>% 
+                           summarize(mean_score = mean(imdb_score, na.rm = T))
+
+ggplot(imdb_score_by_content, aes(x = content_rating, y = mean_score)) + geom_col() 
+```
+
+_Note:_ _By default `geom_bar()` simply counts the number of values in each category. If you want to show the height of each bar at a specific value in the data, use `geom_bar(stat = "identity")`. The function `geom_col()` is equivalent to `geom_bar(stat = "identity")`._
+
+
+### Labels for each bar
+
+There's a `geom_label` we can use to label each column.
+
+```{r}
+
+ggplot(imdb_score_by_content, aes(x = content_rating, y = mean_score)) +
+  geom_col() +
+  geom_label(aes(label = mean_score))
+
+```
+
+_Hint: Update to `label = round(mean_score, digits = 1))` to make labels legible._
+
+<br>
+
+
+#### Exercise _(extra credit)_ <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> {-}
+Create a summarized data set and bar chart of the mean budget by `content_type`.
+
+<details>
+<summary class = "btn_code">_Show solution_</summary>
+<p>
+
+```{r}
+budget_by_content <- movies %>% 
+                     group_by(content_rating) %>% 
+                     summarize(mean_budget         = mean(budget, na.rm = T) / 1000000,
+                               mean_budget_round   = round(mean_budget, digits = 1)) 
+
+ggplot(budget_by_content, aes(x = content_rating, y = mean_budget_round)) +
+  geom_bar(stat = "identity") +
+  geom_label(aes(label = mean_budget_round))
+
+```
+
+</p></details>
+
+
+<br>
+
+## Just for fun...
+
+#### the BIG profit chart _(try_ _after class)_
+
+<details>
+<summary class = "btn_code">_Show BIG profit chart_</summary>
+<p>
+
+### Add a profit column
+```{r}
+movies <- mutate(movies, 
+                 profit     = gross - budget,
+                 profit_mil = profit / 1000000)
+
+```
+
+### Plot the profit of every film
+```{r}
+ggplot(movies, aes(x = title_year,  y = profit)) + geom_jitter(alpha = 0.5)
+```
+
+
+### Label the top and bottom 1/2 percentile of movies
+```{r}
+ggplot(movies, aes(x = title_year,  y = profit)) +
+  geom_jitter(alpha = 0.5) + 
+  geom_label(aes(x = title_year,  
+                 y = profit,
+                 label = ifelse(profit > quantile(movies$profit, 0.997, na.rm = T) |
+                                profit < quantile(movies$profit, 0.003, na.rm = T),
+                                movie_title,
+                                NA)),
+             alpha = 0.85, 
+             nudge_y = 3) +
+  labs(title  = "Which movies made and lost the most $$$ ?",
+       y      = "Profit in U.S. dollars",
+       x      = "year")
+```
+
+
+### Label them all!  
+__Warning!__ This adds thousands of labels and may stall your computer for a few minutes. You have been warned.
+
+```{r}
+library(hrbrthemes)  #install.packages(hrbrthemes)
+library(scales)      # For the $ dollar_format() labels
+
+ggplot(movies, aes(x = title_year,  y = profit)) + 
+  geom_label(aes(label = movie_title, 
+                 fill  = profit > 0),
+                 show.legend = F,
+                 alpha = 0.9) + 
+  scale_y_continuous(labels = dollar_format()) + 
+  labs(title    = "Did your favorite film make or lose $$$ ?",
+       subtitle = "Profit of top 5,000 rated films on IMDB",
+       y        = "Profit in U.S. dollars",
+       x        = "year",
+       caption  = "Brought to you by the #R-Cats") +
+  theme_ipsum_rc() + 
+  theme(plot.title = element_text(size = 24)) # Increase title size
+
+```
+
+</p></details>
+
+
+# Plot summary
+
+Table of __aesthetics__.
+
+| aes()         |    |  
+|:--------------|:---|  
+| `x = `        |    |  
+| `y = `        |    |  
+| `alpha = `    |    | 
+| `fill = `     |    |  
+| `color = `    |    |   
+| `size = `     |    |   
+| `linetype = ` |    |    
+
+
+<br>
+
+Table of __geoms__.
+
+![](http://r4ds.had.co.nz/images/visualization-geoms-2.png)
+
+![](images/geoms_diagram.png)
+
+<br>
+
+Table of __themes__.
+
+You can quickly customize the look of your plot by adding a `theme()` function.
+
+![](http://r4ds.had.co.nz/images/visualization-themes.png)
+
+<br>
+
+
+
+# Plotting finale!
+
+Choose one of the plots below and create it with your neighbor. Compare your code when you're done.   
+
+
+### How many movies were made in each content rating?
+
+_Hint: use `+ coord_flip()`_
+
+```{r, echo = F}
+ggplot(movies) + 
+  geom_bar(aes(x = content_rating, fill = content_rating)) + 
+  coord_flip() + 
+  labs(title = "Total movies by content rating")
+
+```
+
+
+### Are the number of movies increasing for G, PG, PG-13 and R rated films?
+
+_Hint: Use %in% to match on multiple values when you `filter()`._
+```{r, echo = F}
+filter(movies, content_rating %in% c("G", "PG", "PG-13", "R")) %>% 
+  ggplot(aes(x = title_year, fill = content_rating)) + 
+  geom_bar() + 
+  facet_wrap( ~ content_rating) + 
+  labs(title = "Which rating of movie is being produced most often?",
+       subtitle = "Trends in G, PG, PG-13 and R movies",
+       x = "")
+
+```
+
+
+### Since 2012, have the total Facebook likes for a movie been associated with the number of cast Facebook likes? 
+
+_Hint: We made a similar chart in Day 2._
+```{r, echo = F}
+filter(movies, title_year > 2011) %>% 
+  ggplot(aes(x = cast_total_facebook_likes, y = movie_facebook_likes)) + 
+  geom_point(alpha = 0.2) + 
+  geom_smooth(method = "lm") + 
+  labs(title = "Movie Facebook likes increase with cast likes",
+       x = "Cast likes",
+       y = "Movie likes")
+
+```
+
+
+### What is the trend in the total gross of G and PG rated films?
+
+_Hint: Create a summarized table grouped by `title_year` and `content_rating`_
+```{r, echo = F}
+filter(movies, content_rating %in%  c("G", "PG")) %>%
+  group_by(title_year, content_rating) %>% 
+    summarize(gross = sum(gross_mil, na.rm = T)) %>% 
+     ungroup() %>% 
+      ggplot(aes(x = title_year, y = gross)) + 
+       geom_line(aes(color = content_rating)) + 
+         labs(title = "The total gross of G and PG rated films",
+              x = "",
+              y = "Movie gross in MILLIONS")
+```
+
+
+### Since 2012, which content rating has had the highest `median` number of Facebook likes?
+
+```{r, echo = F}
+filter(movies, title_year >= 2012) %>%
+  ggplot(aes(x = content_rating, y = movie_facebook_likes/1000)) +
+  geom_boxplot(aes(fill = content_rating)) + 
+  labs(title = "Movie Facebook likes by content rating",
+       subtitle = "TV-14 steals the show",
+       x = "Content rating",
+       y = "Facebook likes (thousands)")
+```
+<br>
+
+
+#### Bar chart version
+
+_Hint:_ _Summarize the movies by`content_rating`._
+```{r, echo = F}
+filter(movies, title_year >= 2012) %>%
+  group_by(content_rating) %>% 
+  summarize(likes_thousands = median(movie_facebook_likes) / 1000) %>% 
+  ggplot(aes(x = content_rating, y = likes_thousands)) + 
+  geom_bar(stat = "identity", aes(fill = content_rating), position = "dodge") + 
+  labs(title = "Movie Facebook likes by content rating",
+       subtitle = "TV-14 steals the show",
+       x = "Content rating",
+       y = "Facebook likes (thousands)")
+```
+
+
+### Which type of movie has the shortest running time: G, PG-13, or R? 
+```{r, echo = F}
+filter(movies, content_rating %in% c("G", "PG-13", "R")) %>%
+  mutate(duration_hrs = duration / 60) %>% 
+  ggplot(aes(x = content_rating, y = duration_hrs)) +
+           geom_boxplot(aes(fill = content_rating)) + #guides(fill=F) + 
+  labs(title    = "Which movies are shorter?",
+       subtitle = "The duration of movies by content rating",
+       x        = "Content rating",
+       y        = "Movie duration in hours",
+       caption  = "Movie data downloaded from IMDB, 2020") 
+```
+
+
+
+### Movie budgets of longer movies.
+_Hint: Create a new column called `longer_than_2hrs` and set it equal to `duration > 120`_  
+ 
+_Hint 2: Use `scale_y_log10()`_
+
+```{r, echo = F}
+movies %>% 
+  mutate(longer_than_2hrs = duration > 120) %>% 
+  ggplot(aes(x = duration, y = budget)) +
+  geom_point(aes(color = longer_than_2hrs), alpha = 0.25) +
+  geom_smooth(method = "lm") +
+  scale_y_log10() + 
+  labs(title    = "Do longer movies have a bigger budget?",
+       subtitle = "Only up to a point.",
+       y        = "log10(budget)",
+       x        = "Movie duration in minutes")
+
+```
+
+
+### They say attention spans are dwindling. Have movie durations been decreasing since 1965?
+
+_Hint:_ _Use `geom_jitter()`_
+
+```{r, echo = F}
+filter(movies, title_year >= 1965) %>%
+  ggplot(aes(x = title_year, y = duration)) +
+  geom_jitter(alpha = 0.2) +
+  geom_smooth(method = "lm") +
+  labs(title = "Are movie durations decreasing?",
+       subtitle = "1965 to 2016",
+       x = "")
+```
+
+
+#### What about the duration of only black and white films?
+```{r, echo = F}
+filter(movies, 
+       title_year >= 1965, 
+       movie_color != "color") %>%
+  ggplot(aes(x = title_year, y = duration)) +
+    geom_jitter(alpha = 0.2) + 
+    #geom_boxplot(aes(group = title_year), alpha = 0.5) 
+    geom_smooth(method = "lm") +
+  labs(title = "Are Black and white movie durations decreasing?",
+       subtitle = "1965 to 2016",
+       x = "")
+```
+
+
+#### Use a line plot to show the mean duration by year for Black and white films.
+
+_Hint:_ _After filtering, create a summarized table grouped by `title_year`._  
+
+_Hint 2:_ _Set `linetype = "dashed"` inside `geom_line()`_.
+```{r, echo = F}
+filter(movies, 
+       title_year >= 1965, 
+       movie_color != "color") %>%
+  group_by(title_year) %>%
+  summarize(mean_duration = mean(duration, na.rm = T)) %>%
+  ggplot(aes(x = title_year, y = mean_duration)) +
+    geom_line(linetype = "dashed")
+
+```
+
+
+### Since 1990, what was the average IMDB score for each content rating?  
+
+_Hint:_ _Summarize grouped by `content_rating` and `title_year`._  
+
+_Hint 2:_ _Use `geom_tile(aes(fill = mean_score))`._ 
+
+```{r, echo = T}
+filter(movies, title_year >= 1990) %>% 
+  group_by(content_rating, title_year) %>% 
+  summarize(mean_score = mean(imdb_score, na.rm = T)) %>% 
+  ggplot(aes(y = content_rating, x = title_year)) +
+  geom_tile(aes(fill = mean_score), color = "white") +   
+  #theme_minimal() +
+  labs(title = "Average IMDB score by content rating")
+```
+
+<br>
+
+### Show the distribution of gross for each content rating.
+```{r, echo = T}
+#install.packages("ggridges")
+library(ggridges)
+
+ggplot(movies, aes(x = gross_mil, y = content_rating, fill = content_rating)) + # x/y reveresed from boxplots
+  geom_density_ridges() +
+  scale_x_log10() + 
+  scale_fill_brewer() + 
+  labs(title = "Which rating makes more $$$ ?",
+       x = "Gross in millions of dollars",
+       y = "Content rating")
+```
+
+
+<br>
+
+# Save plots with `ggsave()`
+
+__After creating a ggplot in RStudio, save it to an image with__ 
+
+```{r, eval = F}
+ggsave("Boxplot of movie ratings.png")
+```
+
+_Note: The default dimensions will match the plot viewer window in RStudio._
+
+<br>
+
+__To set the size__
+```{r, eval = F}
+# Widescreen plot for your TED talk
+ggsave("Boxplot of movie ratings.png", width = 12, height = 4)
+```
+
+
+<br>
+
+__If you assigned your plot a name:__
+```{r, eval = F}
+
+myplot <- ggplot(movies, aes(budget, gross)) + geom_point(aes(color = title_year))
+
+ggsave(myplot, file = "Boxplot of movie ratings.png")
+
+myplot
+```
+
+<br>
+
+__To save different formats change the file extension: pdf, jpg, png, tiff, eps, svg.__
+```{r, eval = F}
+ggsave(myplot, file = "Boxplot of movie ratings.pdf")
+
+ggsave(myplot, file = "Boxplot of movie ratings.jpg")
+
+```
+
+<br>
+
+__To double the size__
+```{r, eval = F}
+ggsave(myplot, file = "Boxplot of movie ratings.png", scale = 2)
+
+```
+
+<br>
+
+__To GADZOOGLE the font size! Use `base_size = `__
+```{r, eval = F}
+
+myplot <- ggplot(movies, aes(budget, gross)) + 
+              geom_point(aes(color = title_year)) +
+                  theme_gray(base_size = 40) + 
+                  labs(title = "BIG TITLE!")
+
+ggsave(myplot, file = "Boxplot of movie ratings.png", scale = 2)
+
+myplot
+
+```
+
+<br>
+
+__Rotate the X-axis labels__
+```{r, eval = F}
+
+myplot <- ggplot(movies, aes(budget, gross)) + 
+              geom_point(aes(color = title_year)) +
+                  theme_gray(base_size = 40) + 
+                  theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) + 
+                  labs(title = "BIG TITLE!")
+
+ggsave(myplot, file = "Boxplot of movie ratings.png", scale = 2)
+
+myplot
+
+```
+
+<br>
+
+__Or shrink the labels__
+```{r, eval = F}
+
+myplot <- ggplot(movies, aes(budget, gross)) + 
+              geom_point(aes(color = title_year)) +
+                  theme_gray(base_size = 40) + 
+                  theme(axis.text.x = element_text(size = 20)) + 
+                  labs(title = "small TITLE!")
+
+ggsave(myplot, file = "Boxplot of movie ratings.png", scale = 2)
+
+myplot
+
+```
+
+
+<br>
+
+_Ref: [http://stat545.com/](http://stat545.com/block017_write-figure-to-file.html)_
+
+<br>
+
+
+
+### Frequent plotting questions
+- How to modify the gridlines behind your chart?
+    - Try the different themes at the end of this lesson: `theme_light()` or `theme_bw()`.
+    - Or modify the color and size with `theme(panel.grid.minor = element_line(colour = "white", size = 0.5))`.
+    - There's even `theme_excel()`
+- How do you set the x and y scale manually?
+    - Here is an example with a scatter plot: `ggplot() + geom_point() + xlim(beginning, end) + ylim(beginning, end)`
+    - __Warning:__ Values above or below the limits you set will not be shown. This is another great way to lie with data. 
+- How do you get rid of the legend if you don't need it?
+    - `geom_point(aes(color = facility_name), show.legend = FALSE)`
+    - The R cookbook shows a number of ways to get rid of legends: http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/
+- I only like dashed lines. How do you change the linetype to a _dashed_ line? 
+    - `geom_line(aes(color = facility_name), linetype = "dashed")`
+    - You should also try `"dotted"` and `"dotdash"`, or maybe`"twodash"` if you really want to go wild.
+-How many colors are there in R? How did you know `hotpink` was a color?
+    - There is an R color cheatsheet: https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf 
+    - And some basic color names here: http://www.r-graph-gallery.com/42-colors-names/
+    - This web tool will give you palette ideas and color Hex numbers: http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3
+    - `color palettes()` There are color palettes for your favorite movies, just fun palettes that you might like `library(viridis)`, color-blind palettes, and topography palettes.
+- What are some handy keyboard shortcuts in R? How do I find them?
+    - There is a shortcut cheat sheet online here: https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf
+    - Or go to _Help_ > _Keyboard Shortcuts  Help_
+
+<br>
+
+
+# Choose a new path...
+
+<div style = "height: 305px; overflow: hidden;">
+<img src="https://img00.deviantart.net/c562/i/2012/139/5/b/two_x_three_doors_by_klopmaster-d50awvk.jpg" width="580" style="margin-top: -10px;">
+</div>
+
+<br>
+
+1. [Database connections](03-Day3_db_connect.html)
+1. [GIS & Shapefiles](03-Day3_GIS.html)
+1. [Web data](03-Day3_web_data.html)
+1. [Tableau](03-Day3_tableau.html)
+1. [Other Stats software](03-Day3_other_stats.html)
+
+### Good luck!
+
+<br><br>
+
+# Return to [RCamp](index.html) {-}
+
+<br>
+

@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R Camp | day 3</title>
+
+<script src="03-Day3_finish_ggplot_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="03-Day3_finish_ggplot_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="03-Day3_finish_ggplot_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="03-Day3_finish_ggplot_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="03-Day3_finish_ggplot_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="03-Day3_finish_ggplot_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="03-Day3_finish_ggplot_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="03-Day3_finish_ggplot_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="03-Day3_finish_ggplot_files/navigation-1.1/tabsets.js"></script>
+<link href="03-Day3_finish_ggplot_files/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="03-Day3_finish_ggplot_files/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="03-Day3_finish_ggplot_files/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css\camp_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R Camp | day 3</h1>
+
+</div>
+
+
+<style> code {color: #535353 !important;} </style>
+<p><br></p>
+<div id="good-morning-adventurers" class="section level1">
+<h1>Good morning, Adventurers!</h1>
+<p><img src="http://i0.kym-cdn.com/photos/images/original/001/210/794/4e1.jpg" width="308" align="right" style="margin-top: -57px; margin-left: 35px;"></p>
+<p>This tutorial is online at</p>
+<blockquote>
+<p><a href="https://mpca-air.github.io/RCamp" class="uri">https://mpca-air.github.io/RCamp</a></p>
+</blockquote>
+<div id="please-remote-connect-to-your-desktop-computer" class="section level4">
+<h4>Please <em>remote</em> connect to your desktop computer</h4>
+<ol style="list-style-type: decimal">
+<li><strong>Open</strong> the Start menu  *<em>Click the Window’s logo on the bottom left of the screen</em></li>
+<li>Select <code>Remote Desktop Connection</code></li>
+<li>Enter <code>w7-your7digit#</code></li>
+<li>Press <em>Connect</em></li>
+</ol>
+<p><br></p>
+</div>
+<div id="open-your-rstudio-project" class="section level4">
+<h4>Open your <em>RStudio</em> project</h4>
+<ol style="list-style-type: decimal">
+<li><strong>Open</strong> your project folder from last week.</li>
+<li>Double click the <strong>.Rproj</strong> file to open RStudio.</li>
+<li>Ready yourself for an adventure.</li>
+</ol>
+<p><br><br><br><br></p>
+</div>
+<div id="camp-schedule" class="section level2">
+<h2>CAMP schedule</h2>
+<p><br></p>
+<div class="toggle">
+<button class="btn_code">
+<em>Show schedule</em>
+</button>
+<p><br></p>
+<strong>Day 3</strong>
+<div style="background-color: #9df1ff; border-radius: 78px; padding: 20px;">
+<ol style="list-style-type: decimal">
+<li>Finish plotting
+<ul>
+<li>Line charts.</li>
+<li>Add titles and axis labels.</li>
+<li>Boxplots.</li>
+<li>Log transform your chart axis.</li>
+<li>Bar charts.</li>
+<li>Save plots in different formats: <code>ggsave()</code></li>
+</ul></li>
+<li>Tidy your data with <em>tidyr</em>
+<ul>
+<li>Replace missing values.</li>
+<li>Flip your table from wide to tall format.</li>
+<li>Join tables together.</li>
+</ul></li>
+<li>Connect to data sources
+<ul>
+<li>Excel</li>
+<li>SQL databases (e.g. TEMPO / delta / CEDR / EQUIS)</li>
+<li>GIS Shapefiles</li>
+<li>Web data (URL or FTP site)</li>
+<li>Access</li>
+<li>Tableau</li>
+</ul></li>
+</ol>
+</div>
+<p><br><br></p>
+</div>
+</div>
+<div id="day-2-review" class="section level2">
+<h2>Day 2 review</h2>
+<blockquote>
+<p><strong>Reminder:</strong> Add your packages to the top of each new script.</p>
+</blockquote>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(ggplot2)
+
+<span class="co"># Your code starts here.</span></code></pre></div>
+<p><br></p>
+<div id="table-summary-functions" class="section level3">
+<h3>1. Table summary functions</h3>
+<ul>
+<li><code>summary()</code></li>
+<li><code>names()</code></li>
+<li><code>nrow()</code></li>
+<li><code>ncol()</code></li>
+<li><code>glimpse()</code></li>
+</ul>
+</div>
+<div id="completed-data-transformation" class="section level3">
+<h3>2. Completed data transformation</h3>
+<ul>
+<li>Save your data with <code>write_csv()</code>.</li>
+<li>Add a column with <code>mutate()</code>.</li>
+<li>Summarize your data with <code>summarize()</code> (or <em>summarise</em> if you’re from New Zealand).
+<ul>
+<li><code>mean()</code></li>
+<li><code>median()</code></li>
+<li><code>max()</code></li>
+<li><code>min()</code></li>
+<li><code>nth()</code></li>
+<li><code>sd()</code></li>
+<li><code>n()</code></li>
+<li><code>quantile(data, 0.05)</code></li>
+</ul></li>
+<li><strong>Add</strong> <code>na.rm = T</code> to ignore missing values: <code>mean(data, na.rm = T)</code>.<br />
+</li>
+<li>Summarize by different categories in a group with <code>group_by()</code>.</li>
+<li>Connect multiple functions with the <strong>pipe</strong> operator <code>%&gt;%</code>.</li>
+</ul>
+</div>
+<div id="made-awesome-charts" class="section level3">
+<h3>3. Made awesome charts</h3>
+<ul>
+<li><code>ggplot()</code> from the <em>ggplot2</em> package.</li>
+<li>Different geometries:
+<ul>
+<li><code>geom_point()</code></li>
+<li><code>geom_smooth()</code></li>
+<li><code>geom_histogram()</code></li>
+</ul></li>
+<li>Modified histogram bar position: <code>position = &quot;dodge&quot;</code>.</li>
+<li>Set plot colors to vary based on a column in the data.
+<ul>
+<li><code>geom_point(aes(color = content_rating))</code></li>
+</ul></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="plotting-with-ggplot2-continued" class="section level1">
+<h1>Plotting with ggplot2 <em>…continued</em></h1>
+<div id="lets-load-the-imdb-movie-data-again." class="section level3">
+<h3>Let’s load the IMDB movie data again.</h3>
+<p><strong>Surprise!</strong> The data is now in an <em>Excel</em> file.</p>
+</div>
+</div>
+<div id="excel-files" class="section level1">
+<h1>Excel files</h1>
+<div class="figure">
+<img src="https://www.rstudio.com/wp-content/uploads/2017/05/readxl-259x300.png" align="right" style="margin-top: -46px; margin-left: 20px;" width="180" />
+
+</div>
+<p><em>Excel</em> files are complicated. Let’s install the <em>readxl</em> package!</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</code></pre></div>
+<p><br></p>
+<p>Now we can use the <code>read_excel()</code> function to load data from any tab we want in an Excel file.</p>
+<p>As an example, download the movie data as an <em>XLSX</em> file from <a href="https://github.com/MPCA-air/RCamp/raw/master/data/movies/IMDB%20movie%20data.xlsx">HERE</a> and save it to your <code>data</code> folder.</p>
+<p><em>Now you can use <code>read_excel()</code> to load the data into R.</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readxl)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(ggplot2)
+
+movie_file &lt;-<span class="st"> &quot;data/movies/IMDB movie data.xlsx&quot;</span>
+
+<span class="co"># Read Excel file</span>
+movies &lt;-<span class="st"> </span><span class="kw">read_excel</span>(movie_file)</code></pre></div>
+<pre><code>## Error: `path` does not exist: &#39;data/movies/IMDB movie data.xlsx&#39;</code></pre>
+<p><br></p>
+<p>Show the sheet names in the Excel file.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Show sheet names in file</span>
+<span class="kw">excel_sheets</span>(movie_file)</code></pre></div>
+<pre><code>## Error: `path` does not exist: &#39;data/movies/IMDB movie data.xlsx&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The default is the first tab/sheet. </span>
+<span class="co"># Pick the second sheet using `sheet = 2`</span>
+movies &lt;-<span class="st"> </span><span class="kw">read_excel</span>(movie_file, <span class="dt">sheet =</span> <span class="dv">2</span>)</code></pre></div>
+<pre><code>## Error: `path` does not exist: &#39;data/movies/IMDB movie data.xlsx&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Or, pick the &quot;use_this&quot; tab</span>
+movies &lt;-<span class="st"> </span><span class="kw">read_excel</span>(movie_file, <span class="dt">sheet =</span> <span class="st">&quot;use_this&quot;</span>)</code></pre></div>
+<pre><code>## Error: `path` does not exist: &#39;data/movies/IMDB movie data.xlsx&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Column names start on the 3rd row</span>
+<span class="co"># Skip the top 2 rows of random info</span>
+movies &lt;-<span class="st"> </span><span class="kw">read_excel</span>(movie_file, <span class="dt">sheet =</span> <span class="st">&quot;use_this&quot;</span>, <span class="dt">skip =</span> <span class="dv">2</span>)</code></pre></div>
+<pre><code>## Error: `path` does not exist: &#39;data/movies/IMDB movie data.xlsx&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Rename the &#39;color&#39; column</span>
+movies &lt;-<span class="st"> </span><span class="kw">rename</span>(movies, <span class="dt">movie_color =</span> color)</code></pre></div>
+<pre><code>## Error in rename(movies, movie_color = color): object &#39;movies&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Check column types</span>
+<span class="kw">glimpse</span>(movies)</code></pre></div>
+<pre><code>## Error in glimpse(movies): object &#39;movies&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Convert character numbers to numeric()</span>
+movies &lt;-<span class="st"> </span><span class="kw">mutate</span>(movies, 
+                 <span class="dt">budget =</span> <span class="kw">as.numeric</span>(budget), 
+                 <span class="dt">aspect_ratio =</span> <span class="kw">as.numeric</span>(aspect_ratio))</code></pre></div>
+<pre><code>## Error in mutate(movies, budget = as.numeric(budget), aspect_ratio = as.numeric(aspect_ratio)): object &#39;movies&#39; not found</code></pre>
+<div id="line-charts" class="section level2">
+<h2>Line charts</h2>
+<p>Now let’s look at the total <code>gross</code> of movies over time in millions of dollars.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gross_by_year &lt;-<span class="st"> </span>movies <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                         </span><span class="kw">group_by</span>(title_year) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                         </span><span class="kw">summarize</span>(<span class="dt">total_gross =</span> <span class="kw">sum</span>(gross_mil, <span class="dt">na.rm =</span> T)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                         </span><span class="kw">ungroup</span>()</code></pre></div>
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;movies&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(gross_by_year, <span class="kw">aes</span>(<span class="dt">x =</span> title_year, <span class="dt">y =</span> total_gross)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>() </code></pre></div>
+<pre><code>## Error in ggplot(gross_by_year, aes(x = title_year, y = total_gross)): object &#39;gross_by_year&#39; not found</code></pre>
+<div id="lets-use-a-different-color-line-for-each-content_rating" class="section level3">
+<h3>Let’s use a different <code>color</code> line for each <code>content_rating</code></h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gross_by_year &lt;-<span class="st"> </span>movies <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                   </span><span class="kw">group_by</span>(title_year, content_rating) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                   </span><span class="kw">summarize</span>(<span class="dt">total_gross =</span> <span class="kw">sum</span>(gross_mil, <span class="dt">na.rm =</span> T)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                   </span><span class="kw">ungroup</span>()</code></pre></div>
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;movies&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(gross_by_year, <span class="kw">aes</span>(<span class="dt">x =</span> title_year, <span class="dt">y =</span> total_gross)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">color =</span> content_rating)) </code></pre></div>
+<pre><code>## Error in ggplot(gross_by_year, aes(x = title_year, y = total_gross)): object &#39;gross_by_year&#39; not found</code></pre>
+<p>This would be even better with a title and better axis labels. Let’s add some using the <code>labs()</code> function.</p>
+</div>
+</div>
+<div id="title-and-axis-labels" class="section level2">
+<h2>Title and axis labels</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(gross_by_year, <span class="kw">aes</span>(<span class="dt">x =</span> title_year, <span class="dt">y =</span> total_gross, <span class="dt">color =</span> content_rating)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Is the movie industry making more money now?&quot;</span>,
+       <span class="dt">x     =</span> <span class="st">&quot;Year&quot;</span>,
+       <span class="dt">y     =</span> <span class="st">&quot;Gross in millions of U.S. $$$$&quot;</span>)</code></pre></div>
+<pre><code>## Error in ggplot(gross_by_year, aes(x = title_year, y = total_gross, color = content_rating)): object &#39;gross_by_year&#39; not found</code></pre>
+<div id="better-but-it-would-look-even-better-with-a-subtitle-and-a-caption." class="section level3">
+<h3>Better! But it would look even better with a subtitle and a caption.</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(gross_by_year, <span class="kw">aes</span>(<span class="dt">x =</span> title_year, <span class="dt">y =</span> total_gross, <span class="dt">color =</span> content_rating)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;The movie industry is making more money over time&quot;</span>,
+       <span class="dt">subtitle =</span> <span class="st">&quot;What happened in 2012? Netflix? YouTube? New books?&quot;</span>,
+       <span class="dt">x        =</span> <span class="st">&quot;Year&quot;</span>,
+       <span class="dt">y        =</span> <span class="st">&quot;Gross in millions of U.S. $$$$&quot;</span>,
+       <span class="dt">caption  =</span> <span class="st">&quot;Awesome chart made by Derek. December 2017.&quot;</span>)</code></pre></div>
+<pre><code>## Error in ggplot(gross_by_year, aes(x = title_year, y = total_gross, color = content_rating)): object &#39;gross_by_year&#39; not found</code></pre>
+<div id="exercise" class="section level4 unnumbered">
+<h4>Exercise <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i></h4>
+<p>Make a line chart showing the total <code>budget</code> of all the movies each year.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="boxplots" class="section level1">
+<h1>Boxplots</h1>
+<p>Use <code>geom_boxplot()</code> to make a boxplot.</p>
+<div id="lets-compare-how-much-money-movies-made-by-content-rating.-use-y-gross_mil-for-the-y-axis." class="section level2">
+<h2>Let’s compare how much money movies made by content rating. Use <code>y = gross_mil</code> for the y-axis.</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> gross_mil)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>()</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = content_rating, y = gross_mil)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="transform-to-log-scale." class="section level2">
+<h2>Transform to Log scale.</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> gross_mil)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>()</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = content_rating, y = gross_mil)): object &#39;movies&#39; not found</code></pre>
+<div id="make-the-outliers-stand-out.-rotten-tomatoes." class="section level3">
+<h3>Make the outliers stand out. Rotten tomatoes.</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> gross_mil)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.color =</span> <span class="st">&quot;tomato&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>()</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = content_rating, y = gross_mil)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="add-another-sandwich-showing-the-points-on-top-of-the-boxplots." class="section level3">
+<h3>Add another sandwich showing the points on top of the boxplots.</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> gross_mil)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.color =</span> <span class="st">&quot;tomato&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>)</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = content_rating, y = gross_mil)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="use-jitter-to-spread-out-the-points.-this-makes-a-snowfall-plot." class="section level3">
+<h3>Use <code>jitter()</code> to spread out the points. This makes a snowfall plot.</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> gross_mil)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.color =</span> <span class="ot">NA</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>)</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = content_rating, y = gross_mil)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="rearrange-the-layer-order-to-put-the-boxplots-on-top." class="section level3">
+<h3>Rearrange the layer order to put the boxplots on top.</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> gross_mil)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.color =</span> <span class="ot">NA</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>)</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = content_rating, y = gross_mil)): object &#39;movies&#39; not found</code></pre>
+<p><br></p>
+<div id="exercise-1" class="section level4">
+<h4>Exercise</h4>
+<p>Make boxplots comparing the range of <code>gross_mil</code> between <code>movie_color</code> (black and white films vs. color films).</p>
+<p><br></p>
+<details> <summary class = "btn_code"><em>Show solution</em></summary>
+<p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> movie_color, <span class="dt">y =</span> gross_mil)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.color =</span> <span class="ot">NA</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>)</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = movie_color, y = gross_mil)): object &#39;movies&#39; not found</code></pre>
+</p>
+<p></details></p>
+</div>
+</div>
+</div>
+<div id="johnny-depp-movies" class="section level2">
+<h2>Johnny Depp movies</h2>
+<div class="figure">
+<img src="http://www.baldingbeards.com/wp-content/uploads/2017/03/Johhny-Depp-Jack-Sparrow-Beard.png" style="width:25.0%" />
+
+</div>
+<blockquote>
+<p>We received questions about creating a new column with <code>mutate()</code> based on the values of an existing column.</p>
+</blockquote>
+<p>To learn how to do this, let’s make a boxplot of how much movies make that starred Johnny Depp vs. those that didn’t (big mistake!). First we need to learn about <code>ifelse()</code>.</p>
+<p><code>ifelse()</code> makes a comparison and then returns a value depending on the result of the comparison. The comparison below looks to see whether a movie’s #1 actor was Johnny Depp, if it was then <code>ifelse()</code> returns <em>Yes</em>, if not it returns <em>No</em>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">movies &lt;-<span class="st"> </span>movies <span class="op">%&gt;%</span>
+<span class="st">          </span><span class="kw">mutate</span>(<span class="dt">stars_johnny_depp =</span> <span class="kw">ifelse</span>(actor_1_name <span class="op">==</span><span class="st"> &quot;Johnny Depp&quot;</span>, <span class="st">&quot;Yes&quot;</span>, <span class="st">&quot;No&quot;</span>))</code></pre></div>
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;movies&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> stars_johnny_depp, <span class="dt">y =</span> gross_mil)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>()</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = stars_johnny_depp, y = gross_mil)): object &#39;movies&#39; not found</code></pre>
+</div>
+</div>
+<div id="bar-charts" class="section level1">
+<h1>Bar charts</h1>
+<div id="use-a-bar-chart-to-compare-imdb_score-by-content_rating" class="section level3">
+<h3>Use a bar chart to compare <code>imdb_score</code> by <code>content_rating</code></h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">imdb_score_by_content &lt;-<span class="st"> </span>movies <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                           </span><span class="kw">group_by</span>(content_rating) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                           </span><span class="kw">summarize</span>(<span class="dt">mean_score =</span> <span class="kw">mean</span>(imdb_score, <span class="dt">na.rm =</span> T))</code></pre></div>
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;movies&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(imdb_score_by_content, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> mean_score)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_col</span>() </code></pre></div>
+<pre><code>## Error in ggplot(imdb_score_by_content, aes(x = content_rating, y = mean_score)): object &#39;imdb_score_by_content&#39; not found</code></pre>
+<p><em>Note:</em> <em>By default <code>geom_bar()</code> simply counts the number of values in each category. If you want to show the height of each bar at a specific value in the data, use <code>geom_bar(stat = &quot;identity&quot;)</code>. The function <code>geom_col()</code> is equivalent to <code>geom_bar(stat = &quot;identity&quot;)</code>.</em></p>
+</div>
+<div id="labels-for-each-bar" class="section level3">
+<h3>Labels for each bar</h3>
+<p>There’s a <code>geom_label</code> we can use to label each column.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(imdb_score_by_content, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> mean_score)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_label</span>(<span class="kw">aes</span>(<span class="dt">label =</span> mean_score))</code></pre></div>
+<pre><code>## Error in ggplot(imdb_score_by_content, aes(x = content_rating, y = mean_score)): object &#39;imdb_score_by_content&#39; not found</code></pre>
+<p><em>Hint: Update to <code>label = round(mean_score, digits = 1))</code> to make labels legible.</em></p>
+<p><br></p>
+<div id="exercise-extra-credit" class="section level4 unnumbered">
+<h4>Exercise <em>(extra credit)</em> <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i></h4>
+<p>Create a summarized data set and bar chart of the mean budget by <code>content_type</code>.</p>
+<details> <summary class = "btn_code"><em>Show solution</em></summary>
+<p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">budget_by_content &lt;-<span class="st"> </span>movies <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                     </span><span class="kw">group_by</span>(content_rating) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">                     </span><span class="kw">summarize</span>(<span class="dt">mean_budget         =</span> <span class="kw">mean</span>(budget, <span class="dt">na.rm =</span> T) <span class="op">/</span><span class="st"> </span><span class="dv">1000000</span>,
+                               <span class="dt">mean_budget_round   =</span> <span class="kw">round</span>(mean_budget, <span class="dt">digits =</span> <span class="dv">1</span>)) </code></pre></div>
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;movies&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(budget_by_content, <span class="kw">aes</span>(<span class="dt">x =</span> content_rating, <span class="dt">y =</span> mean_budget_round)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_label</span>(<span class="kw">aes</span>(<span class="dt">label =</span> mean_budget_round))</code></pre></div>
+<pre><code>## Error in ggplot(budget_by_content, aes(x = content_rating, y = mean_budget_round)): object &#39;budget_by_content&#39; not found</code></pre>
+</p>
+<p></details></p>
+<p><br></p>
+</div>
+</div>
+<div id="just-for-fun" class="section level2">
+<h2>Just for fun…</h2>
+<div id="the-big-profit-chart-try-after-class" class="section level4">
+<h4>the BIG profit chart <em>(try</em> <em>after class)</em></h4>
+<details> <summary class = "btn_code"><em>Show BIG profit chart</em></summary>
+<p>
+</div>
+<div id="add-a-profit-column" class="section level3">
+<h3>Add a profit column</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">movies &lt;-<span class="st"> </span><span class="kw">mutate</span>(movies, 
+                 <span class="dt">profit     =</span> gross <span class="op">-</span><span class="st"> </span>budget,
+                 <span class="dt">profit_mil =</span> profit <span class="op">/</span><span class="st"> </span><span class="dv">1000000</span>)</code></pre></div>
+<pre><code>## Error in mutate(movies, profit = gross - budget, profit_mil = profit/1e+06): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="plot-the-profit-of-every-film" class="section level3">
+<h3>Plot the profit of every film</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> title_year,  <span class="dt">y =</span> profit)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_jitter</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>)</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = title_year, y = profit)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="label-the-top-and-bottom-12-percentile-of-movies" class="section level3">
+<h3>Label the top and bottom 1/2 percentile of movies</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> title_year,  <span class="dt">y =</span> profit)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_jitter</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_label</span>(<span class="kw">aes</span>(<span class="dt">x =</span> title_year,  
+                 <span class="dt">y =</span> profit,
+                 <span class="dt">label =</span> <span class="kw">ifelse</span>(profit <span class="op">&gt;</span><span class="st"> </span><span class="kw">quantile</span>(movies<span class="op">$</span>profit, <span class="fl">0.997</span>, <span class="dt">na.rm =</span> T) <span class="op">|</span>
+<span class="st">                                </span>profit <span class="op">&lt;</span><span class="st"> </span><span class="kw">quantile</span>(movies<span class="op">$</span>profit, <span class="fl">0.003</span>, <span class="dt">na.rm =</span> T),
+                                movie_title,
+                                <span class="ot">NA</span>)),
+             <span class="dt">alpha =</span> <span class="fl">0.85</span>, 
+             <span class="dt">nudge_y =</span> <span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title  =</span> <span class="st">&quot;Which movies made and lost the most $$$ ?&quot;</span>,
+       <span class="dt">y      =</span> <span class="st">&quot;Profit in U.S. dollars&quot;</span>,
+       <span class="dt">x      =</span> <span class="st">&quot;year&quot;</span>)</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = title_year, y = profit)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="label-them-all" class="section level3">
+<h3>Label them all!</h3>
+<p><strong>Warning!</strong> This adds thousands of labels and may stall your computer for a few minutes. You have been warned.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(hrbrthemes)  <span class="co">#install.packages(hrbrthemes)</span></code></pre></div>
+<pre><code>## Error in library(hrbrthemes): there is no package called &#39;hrbrthemes&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(scales)      <span class="co"># For the $ dollar_format() labels</span>
+
+<span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> title_year,  <span class="dt">y =</span> profit)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_label</span>(<span class="kw">aes</span>(<span class="dt">label =</span> movie_title, 
+                 <span class="dt">fill  =</span> profit <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>),
+                 <span class="dt">show.legend =</span> F,
+                 <span class="dt">alpha =</span> <span class="fl">0.9</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> <span class="kw">dollar_format</span>()) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title    =</span> <span class="st">&quot;Did your favorite film make or lose $$$ ?&quot;</span>,
+       <span class="dt">subtitle =</span> <span class="st">&quot;Profit of top 5,000 rated films on IMDB&quot;</span>,
+       <span class="dt">y        =</span> <span class="st">&quot;Profit in U.S. dollars&quot;</span>,
+       <span class="dt">x        =</span> <span class="st">&quot;year&quot;</span>,
+       <span class="dt">caption  =</span> <span class="st">&quot;Brought to you by the #R-Cats&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_ipsum_rc</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">24</span>)) <span class="co"># Increase title size</span></code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = title_year, y = profit)): object &#39;movies&#39; not found</code></pre>
+</p>
+<p></details></p>
+</div>
+</div>
+</div>
+<div id="plot-summary" class="section level1">
+<h1>Plot summary</h1>
+<p>Table of <strong>aesthetics</strong>.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">aes()</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>x =</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>y =</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>alpha =</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>fill =</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>color =</code></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>size =</code></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>linetype =</code></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>Table of <strong>geoms</strong>.</p>
+<div class="figure">
+<img src="http://r4ds.had.co.nz/images/visualization-geoms-2.png" />
+
+</div>
+<div class="figure">
+<img src="images/geoms_diagram.png" />
+
+</div>
+<p><br></p>
+<p>Table of <strong>themes</strong>.</p>
+<p>You can quickly customize the look of your plot by adding a <code>theme()</code> function.</p>
+<div class="figure">
+<img src="http://r4ds.had.co.nz/images/visualization-themes.png" />
+
+</div>
+<p><br></p>
+</div>
+<div id="plotting-finale" class="section level1">
+<h1>Plotting finale!</h1>
+<p>Choose one of the plots below and create it with your neighbor. Compare your code when you’re done.</p>
+<div id="how-many-movies-were-made-in-each-content-rating" class="section level3">
+<h3>How many movies were made in each content rating?</h3>
+<p><em>Hint: use <code>+ coord_flip()</code></em></p>
+<pre><code>## Error in ggplot(movies): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="are-the-number-of-movies-increasing-for-g-pg-pg-13-and-r-rated-films" class="section level3">
+<h3>Are the number of movies increasing for G, PG, PG-13 and R rated films?</h3>
+<p><em>Hint: Use %in% to match on multiple values when you <code>filter()</code>.</em></p>
+<pre><code>## Error in filter(movies, content_rating %in% c(&quot;G&quot;, &quot;PG&quot;, &quot;PG-13&quot;, &quot;R&quot;)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="since-2012-have-the-total-facebook-likes-for-a-movie-been-associated-with-the-number-of-cast-facebook-likes" class="section level3">
+<h3>Since 2012, have the total Facebook likes for a movie been associated with the number of cast Facebook likes?</h3>
+<p><em>Hint: We made a similar chart in Day 2.</em></p>
+<pre><code>## Error in filter(movies, title_year &gt; 2011): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="what-is-the-trend-in-the-total-gross-of-g-and-pg-rated-films" class="section level3">
+<h3>What is the trend in the total gross of G and PG rated films?</h3>
+<p><em>Hint: Create a summarized table grouped by <code>title_year</code> and <code>content_rating</code></em></p>
+<pre><code>## Error in filter(movies, content_rating %in% c(&quot;G&quot;, &quot;PG&quot;)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="since-2012-which-content-rating-has-had-the-highest-median-number-of-facebook-likes" class="section level3">
+<h3>Since 2012, which content rating has had the highest <code>median</code> number of Facebook likes?</h3>
+<pre><code>## Error in filter(movies, title_year &gt;= 2012): object &#39;movies&#39; not found</code></pre>
+<p><br></p>
+<div id="bar-chart-version" class="section level4">
+<h4>Bar chart version</h4>
+<p><em>Hint:</em> <em>Summarize the movies by<code>content_rating</code>.</em></p>
+<pre><code>## Error in filter(movies, title_year &gt;= 2012): object &#39;movies&#39; not found</code></pre>
+</div>
+</div>
+<div id="which-type-of-movie-has-the-shortest-running-time-g-pg-13-or-r" class="section level3">
+<h3>Which type of movie has the shortest running time: G, PG-13, or R?</h3>
+<pre><code>## Error in filter(movies, content_rating %in% c(&quot;G&quot;, &quot;PG-13&quot;, &quot;R&quot;)): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="movie-budgets-of-longer-movies." class="section level3">
+<h3>Movie budgets of longer movies.</h3>
+<p><em>Hint: Create a new column called <code>longer_than_2hrs</code> and set it equal to <code>duration &gt; 120</code></em></p>
+<p><em>Hint 2: Use <code>scale_y_log10()</code></em></p>
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="they-say-attention-spans-are-dwindling.-have-movie-durations-been-decreasing-since-1965" class="section level3">
+<h3>They say attention spans are dwindling. Have movie durations been decreasing since 1965?</h3>
+<p><em>Hint:</em> <em>Use <code>geom_jitter()</code></em></p>
+<pre><code>## Error in filter(movies, title_year &gt;= 1965): object &#39;movies&#39; not found</code></pre>
+<div id="what-about-the-duration-of-only-black-and-white-films" class="section level4">
+<h4>What about the duration of only black and white films?</h4>
+<pre><code>## Error in filter(movies, title_year &gt;= 1965, movie_color != &quot;color&quot;): object &#39;movies&#39; not found</code></pre>
+</div>
+<div id="use-a-line-plot-to-show-the-mean-duration-by-year-for-black-and-white-films." class="section level4">
+<h4>Use a line plot to show the mean duration by year for Black and white films.</h4>
+<p><em>Hint:</em> <em>After filtering, create a summarized table grouped by <code>title_year</code>.</em></p>
+<p><em>Hint 2:</em> <em>Set <code>linetype = &quot;dashed&quot;</code> inside <code>geom_line()</code></em>.</p>
+<pre><code>## Error in filter(movies, title_year &gt;= 1965, movie_color != &quot;color&quot;): object &#39;movies&#39; not found</code></pre>
+</div>
+</div>
+<div id="since-1990-what-was-the-average-imdb-score-for-each-content-rating" class="section level3">
+<h3>Since 1990, what was the average IMDB score for each content rating?</h3>
+<p><em>Hint:</em> <em>Summarize grouped by <code>content_rating</code> and <code>title_year</code>.</em></p>
+<p><em>Hint 2:</em> <em>Use <code>geom_tile(aes(fill = mean_score))</code>.</em></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(movies, title_year <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1990</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(content_rating, title_year) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_score =</span> <span class="kw">mean</span>(imdb_score, <span class="dt">na.rm =</span> T)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">y =</span> content_rating, <span class="dt">x =</span> title_year)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_tile</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> mean_score), <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span><span class="st">   </span>
+<span class="st">  </span><span class="co">#theme_minimal() +</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Average IMDB score by content rating&quot;</span>)</code></pre></div>
+<pre><code>## Error in filter(movies, title_year &gt;= 1990): object &#39;movies&#39; not found</code></pre>
+<p><br></p>
+</div>
+<div id="show-the-distribution-of-gross-for-each-content-rating." class="section level3">
+<h3>Show the distribution of gross for each content rating.</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;ggridges&quot;)</span>
+<span class="kw">library</span>(ggridges)</code></pre></div>
+<pre><code>## Error in library(ggridges): there is no package called &#39;ggridges&#39;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(<span class="dt">x =</span> gross_mil, <span class="dt">y =</span> content_rating, <span class="dt">fill =</span> content_rating)) <span class="op">+</span><span class="st"> </span><span class="co"># x/y reveresed from boxplots</span>
+<span class="st">  </span><span class="kw">geom_density_ridges</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_fill_brewer</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Which rating makes more $$$ ?&quot;</span>,
+       <span class="dt">x =</span> <span class="st">&quot;Gross in millions of dollars&quot;</span>,
+       <span class="dt">y =</span> <span class="st">&quot;Content rating&quot;</span>)</code></pre></div>
+<pre><code>## Error in ggplot(movies, aes(x = gross_mil, y = content_rating, fill = content_rating)): object &#39;movies&#39; not found</code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="save-plots-with-ggsave" class="section level1">
+<h1>Save plots with <code>ggsave()</code></h1>
+<p><strong>After creating a ggplot in RStudio, save it to an image with</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="st">&quot;Boxplot of movie ratings.png&quot;</span>)</code></pre></div>
+<p><em>Note: The default dimensions will match the plot viewer window in RStudio.</em></p>
+<p><br></p>
+<p><strong>To set the size</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Widescreen plot for your TED talk</span>
+<span class="kw">ggsave</span>(<span class="st">&quot;Boxplot of movie ratings.png&quot;</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">4</span>)</code></pre></div>
+<p><br></p>
+<p><strong>If you assigned your plot a name:</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myplot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(budget, gross)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> title_year))
+
+<span class="kw">ggsave</span>(myplot, <span class="dt">file =</span> <span class="st">&quot;Boxplot of movie ratings.png&quot;</span>)
+
+myplot</code></pre></div>
+<p><br></p>
+<p><strong>To save different formats change the file extension: pdf, jpg, png, tiff, eps, svg.</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(myplot, <span class="dt">file =</span> <span class="st">&quot;Boxplot of movie ratings.pdf&quot;</span>)
+
+<span class="kw">ggsave</span>(myplot, <span class="dt">file =</span> <span class="st">&quot;Boxplot of movie ratings.jpg&quot;</span>)</code></pre></div>
+<p><br></p>
+<p><strong>To double the size</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(myplot, <span class="dt">file =</span> <span class="st">&quot;Boxplot of movie ratings.png&quot;</span>, <span class="dt">scale =</span> <span class="dv">2</span>)</code></pre></div>
+<p><br></p>
+<p><strong>To GADZOOGLE the font size! Use <code>base_size =</code></strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myplot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(budget, gross)) <span class="op">+</span><span class="st"> </span>
+<span class="st">              </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> title_year)) <span class="op">+</span>
+<span class="st">                  </span><span class="kw">theme_gray</span>(<span class="dt">base_size =</span> <span class="dv">40</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">                  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;BIG TITLE!&quot;</span>)
+
+<span class="kw">ggsave</span>(myplot, <span class="dt">file =</span> <span class="st">&quot;Boxplot of movie ratings.png&quot;</span>, <span class="dt">scale =</span> <span class="dv">2</span>)
+
+myplot</code></pre></div>
+<p><br></p>
+<p><strong>Rotate the X-axis labels</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myplot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(budget, gross)) <span class="op">+</span><span class="st"> </span>
+<span class="st">              </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> title_year)) <span class="op">+</span>
+<span class="st">                  </span><span class="kw">theme_gray</span>(<span class="dt">base_size =</span> <span class="dv">40</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">                  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">vjust =</span> <span class="fl">0.5</span>)) <span class="op">+</span><span class="st"> </span>
+<span class="st">                  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;BIG TITLE!&quot;</span>)
+
+<span class="kw">ggsave</span>(myplot, <span class="dt">file =</span> <span class="st">&quot;Boxplot of movie ratings.png&quot;</span>, <span class="dt">scale =</span> <span class="dv">2</span>)
+
+myplot</code></pre></div>
+<p><br></p>
+<p><strong>Or shrink the labels</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myplot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(movies, <span class="kw">aes</span>(budget, gross)) <span class="op">+</span><span class="st"> </span>
+<span class="st">              </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> title_year)) <span class="op">+</span>
+<span class="st">                  </span><span class="kw">theme_gray</span>(<span class="dt">base_size =</span> <span class="dv">40</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">                  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">20</span>)) <span class="op">+</span><span class="st"> </span>
+<span class="st">                  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;small TITLE!&quot;</span>)
+
+<span class="kw">ggsave</span>(myplot, <span class="dt">file =</span> <span class="st">&quot;Boxplot of movie ratings.png&quot;</span>, <span class="dt">scale =</span> <span class="dv">2</span>)
+
+myplot</code></pre></div>
+<p><br></p>
+<p><em>Ref: <a href="http://stat545.com/block017_write-figure-to-file.html">http://stat545.com/</a></em></p>
+<p><br></p>
+<div id="frequent-plotting-questions" class="section level3">
+<h3>Frequent plotting questions</h3>
+<ul>
+<li>How to modify the gridlines behind your chart?
+<ul>
+<li>Try the different themes at the end of this lesson: <code>theme_light()</code> or <code>theme_bw()</code>.</li>
+<li>Or modify the color and size with <code>theme(panel.grid.minor = element_line(colour = &quot;white&quot;, size = 0.5))</code>.</li>
+<li>There’s even <code>theme_excel()</code></li>
+</ul></li>
+<li>How do you set the x and y scale manually?
+<ul>
+<li>Here is an example with a scatter plot: <code>ggplot() + geom_point() + xlim(beginning, end) + ylim(beginning, end)</code></li>
+<li><strong>Warning:</strong> Values above or below the limits you set will not be shown. This is another great way to lie with data.</li>
+</ul></li>
+<li>How do you get rid of the legend if you don’t need it?
+<ul>
+<li><code>geom_point(aes(color = facility_name), show.legend = FALSE)</code></li>
+<li>The R cookbook shows a number of ways to get rid of legends: <a href="http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/" class="uri">http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/</a></li>
+</ul></li>
+<li>I only like dashed lines. How do you change the linetype to a <em>dashed</em> line?
+<ul>
+<li><code>geom_line(aes(color = facility_name), linetype = &quot;dashed&quot;)</code></li>
+<li>You should also try <code>&quot;dotted&quot;</code> and <code>&quot;dotdash&quot;</code>, or maybe<code>&quot;twodash&quot;</code> if you really want to go wild. -How many colors are there in R? How did you know <code>hotpink</code> was a color?</li>
+<li>There is an R color cheatsheet: <a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf" class="uri">https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf</a></li>
+<li>And some basic color names here: <a href="http://www.r-graph-gallery.com/42-colors-names/" class="uri">http://www.r-graph-gallery.com/42-colors-names/</a></li>
+<li>This web tool will give you palette ideas and color Hex numbers: <a href="http://colorbrewer2.org/#type=sequential&amp;scheme=BuGn&amp;n=3" class="uri">http://colorbrewer2.org/#type=sequential&amp;scheme=BuGn&amp;n=3</a></li>
+<li><code>color palettes()</code> There are color palettes for your favorite movies, just fun palettes that you might like <code>library(viridis)</code>, color-blind palettes, and topography palettes.</li>
+</ul></li>
+<li>What are some handy keyboard shortcuts in R? How do I find them?
+<ul>
+<li>There is a shortcut cheat sheet online here: <a href="https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf" class="uri">https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf</a></li>
+<li>Or go to <em>Help</em> &gt; <em>Keyboard Shortcuts Help</em></li>
+</ul></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="choose-a-new-path" class="section level1">
+<h1>Choose a new path…</h1>
+<div style="height: 305px; overflow: hidden;">
+<p><img src="https://img00.deviantart.net/c562/i/2012/139/5/b/two_x_three_doors_by_klopmaster-d50awvk.jpg" width="580" style="margin-top: -10px;"></p>
+</div>
+<p><br></p>
+<ol style="list-style-type: decimal">
+<li><a href="03-Day3_db_connect.html">Database connections</a></li>
+<li><a href="03-Day3_GIS.html">GIS &amp; Shapefiles</a></li>
+<li><a href="03-Day3_web_data.html">Web data</a></li>
+<li><a href="03-Day3_tableau.html">Tableau</a></li>
+<li><a href="03-Day3_other_stats.html">Other Stats software</a></li>
+</ol>
+<div id="good-luck" class="section level3">
+<h3>Good luck!</h3>
+<p><br><br></p>
+</div>
+</div>
+<div id="return-to-rcamp" class="section level1 unnumbered">
+<h1>Return to <a href="index.html">RCamp</a></h1>
+<p><br></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+Move Endor to Day3
+
+Collapse pipe
+
+Why distinct?
+
+  Mix up porg names order
+
+Divide price by 1,000
+
+# Search packages in Rstudio for plot, regression
+#
+

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R Camp | day 3</title>
+
+<script src="03-Day3_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="03-Day3_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="03-Day3_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="03-Day3_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="03-Day3_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="03-Day3_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="03-Day3_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="03-Day3_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="03-Day3_files/navigation-1.1/tabsets.js"></script>
+<link href="03-Day3_files/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="03-Day3_files/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="03-Day3_files/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css\camp_style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R Camp | day 3</h1>
+
+</div>
+
+
+<div id="bonus-level" class="section level1 unnumbered">
+<h1><i class="fa fa-star" style="color:#ffff00"></i> <i class="fa fa-star" style="color:#ffff00"></i> Bonus level!! <i class="fa fa-star" style="color:#ffff00"></i> <i class="fa fa-star" style="color:#ffff00"></i></h1>
+<p>R wasn’t made to only look at cat data, but if that’s your thing there’s certainly more great cat data to be found. Other free data sets are also available online and in R packages <em>(try typing <code>starwars</code> after you’ve loaded the <strong>dplyr</strong> package)</em>. One big advantage of CSVs is that you can easily share them online. Once there, researchers and collaborators can easily read your data directly into their own R session using the data’s URL.</p>
+<p>Kaggle <a href="https://www.kaggle.com/datasets">datasets</a> is one great resource for interesting data. The example below shows a data set of the top 5,000 rated movies on IMDB.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;readr&quot;</span>)
+
+<span class="co"># Below is a IMDB movie file stored on the internet as a CSV</span>
+movie_url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/MPCA-air/RCamp/master/data/movies/IMDB.csv&quot;</span>
+
+
+<span class="co"># Read the IMDB movie data and save as `movies`</span>
+movies &lt;-<span class="st"> </span><span class="kw">read_csv</span>(movie_url)</code></pre></div>
+<p><br></p>
+<p>Your challenge is to load the movie data (or use one of your own) and to practice using the <code>filter()</code>, <code>arrange()</code>, <code>mutate()</code>, and <code>summarize()</code> functions. When you’ve run out of time, save your script as “my_name.R” to this folder — <code>X:\Agency_Files\Data_Services\DAU\Data Analytics User Group\Shared\r\training\RCamp\Day1\Student scripts</code>.</p>
+<blockquote>
+<p>Add your data file as well if it isn’t already on the X-drive.</p>
+</blockquote>
+<p><br></p>
+<p><strong>Create a new R script that answers a few questions about your data set: </strong></p>
+<ol style="list-style-type: decimal">
+<li>How many rows are in your data set?</li>
+<li>What are the column names?</li>
+<li>Find a mean of a single column.</li>
+<li>Use <code>group_by()</code> to summarize()` the values of a column based on a group it’s in.</li>
+<li>Use <code>mutate()</code> to convert one of your columns into a different unit (e.g. <code>lbs</code> to <code>Millions of lbs</code> or <code>grams</code> to <code>kilograms</code>).</li>
+<li><code>filter()</code> your data to a single category.</li>
+<li>Use <code>%in%</code> to filter your data to a few categories.</li>
+<li>Make up a question of your own and try to answer it using the data.</li>
+</ol>
+<blockquote>
+<p><em>Did answering these questions raise new questions about your data?</em></p>
+</blockquote>
+<p>Add some of these questions to your script using comments <code>#</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Why does Facility A have no emissions?</span>
+<span class="co"># What happened to the County value for some monitors?</span>
+<span class="co"># Is this site really a million times bigger than that site??</span></code></pre></div>
+<p><strong>Some additional movie questions if you’re using the IMDB data: </strong></p>
+<ol style="list-style-type: decimal">
+<li>What were the highest and lowest grossing movies in this database?</li>
+<li>What actor or actress appears the most times in this database as actor1?</li>
+<li>How many Facebook likes has this actor or actress received?</li>
+<li>Filter the data set to your favorite movie, or a movie you have seen. What is the duration of that movie?<br />
+</li>
+<li>What movie has the longest duration? the shortest? Make a table including only the directors and the mean duration of their movies.</li>
+</ol>
+<p><br></p>
+<div id="question-1" class="section level2 unnumbered">
+<h2>Question 1</h2>
+<details><summary class = "btn_code"><em>Show solution</em></summary>
+<p>
+<p><i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>my_CAT55</code></p>
+<p><em>Yes!! That was purrfect!</em></p>
+</p>
+<p></details></p>
+</div>
+<div id="survey-says" class="section level2 unnumbered">
+<h2>Survey says</h2>
+<hr>
+<p>On the <strong>front</strong> of your sticky note answer one of these:</p>
+<ul>
+<li>Something you really liked learning today?</li>
+<li>A useful thing you learned?</li>
+<li>A new skill you are you excited about using?</li>
+</ul>
+<p>On the <strong>back</strong>:</p>
+<ul>
+<li>A lingering question you have about the material.</li>
+<li>A topic that was confusing and could use more clarification?</li>
+</ul>
+<p>We will compile the questions and send out answers before next class. If you think of something later, please e-mail us any questions you have. If you’re uncertain about something I guarantee someone else is as well. So help a friend, and ask a question.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

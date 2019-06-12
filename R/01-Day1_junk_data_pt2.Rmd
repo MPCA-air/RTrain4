@@ -1,0 +1,323 @@
+---
+title: "R Training | Day 1 - part 3"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: readable
+    highlight: tango
+    css: css/camp_style.css
+    number_sections: true
+    self_contained: false
+fontsize: 15pt
+monofont: Source Code Pro
+monofontoptions: Scale = 1.2
+---
+
+
+```{r setup, include=FALSE}
+library("rmarkdown")
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+
+```{r read-again, message=F, warning=F, include=F}
+library(readr)
+library(dplyr)
+library(ggplot2)
+my_scrap_file <- "data/starwars_scrap_jakku.csv"
+scrap <- read_csv(my_scrap_file)
+```
+
+
+![](images/boba_tea.jpg){width="300"}
+
+
+#| `filter()`
+<hr>
+
+The `filter()` function creates a subset of the data based on the value of one or more columns. Use `filter()` to answer the questions below.
+
+<br>
+
+_Do you remember we had that "All" category in the Star Wars scrap data? Let's take a look at that._
+
+```{r filter12, eval = F}
+
+filter(scrap, Origin == "All")
+
+```
+
+
+### <i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
+> We use a `==` (double equals sign) for comparing values. A `==` makes the comparison "is it equal to?" and returns a True or False answer. So the code above returns all the rows where the condition `Origin == "All"` is TRUE.
+>
+  > A single equals sign (`=`) is used within functions to set options, for example `read_csv(file = "starwars_scrap_jakku.csv")`. Don't worry too much. If you use the wrong symbol R is often helpful and will let you know which one is needed.
+
+
+## Comparisons
+<hr>
+
+To use filtering effectively you will want to know how to select observations using various comparison operators.
+
+_Key comparison operators_
+
+| Symbol| Comparison               |
+|:----|:------------------------|
+| `>`   | greater than             |
+| `>=`  | greater than or equal to |
+| `<`   | less than                |
+| `<=`  | less than or equal to    |
+| `==`  | equal to                 |
+| `!=`  | not equal to             |
+| `%in%`| value is in a list       |
+
+<br>
+
+Now let's look at that data again WITHOUT the _All_ category. Then we will more easily be able to see the amounts. Look in the table above and find the `NOT` operator.
+
+```{r filter all}
+
+scrap <- filter(scrap, Origin != "All")
+
+```
+
+
+<br>
+
+_Now arrange your data in descending order by the amounts to confirm that the "All" category is gone. Then look at the data using the `head()` function_
+
+```{r filter_arrange}
+
+scrap <- arrange(scrap, desc(Amount))
+head(scrap)
+
+```
+
+<br>
+
+_Now let's take another look at that bar chart. Is there anything else that is less than perfect with our data?_
+
+```{r ggplot no All}
+ggplot(scrap, aes(x = Origin, y = Amount)) +
+  geom_col()
+``` 
+
+
+Something still might be hidden in the data that is unexpected. Take a look at the amount of items and chart them by the units field.
+
+```{r ggplot Units}
+ggplot(scrap, aes(x = Units, y = Amount)) +
+  geom_col()
+```
+
+There is still an issue with the data. The item "tons" is written two ways. This happens when multiple field technicians collect data! We will deal with this a bit later. First, what happens if we want to filter for multiple fields and categories?
+
+
+## Multiple filters
+<hr>
+
+
+### Exercise <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> {-}
+
+Create a small table that includes all Retrorockets and Sublight drives that are priced higher than 500.00 credits. Name it `highend_starship_junk`.
+
+_Work with your neighbor to create the table._
+
+Hint: You will need to use the _c()_ function and the %in% operator.
+
+```{r filter2, eval = F}
+
+highend_starship_junk <- filter(scrap, Salvage %in% c("Retrorocket", "Sublight drive"), Price_per_Ton > 500)
+
+```
+
+
+<div class="quiz">
+### Pop Quiz, hotshot! {-}
+
+__Are there more total `Retrorockets` or `Sublight drives` over 500 credits?__
+
+<input type="radio"> _more Retrorockets_          <br>
+<input type="radio"> _more Sublight drives_               <br>
+<input type="radio"> _same amount in both groups_ <br>
+
+
+<br>
+  
+<details>
+<summary class = "btn_code"> _Show solution_ </summary>
+<p>
+<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `more Retrockets`
+
+_There is a new light saber in your future! Great job!_
+
+</p></details></div>
+
+<br>
+
+> __What is that `c()` thing all about again?__
+
+
+You can put multiple values inside `c()` to make a vector of items. Each item in the vector is separated by a comma. Let's create a short vector of your favorite colors.
+
+```{r colors22}
+# This is an example vector
+my_fave_colors <- c("green", "orange", "cornflower")
+
+my_fave_colors
+```
+
+<br>
+
+
+## Star Wars scrap challenge &#x1F431;
+<hr>
+
+
+> Ask your neighbor a question about the scrap data that requires filter and the __%in%__ operator.
+> Try to answer your neighbor's question.
+
+<br><br>
+
+
+#| Update from the New Republic! Rey needs our help.
+<hr>
+
+![](images/rey.jpg){width="250" align="right" style="margin-top: -20px; margin-left: 20px; margin-right: 36px;"}
+
+_Let's help Rey!_
+
+Rey's droid was able to download the full scrap transfer database from the notorious Junk Boss Unkar Plutt. We have already downloaded the data set in tons and named it _scrap_. You are especially interested in trying to influence Rey to trade with scrappers from your City on Jakku. You know Rey needs parts for her star ship to fight for the New Republic and of course she needs food. Look under your keyboard to find out the name of your City in Jakku.
+
+<br>
+
+First. Let's read in the whole dataset. There are additional units of Salvage items beyond "tons". It looks like we have lots of data cleaning to do!
+
+```{r read full, eval=F}
+library("readr")
+
+my_scrap_file <- "data/starwars_scrap_jakku_full.csv"
+
+scrap <- read_csv(my_scrap_file)
+
+```
+
+<br>
+
+#| `glimpse()`
+<hr>
+
+Take a minute to look at the full scrap transaction dataset. An R function called _glimpse()_ will help us to start.
+
+<br>
+
+```{r glimpse full, eval=T}
+
+glimpse(scrap)
+
+```
+
+
+You can see that the units in the full data set are in "Items", "Cubic Yards"; and you remember from before that there were also units of "TONS" and "Tons".
+
+<br>
+
+__Use `filter()` and `arrange()` to sort your City's scrap by price.
+  
+Hint: First filter your data to include only your City from the Origin column.
+
+  
+```{r, eval=F}
+
+my_city_scrap <- filter(scrap, Origin == "")
+
+my_scrap <- arrange(my_city_scrap, desc(Price_per_Ton))
+
+```
+
+<br>
+
+Take a look at the first couple of rows in your table to find the Salvage that fetches the highest prices. 
+
+
+
+
+## Great work! {-}
+<hr>
+
+Hopefully you found a way to help Rey and your home City. We all have to survive right? You've earned a Star Wars film fan award!
+
+<br>
+
+<details>
+<summary><button class = "btn_code"> __Receive your badge__ </button></summary>
+<p>
+
+<img src="https://upload.wikimedia.org/wikipedia/en/6/6d/SWFFA.jpg" width="200" align="left" style="margin-top: -20px; margin-right: 30px;">
+
+<br>
+
+<hr>
+
+</p></details>
+
+<br>
+
+<span style="font-size: 22px;"> <i class="fa fa-group" aria-hidden="true" style="color:black;"></i>&nbsp; __Meet the scrapper planets__ &nbsp; <i class="fa fa-group" aria-hidden="true" style="color:black;"></i></span>
+
+> <i class="fa fa-hourglass-half" aria-hidden="true" style="color:#040707;"></i> __RECAP:__
+>
+>
+> - What packages have we added to our `library`?
+>
+> - What new functions have we learned?
+
+
+# Survey says {-}
+<hr>
+
+On the __front__ of your sticky note answer one of these:
+
+- Something you really liked learning today?
+- A useful thing you learned?
+- A new skill you are you excited about using?
+
+
+On the __back__:
+
+- A lingering question you have about the material.
+- A topic that was confusing and could use more clarification?
+
+
+We will compile the questions and send out answers before next class. If you think of something later, please e-mail us any questions you have. If you're uncertain about something I guarantee someone else is as well. So help a friend, and ask a question.
+
+
+#| Shutdown complete 
+
+When you close RStudio it will ask you about saving your _workspace_ and other files. This can get tiresome after awhile. Follow the steps below to set these options once and for always.
+
+Turn off __"Save Workspace"__
+
+- Go to __Tools__ on the top RStudio navigation bar.
+- Choose `Global Options...`.
+- On the first screen:
+- Set _Save workspace to .RData on exit:_ to "Never".
+- Uncheck _Always save history_
+- Uncheck _Restore .Rdata into workspace at startup_
+
+
+## Congratulations! You've completed __Day 1__. {-}
+<hr>
+
+![](https://media1.tenor.com/images/ce269fabe989f148f84d339850ce9a8f/tenor.gif?itemid=3561486)
+
+<br>
+
+
+# Return to [RCamp](index.html) {-}
+
+<br>

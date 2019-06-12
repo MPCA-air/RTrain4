@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R Training | Day 2</title>
+
+<script src="02_Day2_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="02_Day2_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="02_Day2_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="02_Day2_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="02_Day2_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="02_Day2_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="02_Day2_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="02_Day2_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="02_Day2_files/navigation-1.1/tabsets.js"></script>
+<link href="02_Day2_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="02_Day2_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css\camp_style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R Training | Day 2</h1>
+
+</div>
+
+
+<div id="good-morning-jedis" class="section level1 unnumbered">
+<h1>Good morning Jedis!</h1>
+<div class="figure">
+<img src="images/day2_bb8_sq.png" style="float: left; margin-right: 60px; margin-top: -4px;" width="260" />
+
+</div>
+<div id="schedule" class="section level3 unnumbered">
+<h3>Schedule</h3>
+<pre><code>- Review
+- Example work flow
+- Explore your data tables
+- Arrange and filter data
+- Join two tables together - by one or more variables
+- Add a new column calculated from other columns
+- Save data
+- Make heatmaps to find the Electro-storm</code></pre>
+<p><br><br></p>
+</div>
+<div id="review-day-1" class="section level2 unnumbered">
+<h2>Review Day 1</h2>
+<hr>
+<ul>
+<li>We kicked off with a tour of RStudio.</li>
+</ul>
+<div class="figure">
+<img src="images/rstudio.png" style="width: 74%; margin-left: 12.5%;" />
+
+</div>
+<p><br></p>
+<ul>
+<li>And jumped into storing values, naming objects, and how to remove objects from the environment.</li>
+<li>We made lists with <code>c()</code></li>
+<li>We brought lists together into a table, also known as a <code>data frame</code> or <code>tibble</code>.</li>
+</ul>
+<p><br></p>
+<div class="figure">
+<img src="images/vector_to_dataframe.png" style="margin-left: 8%;" style="width:50.0%" />
+
+</div>
+<p><br></p>
+<p><img src="images/readr-hexbin-sticker-from-rstudio.png" style="float: left; margin-right: 0; margin-bottom: 12px;" width="145" /> <img src="images/ggplot2_hex.png" style="float: left; margin-right: 22px; margin-top: 10px;  margin-left: 6px;" width="140" /></p>
+<p><br></p>
+<ul>
+<li>We installed new packages</li>
+<li>Read in scrap data from online using <code>read_csv()</code></li>
+<li>And made our first plot with the <code>ggplot()</code> function from the <strong>ggplot2</strong> package</li>
+</ul>
+<div style="clear: both;">
+
+</div>
+</div>
+<div id="example-workflow" class="section level2 unnumbered">
+<h2>Example workflow</h2>
+<p>Here’s an example air monitoring project from start to finish.</p>
+<details> <summary class = "btn_code"> <strong>EXAMPLE</strong> Ozone data project </summary>
+<div class="quiz" style="margin-top: 0; background-color: white;">
+<p>
+<p><br></p>
+<p>Imagine we just received 3 years worth of ozone monitoring data to summarize. <strong>Fun!</strong> Below is an example workflow we might follow using R.</p>
+<h3 id="start-a-new-project" class="unnumbered">0. Start a new project</h3>
+<p>Let’s be creative and name our project: <code>&quot;2019_Ozone&quot;</code></p>
+<h3 id="read-the-data" class="unnumbered">1. Read the data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+
+<span class="co"># Read a file from the web</span>
+air_data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://itep-r.netlify.com/data/OZONE_samples_demo.csv&quot;</span>)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SITE</th>
+<th align="left">Date</th>
+<th align="right">OZONE</th>
+<th align="right">TEMP_F</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">27-137-7001</td>
+<td align="left">2017-04-15</td>
+<td align="right">10</td>
+<td align="right">30.2</td>
+</tr>
+<tr class="even">
+<td align="left">27-137-7001</td>
+<td align="left">2016-10-24</td>
+<td align="right">13</td>
+<td align="right">59.0</td>
+</tr>
+<tr class="odd">
+<td align="left">27-137-7554</td>
+<td align="left">2017-06-22</td>
+<td align="right">7</td>
+<td align="right">56.6</td>
+</tr>
+<tr class="even">
+<td align="left">27-137-7554</td>
+<td align="left">2018-09-01</td>
+<td align="right">9</td>
+<td align="right">68.0</td>
+</tr>
+<tr class="odd">
+<td align="left">27-137-7554</td>
+<td align="left">2017-08-12</td>
+<td align="right">23</td>
+<td align="right">75.2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="clean-the-names" class="unnumbered">2. Clean the names</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(janitor)
+
+<span class="co"># Capital letters and spaces make things more difficult</span>
+<span class="co"># Let&#39;s clean them out</span>
+air_data &lt;-<span class="st"> </span><span class="kw">clean_names</span>(air_data)</code></pre></div>
+<h3 id="plot-the-data" class="unnumbered">3. Plot the data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+
+<span class="kw">ggplot</span>(air_data, <span class="kw">aes</span>(<span class="dt">x =</span> temp_f, <span class="dt">y =</span> ozone)) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre></div>
+<p><img src="02_Day2_files/figure-html/view-1.png" width="1152" /></p>
+<h3 id="clean-the-data" class="unnumbered">4. Clean the data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+
+<span class="co"># Drop values out of range</span>
+air_data &lt;-<span class="st"> </span>air_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(ozone <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, temp_f <span class="op">&lt;</span><span class="st"> </span><span class="dv">199</span>) 
+
+<span class="co"># Convert all samples to PPB</span>
+air_data &lt;-<span class="st"> </span>air_data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">            </span><span class="kw">mutate</span>(<span class="dt">OZONE =</span> <span class="kw">ifelse</span>(units <span class="op">==</span><span class="st"> &quot;PPM&quot;</span>, ozone <span class="op">*</span><span class="st"> </span><span class="dv">1000</span>, 
+                                  ozone)) </code></pre></div>
+<h3 id="view-the-data-closer" class="unnumbered">5. View the data <strong>closer</strong></h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(air_data, <span class="kw">aes</span>(<span class="dt">x =</span> temp_f, <span class="dt">y =</span> ozone)) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>site) <span class="op">+</span>
+<span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Ozone increases with temperature&quot;</span>, 
+         <span class="dt">subtitle =</span> <span class="st">&quot;Observations from 2015-2017&quot;</span>)</code></pre></div>
+<p><img src="02_Day2_files/figure-html/unnamed-chunk-1-1.png" width="1152" /></p>
+<h3 id="summarize-the-data" class="unnumbered">6. Summarize the data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">air_data &lt;-<span class="st"> </span>air_data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">            </span><span class="kw">group_by</span>(site, year) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">            </span><span class="kw">summarize</span>(<span class="dt">avg_ozone =</span> <span class="kw">mean</span>(ozone) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>),
+                      <span class="dt">avg_temp  =</span> <span class="kw">mean</span>(temp_f) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">site</th>
+<th align="right">year</th>
+<th align="right">avg_ozone</th>
+<th align="right">avg_temp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">27-137-7001</td>
+<td align="right">2016</td>
+<td align="right">11.01</td>
+<td align="right">60.74</td>
+</tr>
+<tr class="even">
+<td align="left">27-137-7001</td>
+<td align="right">2017</td>
+<td align="right">11.26</td>
+<td align="right">60.66</td>
+</tr>
+<tr class="odd">
+<td align="left">27-137-7001</td>
+<td align="right">2018</td>
+<td align="right">11.54</td>
+<td align="right">60.59</td>
+</tr>
+<tr class="even">
+<td align="left">27-137-7554</td>
+<td align="right">2016</td>
+<td align="right">12.23</td>
+<td align="right">61.23</td>
+</tr>
+<tr class="odd">
+<td align="left">27-137-7554</td>
+<td align="right">2017</td>
+<td align="right">11.81</td>
+<td align="right">60.98</td>
+</tr>
+<tr class="even">
+<td align="left">27-137-7554</td>
+<td align="right">2018</td>
+<td align="right">12.87</td>
+<td align="right">61.02</td>
+</tr>
+</tbody>
+</table>
+<h3 id="save-the-results" class="unnumbered">7. Save the results</h3>
+<p><strong>Save the final data table</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">air_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">write_csv</span>(<span class="st">&quot;results/2015-17_ozone_summary.csv&quot;</span>)</code></pre></div>
+<p><br></p>
+<p><strong>Save the site plot to PDF</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="st">&quot;results/2015-2017 - Ozone vs Temp.pdf&quot;</span>)</code></pre></div>
+<h3 id="share-with-friends" class="unnumbered">8. Share with friends</h3>
+<p><a href = "https://github.com/dKvale/ex__OZONE__Project"> <img src="images/github_example_ozone.png" style="width: 95%;" /> </a></p>
+<p><br></p>
+<div class="well">
+<p>Having an exact record of what you did can be great documentation for yourself and others. It’s also handy when you want to repeat the same analysis on new data. Then you only need to copy the script, update the read data line, and push run to get a whole new set of fancy charts.</p>
+</div>
+</p>
+</div>
+<p></details></p>
+<p><br></p>
+<div class="well">
+<h4>
+<i class="fa fa-mitten" aria-hidden="true"></i> QUESTIONS
+</h4>
+<p>Any questions? Any questions at all. No matter how large or terribly small… Last chance, we are about to move on…</p>
+</div>
+<p><br></p>
+<div class="figure">
+<img src="images/moving_on.jpg" style="margin-left: 12%; margin-bottom: 10px; width: 75%" />
+
+</div>
+</div>
+</div>
+<div id="read-scrap-data" class="section level1 unnumbered">
+<h1>Read scrap data</h1>
+<p>It’s time to jump back in to where we left off on <strong>Day 1</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Read in scrap data and set name to &quot;scrap&quot;</span>
+scrap &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://itep-r.netlify.com/data/starwars_scrap_jakku.csv&quot;</span>)</code></pre></div>
+<div id="plot-scrap-data" class="section level2 unnumbered">
+<h2>Plot scrap data</h2>
+<p>Last time we made a column plot showing the amount of scrap coming from each town.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+
+<span class="kw">ggplot</span>(scrap, <span class="kw">aes</span>(<span class="dt">y =</span> amount, <span class="dt">x =</span> origin)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_gray</span>()</code></pre></div>
+<p><img src="02_Day2_files/figure-html/unnamed-chunk-3-1.png" width="1152" /></p>
+</div>
+</div>
+<div id="data-exploration" class="section level1 unnumbered">
+<h1>Data exploration</h1>
+</div>
+<div id="dplyr" class="section level1">
+<h1><span class="header-section-number">1</span> | dplyr</h1>
+<hr>
+<div class="figure">
+<img src="images/dplyr_hex.png" align="left" style="margin-right: 32px; margin-top: 8px; margin-bottom: 20px;" width="128" />
+
+</div>
+<p><br></p>
+<p>The <em>dplyr</em> package is our go-to tool for exploring, re-arranging, and summarizing data. Use <code>install.packages(&quot;dplyr&quot;)</code> to add <em>dplyr</em> to your library.</p>
+<div style="clear: both; margin-top: 22px;">
+
+</div>
+<div id="functions-to-get-to-know-your-data." class="section level2 unnumbered">
+<h2>Functions to get to know your data.</h2>
+<table style="width:51%;">
+<colgroup>
+<col width="11%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Function</th>
+<th align="left">Information</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>names(scrap)</code></td>
+<td align="left">column names</td>
+</tr>
+<tr class="even">
+<td align="left"><code>nrow(...)</code></td>
+<td align="left">number of rows</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>ncol(...)</code></td>
+<td align="left">number of columns</td>
+</tr>
+<tr class="even">
+<td align="left"><code>summary(...)</code></td>
+<td align="left">summary of all column values (ex. <em>max</em>, <em>mean</em>, <em>median</em>)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>glimpse(...)</code></td>
+<td align="left">column names + a glimpse of first values (requires <em>dplyr</em> package)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="glimpse-the-columns" class="section level1">
+<h1><span class="header-section-number">2</span> | <code>glimpse()</code> the columns</h1>
+<hr>
+<p>Use the <code>glimpse()</code> function to find out what type and how much data you have.</p>
+<p>Use the <code>summary()</code> function to get a quick report on your numeric data.</p>
+<p><br><br></p>
+<div id="lets-read-the-data-into-r-and-give-these-a-whirl." class="section level3 unnumbered">
+<h3>Let’s read the data into R and give these a whirl.</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(readr)
+
+scrap &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://itep-r.netlify.com/data/starwars_scrap_jakku.csv&quot;</span>)
+
+<span class="co"># View your whole dataframe and the types of data it contains</span>
+<span class="kw">glimpse</span>(scrap)</code></pre></div>
+<pre><code>## Observations: 1,132
+## Variables: 7
+## $ receipt_date    &lt;chr&gt; &quot;4/1/2013&quot;, &quot;4/2/2013&quot;, &quot;4/3/2013&quot;, &quot;4/4/2013&quot;...
+## $ item            &lt;chr&gt; &quot;Flight recorder&quot;, &quot;Proximity sensor&quot;, &quot;Vitus-...
+## $ origin          &lt;chr&gt; &quot;Outskirts&quot;, &quot;Outskirts&quot;, &quot;Reestki&quot;, &quot;Tuanul&quot;,...
+## $ destination     &lt;chr&gt; &quot;Niima Outpost&quot;, &quot;Raiders&quot;, &quot;Raiders&quot;, &quot;Raider...
+## $ amount          &lt;dbl&gt; 887, 7081, 4901, 707, 107, 32109, 862, 13944, ...
+## $ units           &lt;chr&gt; &quot;Tons&quot;, &quot;Tons&quot;, &quot;Tons&quot;, &quot;Tons&quot;, &quot;Tons&quot;, &quot;Tons&quot;...
+## $ price_per_pound &lt;dbl&gt; 590.93, 1229.03, 225.54, 145.27, 188.28, 1229....</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use the summary function to get a quick of idea of means and maxima for your numeric data</span>
+<span class="kw">summary</span>(scrap)</code></pre></div>
+<pre><code>##  receipt_date           item              origin         
+##  Length:1132        Length:1132        Length:1132       
+##  Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character  
+##                                                          
+##                                                          
+##                                                          
+##                                                          
+##  destination            amount           units          
+##  Length:1132        Min.   :     65   Length:1132       
+##  Class :character   1st Qu.:   1544   Class :character  
+##  Mode  :character   Median :   4099   Mode  :character  
+##                     Mean   :  18751                     
+##                     3rd Qu.:   7475                     
+##                     Max.   :2971601                     
+##                     NA&#39;s   :910                         
+##  price_per_pound   
+##  Min.   :   145.3  
+##  1st Qu.:   259.6  
+##  Median :   790.7  
+##  Mean   :  3811.7  
+##  3rd Qu.:  1496.7  
+##  Max.   :579215.3  
+##  NA&#39;s   :910</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Try the rest on your own, I dare you!</span>
+
+<span class="kw">nrow</span>()
+
+<span class="kw">ncol</span>()
+
+<span class="kw">names</span>()</code></pre></div>
+<p><br></p>
+</div>
+<div id="more-dplyr" class="section level2 unnumbered">
+<h2>More dplyr</h2>
+<p>Dplyr is our go-to package for most analysis tasks. With the six functions below you can accomplish just about anything you’d want to do with data.</p>
+<p><br></p>
+<blockquote>
+<h3 id="your-new-analysis-toolbox" class="unnumbered"><i class="fa fa-toolbox" aria-hidden="true" style="color: grey;"></i> Your new analysis toolbox</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Function</th>
+<th align="left">Job</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>select()</code></td>
+<td align="left">Select individual columns to drop or keep</td>
+</tr>
+<tr class="even">
+<td align="left"><code>arrange()</code></td>
+<td align="left">Sort a table top-to-bottom based on the values of a column</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>filter()</code></td>
+<td align="left">Keep only a subset of rows depending on the values of a column</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mutate()</code></td>
+<td align="left">Add new columns or update existing columns</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>summarize()</code></td>
+<td align="left">Calculate a single summary for an entire table</td>
+</tr>
+<tr class="even">
+<td align="left"><code>group_by()</code></td>
+<td align="left">Sort data into groups based on the values of a column</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+</div>
+</div>
+<div id="porg-tables" class="section level1">
+<h1><span class="header-section-number">3</span> | Porg tables</h1>
+<p>A poggle of porgs has volunteered to help us demo the <code>dplyr</code> functions.</p>
+<ul class="nav nav-pills" id="myTab" role="tablist" style="margin-top: 18px;">
+<li class="nav-item active">
+<a class="nav-link" id="porgs-tab" data-toggle="tab" href="#porgs" role="tab" aria-controls="porgs" aria-selected="true"> porgs </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="select-tab" data-toggle="tab" href="#select" role="tab" aria-controls="select" aria-selected="false"> <code>select</code> </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="arrange-tab" data-toggle="tab" href="#arrange" role="tab" aria-controls="arrange" aria-selected="false"> <code>arrange</code></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="filter-tab" data-toggle="tab" href="#filter" role="tab" aria-controls="filter" aria-selected="false"> <code>filter</code></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="mutate3-tab" data-toggle="tab" href="#mutate3" role="tab" aria-controls="mutate3" aria-selected="false"> <code>mutate</code></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="summarize-tab" data-toggle="tab" href="#summarize" role="tab" aria-controls="summarize" aria-selected="false"> <code>summarize</code></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" id="group_by-tab" data-toggle="tab" href="#group_by" role="tab" aria-controls="group_by" aria-selected="false"> <code>group_by</code></a>
+</li>
+</ul>
+<div id="myTabContent" class="well tab-content" style="background-color: white;">
+<div id="porgs" class="tab-pane fade active in" role="tabpanel" aria-labelledby="porgs-tab">
+<img src="images/porgs/porgs_tbl.png" style="width: 85%;" /> <br><br>
+</div>
+<div id="select" class="tab-pane fade" role="tabpanel" aria-labelledby="select-tab">
+<img src="images/porgs/select_card.png" style="width: 90%;" /> <br><br> <img src="images/porgs/select_drop.png" style="width: 65%;" /> <img src="images/porgs/select_drop_tbl.png" style="width: 80%; margin-left: 5%; margin-top: 12px;" /> <br><br>
+</div>
+<div id="arrange" class="tab-pane fade" role="tabpanel" aria-labelledby="arrange-tab">
+<img src="images/porgs/arrange.png" style="width: 65%;" /> <img src="images/porgs/arrange_tbl.png" style="width: 88%; margin-left: 10%; margin-top: 12px;" /> <br><br> <img src="images/porgs/arrange_desc.png" style="width: 57%;" /> <img src="images/porgs/arrange_tbl_desc.png" style="width: 88%; margin-left: 10%; margin-top: 12px;" /> <br><br>
+</div>
+<div id="filter" class="tab-pane fade" role="tabpanel" aria-labelledby="filter-tab">
+<img src="images/porgs/filter.png" style="width: 65%;" /> <img src="images/porgs/filter_tbl.png" style="width: 88%; margin-left: 10%; margin-top: 12px;" /> <br><br> <img src="images/porgs/filter2.png" style="width: 75%;" /> <img src="images/porgs/filter2_tbl.png" style="width: 88%; margin-left: 10%; margin-top: 12px;" /> <br><br>
+</div>
+<div id="mutate3" class="tab-pane fade" role="tabpanel" aria-labelledby="mutate3-tab">
+<img src="images/porgs/mutate_card.png" style="width: 88%;" /> <br><br>
+</div>
+<div id="summarize" class="tab-pane fade" role="tabpanel" aria-labelledby="summarize-tab">
+<img src="images/porgs/summarize_card.png" style="width: 88%;" /> <br><br>
+</div>
+<div id="group_by" class="tab-pane fade" role="tabpanel" aria-labelledby="group_by-tab">
+<img src="images/porgs/groupby_card.png" style="width: 92%;" /> <br><br>
+</div>
+</div>
+</div>
+<div id="select" class="section level1">
+<h1><span class="header-section-number">4</span> | <code>select()</code></h1>
+<hr>
+<p>Use the <code>select()</code> function to:</p>
+<ul>
+<li>Drop a column you no longer need</li>
+<li>Pull-out a few columns to create a new table</li>
+<li>Rearrange or change the order of columns</li>
+</ul>
+<div id="drop-columns-with-a-minus-sign--column_name" class="section level2 unnumbered">
+<h2>Drop columns with a minus sign: <code>-column_name</code></h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(readr)
+
+scrap &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://itep-r.netlify.com/data/starwars_scrap_jakku.csv&quot;</span>)
+
+<span class="co"># Drop the destination column</span>
+<span class="kw">select</span>(scrap, <span class="op">-</span>destination)</code></pre></div>
+<pre><code>## # A tibble: 1,132 x 6
+##    receipt_date item                  origin   amount units price_per_pound
+##    &lt;chr&gt;        &lt;chr&gt;                 &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
+##  1 4/1/2013     Flight recorder       Outskir~    887 Tons             591.
+##  2 4/2/2013     Proximity sensor      Outskir~   7081 Tons            1229.
+##  3 4/3/2013     Vitus-Series Attitud~ Reestki    4901 Tons             226.
+##  4 4/4/2013     Aural sensor          Tuanul      707 Tons             145.
+##  5 4/5/2013     Electromagnetic disc~ Tuanul      107 Tons             188.
+##  6 4/6/2013     Proximity sensor      Tuanul    32109 Tons            1229.
+##  7 4/7/2013     Hyperdrive motivator  Tuanul      862 Tons            1485.
+##  8 4/8/2013     Landing jet           Reestki   13944 Tons            1497.
+##  9 4/9/2013     Electromagnetic disc~ Cratert~   7788 Tons             188.
+## 10 4/10/2013    Sublight engine       Outskir~  10642 Tons            7211.
+## # ... with 1,122 more rows</code></pre>
+</div>
+<div id="keep-only-three-columns" class="section level2 unnumbered">
+<h2>Keep only three columns</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Keep the item, amount and price_per_pound columns</span>
+<span class="kw">select</span>(scrap, <span class="kw">c</span>(item, amount, price_per_pound))</code></pre></div>
+<pre><code>## # A tibble: 1,132 x 3
+##    item                             amount price_per_pound
+##    &lt;chr&gt;                             &lt;dbl&gt;           &lt;dbl&gt;
+##  1 Flight recorder                     887            591.
+##  2 Proximity sensor                   7081           1229.
+##  3 Vitus-Series Attitude Thrusters    4901            226.
+##  4 Aural sensor                        707            145.
+##  5 Electromagnetic discharge filter    107            188.
+##  6 Proximity sensor                  32109           1229.
+##  7 Hyperdrive motivator                862           1485.
+##  8 Landing jet                       13944           1497.
+##  9 Electromagnetic discharge filter   7788            188.
+## 10 Sublight engine                   10642           7211.
+## # ... with 1,122 more rows</code></pre>
+</div>
+<div id="everything" class="section level2 unnumbered">
+<h2><code>everything()</code></h2>
+<p><code>select()</code> also works to change the order of columns. The code below puts the <code>item</code> column first and then moves the <code>units</code> and <code>amount</code> columns directly after <code>item</code>. We then keep <code>everything()</code> else the same.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Make the `item`, `units`, and `amount` columns the first three columns</span>
+<span class="co"># Leave `everything()` else in the same order</span>
+<span class="kw">select</span>(scrap, item, units, amount, <span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</code></pre></div>
+<pre><code>## # A tibble: 6 x 7
+##   item        units amount receipt_date origin  destination price_per_pound
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;                 &lt;dbl&gt;
+## 1 Flight rec~ Tons     887 4/1/2013     Outski~ Niima Outp~            591.
+## 2 Proximity ~ Tons    7081 4/2/2013     Outski~ Raiders               1229.
+## 3 Vitus-Seri~ Tons    4901 4/3/2013     Reestki Raiders                226.
+## 4 Aural sens~ Tons     707 4/4/2013     Tuanul  Raiders                145.
+## 5 Electromag~ Tons     107 4/5/2013     Tuanul  Niima Outp~            188.
+## 6 Proximity ~ Tons   32109 4/6/2013     Tuanul  Trade cara~           1229.</code></pre>
+</div>
+</div>
+<div id="arrange" class="section level1">
+<h1><span class="header-section-number">5</span> | <code>arrange()</code></h1>
+<hr>
+<p>Rey wants to know what the highest priced items are. Use <code>arrange()</code> to find the highest priced scrap item and see which origins might have a lot of them.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Arrange scrap items by price</span>
+scrap &lt;-<span class="st"> </span><span class="kw">arrange</span>(scrap, price_per_pound)
+
+<span class="co"># View the top 6 rows</span>
+<span class="kw">head</span>(scrap)</code></pre></div>
+<pre><code>## # A tibble: 6 x 7
+##   receipt_date item      origin    destination amount units price_per_pound
+##   &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
+## 1 4/4/2013     Aural se~ Tuanul    Raiders        707 Tons             145.
+## 2 5/22/2013    Aural se~ Outskirts Niima Outp~   3005 Tons             145.
+## 3 5/23/2013    Aural se~ Tuanul    Raiders       6204 Tons             145.
+## 4 6/4/2013     Aural se~ Tuanul    Raiders       3120 Tons             145.
+## 5 6/10/2013    Aural se~ Blowback~ Niima Outp~   2312 Tons             145.
+## 6 6/20/2013    Aural se~ Outskirts Trade cara~   6272 Tons             145.</code></pre>
+<p><br></p>
+<div id="only-145-credits-thats-not-very-much-at-all-oh-wait" class="section level3 unnumbered">
+<h3>Only <code>145 credits</code>! That’s not very much at all, oh wait…</h3>
+</div>
+<div id="big-things-first-desc" class="section level2 unnumbered">
+<h2>Big things first: <code>desc()</code></h2>
+<p>To arrange a column in descending order with the biggest numbers on top, we use: <code>desc(price_per_pound)</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Put most expensive items on top</span>
+scrap &lt;-<span class="st"> </span><span class="kw">arrange</span>(scrap, <span class="kw">desc</span>(price_per_pound))
+
+<span class="co"># View the top 8 rows</span>
+<span class="kw">head</span>(scrap, <span class="dv">8</span>)</code></pre></div>
+<pre><code>## # A tibble: 8 x 7
+##   receipt_date item      origin    destination amount units price_per_pound
+##   &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
+## 1 12/31/2016   Total     All       All         2.97e6 Tons          579215.
+## 2 4/10/2013    Sublight~ Outskirts Niima Outp~ 1.06e4 Tons            7211.
+## 3 4/14/2013    Sublight~ Outskirts Raiders     2.38e3 Tons            7211.
+## 4 4/15/2013    Sublight~ Craterto~ Raiders     6.31e3 Tons            7211.
+## 5 4/16/2013    Sublight~ Tuanul    Trade cara~ 3.98e3 Tons            7211.
+## 6 5/14/2013    Sublight~ Craterto~ Raiders     2.99e2 Tons            7211.
+## 7 6/14/2013    Sublight~ Blowback~ Raiders     8.58e3 Tons            7211.
+## 8 8/6/2013     Sublight~ Craterto~ Raiders     1.77e3 Tons            7211.</code></pre>
+<p><br></p>
+<div class="data">
+<h3 id="exercise" class="unnumbered"><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise</h3>
+<p>Try arranging by more than one column, such as <code>price_per_pound</code> and <code>amount</code>. What happens?</p>
+<p><strong>HINT:</strong> You can view the entire table by clicking on it in the upper-right <em>Environment</em> tab.</p>
+</div>
+<p><br></p>
+<div id="pro-tip" class="section level3 unnumbered">
+<h3><i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
+<div class="well">
+<p>When you save an arranged data table it maintains its order. This is perfect for sending people a quick <strong>Top 10</strong> list of pollutants or sites.</p>
+</div>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="filter" class="section level1">
+<h1><span class="header-section-number">6</span> | <code>filter()</code></h1>
+<hr>
+<p>The <code>filter()</code> function creates a subset of the data based on the value of one or more columns. Let’s take a look at the records with the origin <code>&quot;All&quot;</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">filter</span>(scrap, origin <span class="op">==</span><span class="st"> &quot;All&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 7
+##   receipt_date item  origin destination  amount units price_per_pound
+##   &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
+## 1 12/31/2016   Total All    All         2971601 Tons          579215.</code></pre>
+<p><br></p>
+<div id="pro-tip-1" class="section level3 unnumbered">
+<h3><i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
+<div class="data">
+<p>Use a <code>==</code> (double equals sign) for comparing values. A <code>==</code> makes the comparison “is it equal to?” and returns a True or False answer. So the code above returns all the rows where the condition <code>origin == &quot;All&quot;</code> is TRUE.</p>
+<p>A single equals sign <code>=</code> is used within functions to set options, for example <code>read_csv(file = &quot;starwars_scrap_jakku.csv&quot;)</code>. Don’t worry too much. If you use the wrong symbol R is often helpful and will let you know which one is needed.</p>
+</div>
+</div>
+<div id="comparisons" class="section level2 unnumbered">
+<h2>Comparisons</h2>
+<hr>
+<p>Processing data requires many types of filtering. You’ll want to know how to select observations in your table by making various comparisons.</p>
+<p><strong>Key comparison operators</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Symbol</th>
+<th align="left">Comparison</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>&gt;</code></td>
+<td align="left">greater than</td>
+</tr>
+<tr class="even">
+<td align="left"><code>&gt;=</code></td>
+<td align="left">greater than or equal to</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>&lt;</code></td>
+<td align="left">less than</td>
+</tr>
+<tr class="even">
+<td align="left"><code>&lt;=</code></td>
+<td align="left">less than or equal to</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>==</code></td>
+<td align="left">equal to</td>
+</tr>
+<tr class="even">
+<td align="left"><code>!=</code></td>
+<td align="left">NOT equal to</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>%in%</code></td>
+<td align="left">is value in a list: <code>X %in% c(1,3,5)</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>is.na(...)</code></td>
+<td align="left">Is the value missing?</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="exercise-1" class="section level2 unnumbered">
+<h2><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise</h2>
+<p>Try comparing some things in the console and see if you get what you’d expect. R doesn’t always think like we do.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">4</span> <span class="op">!=</span><span class="st"> </span><span class="dv">5</span>
+
+<span class="dv">4</span> <span class="op">==</span><span class="st"> </span><span class="dv">4</span>
+
+<span class="dv">4</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span>
+
+<span class="dv">4</span> <span class="op">&gt;</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)
+
+<span class="dv">5</span> <span class="op">==</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)
+
+<span class="dv">5</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)
+
+<span class="dv">2</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)
+
+<span class="dv">2</span> <span class="op">==</span><span class="st"> </span><span class="ot">NA</span></code></pre></div>
+</div>
+<div id="dropping-rows" class="section level2 unnumbered">
+<h2>Dropping rows</h2>
+<p>Let’s look at the data without that pesky <em>All</em> category. Look in the comparison table above to find the <code>NOT</code> operator. We’re going to filter the data to keep only the origins that are <code>NOT equal to</code> “All”.</p>
+<p><br></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scrap &lt;-<span class="st"> </span><span class="kw">filter</span>(scrap, origin <span class="op">!=</span><span class="st"> &quot;All&quot;</span>)</code></pre></div>
+<p><br></p>
+<p>We can arrange the data in ascending order by <code>item</code> to confirm that the “All” category is gone.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Arrange data</span>
+scrap &lt;-<span class="st"> </span><span class="kw">arrange</span>(scrap, item)
+
+<span class="kw">head</span>(scrap)</code></pre></div>
+<pre><code>## # A tibble: 6 x 7
+##   receipt_date item      origin    destination amount units price_per_pound
+##   &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;
+## 1 4/4/2013     Aural se~ Tuanul    Raiders        707 Tons             145.
+## 2 5/22/2013    Aural se~ Outskirts Niima Outp~   3005 Tons             145.
+## 3 5/23/2013    Aural se~ Tuanul    Raiders       6204 Tons             145.
+## 4 6/4/2013     Aural se~ Tuanul    Raiders       3120 Tons             145.
+## 5 6/10/2013    Aural se~ Blowback~ Niima Outp~   2312 Tons             145.
+## 6 6/20/2013    Aural se~ Outskirts Trade cara~   6272 Tons             145.</code></pre>
+<p><br></p>
+<p>Now let’s take another look at that bar chart. Is there anything else that is less than perfect with our data?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+
+<span class="kw">ggplot</span>(scrap, <span class="kw">aes</span>(<span class="dt">x =</span> origin, <span class="dt">y =</span> amount)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_col</span>()</code></pre></div>
+<p><img src="02_Day2_files/figure-html/ggplot-noAll-1.png" width="960" /></p>
+</div>
+<div id="multiple-filters" class="section level2">
+<h2><span class="header-section-number">6.1</span> Multiple filters</h2>
+<hr>
+<p>We can add multiple comparisons to <code>filter()</code> to further restrict the data we pull from a larger data set. Only the records that pass the conditions of all the comparisons will be pulled into the new data frame.</p>
+<p>The code below filters the data to only scrap records with an origin of <code>Outskirts</code> <strong>AND</strong> a destination of <code>Niima Outpost</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outskirts_to_niima &lt;-<span class="st"> </span><span class="kw">filter</span>(scrap, 
+                             origin        <span class="op">==</span><span class="st"> &quot;Outskirts&quot;</span>, 
+                             destination   <span class="op">==</span><span class="st"> &quot;Niima Outpost&quot;</span>)</code></pre></div>
+<p><br></p>
+</div>
+</div>
+<div id="guess-who" class="section level1 unnumbered">
+<h1>Guess Who?</h1>
+<h2 style="margin-top: -24px;">
+<em>Star Wars edition</em>
+</h2>
+<div class="figure">
+<img src="images/sw_guesswho.jpg" align="right" style="margin-top: -65px; margin-left: 24px; margin-right: 8px;" width="280" />
+
+</div>
+<blockquote>
+<p>Are you the best Jedi detective out there? Let’s play a game to find out.</p>
+</blockquote>
+<p><br></p>
+<p>Guess what else comes with the <code>dplyr</code> package? A <strong>Star Wars data set</strong>.</p>
+<p>You can open the data set with the following steps:</p>
+<ol style="list-style-type: decimal">
+<li>Load the <code>dplyr</code> package from your <code>library()</code></li>
+<li>Pull the Star Wars dataset into your environment.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+
+starwars_data &lt;-<span class="st"> </span>starwars</code></pre></div>
+<div id="rules" class="section level2 unnumbered">
+<h2><span style="text-decoration: underline;"> Rules </span></h2>
+<ol style="list-style-type: decimal">
+<li>You have a <strong>secret</strong> identity.</li>
+<li>Scroll through the Star Wars dataset and find a character you find interesting. <em>(Or run <code>sample_n(starwars_data, 1)</code> to choose your character at random.)</em></li>
+<li><strong>Keep it hidden!</strong> Don’t show your neighbor the character you chose.</li>
+<li>Take turns asking each other questions about your partner’s Star Wars character.</li>
+<li>Use the answers to build a <code>filter()</code> function and narrow down the potential characters your neighbor may have picked.</li>
+</ol>
+<p>For example: Here’s a <code>filter()</code> statement that filters the data to the character <em>Plo Koon</em>.</p>
+<div style="width: 90%; margin-left: 8%">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mr_koon &lt;-<span class="st"> </span><span class="kw">filter</span>(starwars_data,
+                  mass       <span class="op">&lt;</span><span class="st"> </span><span class="dv">100</span>,
+                  eye_color  <span class="op">!=</span><span class="st"> &quot;blue&quot;</span>,
+                  gender     <span class="op">==</span><span class="st"> &quot;male&quot;</span>,
+                  homeworld  <span class="op">==</span><span class="st"> &quot;Dorin&quot;</span>,
+                  birth_year <span class="op">&gt;</span><span class="st"> </span><span class="dv">20</span>)</code></pre></div>
+</div>
+<p><br></p>
+<p>Elusive answers are allowed. For example, if someone asks: <em>What is your character’s mass?</em></p>
+<ul>
+<li>You can respond: <em>My character’s mass is equal to one less than their age.</em></li>
+<li>Or if you’re feeling generous you can give a straight forward answer such as: <em>My character’s mass is definitely more than 100 and less that 140.</em></li>
+</ul>
+<p>Sometimes a character will not have a specific attribute. We learned earlier how R stores nulls as <code>NA</code>. If your character has a missing value for hair color, one of your filter statements could be <code>is.na(hair_color)</code>.</p>
+<p><br></p>
+<p><span style="margin-top: 18px; color: green;"> <strong>WINNER!</strong> </span></p>
+<p>The winner is the first to guess their neighbor’s character.</p>
+<p><details> <summary class = "btn_code_green"> <strong>WINNERS Click here!</strong> </summary></p>
+<div class="data" style="margin-top: -12px;">
+<p>
+<div class="figure">
+<img src="images/cat_win.jpg" style="width:96.0%" />
+
+</div>
+</p>
+</div>
+<p></details></p>
+<p><br></p>
+<div class="note">
+<h4 id="want-to-rematch" class="unnumbered">Want to rematch?</h4>
+<p>How about make it best of <strong>3</strong> games? Or switch partners and try again.</p>
+</div>
+<p><br></p>
+</div>
+<div id="mystery-messenger" class="section level2 unnumbered">
+<h2><i class="far fa-question-circle"></i> Mystery messenger</h2>
+<p>An unknown someone was sent to Jakku to deliver Rey a message, but unfortunately we only have a few clues about what they look like. Work with your partner and the starwars data to find the messenger’s name. And with that, BB8 can track down where our messenger is.</p>
+<p><br></p>
+<p>Are you ready? The clock starts… ticking… now.</p>
+<ul>
+<li><strong>Step 1:</strong> Ask Derek for the clues.</li>
+</ul>
+<p><br><br></p>
+<blockquote>
+<p><strong>Back to Jakku</strong></p>
+<p>Let’s calculate some new columns to help focus Rey’s scavenging work.</p>
+</blockquote>
+</div>
+</div>
+<div id="mutate" class="section level1">
+<h1><span class="header-section-number">7</span> | <code>mutate()</code></h1>
+<hr>
+<p><code>mutate()</code> can edit existing columns in a data frame or add new columns calculated from neighboring columns.</p>
+<div id="add-a-column" class="section level2 unnumbered">
+<h2>Add a column</h2>
+<hr>
+<p>First, let’s add a column with our names. That way Rey can thank us personally when her ship is finally up and running.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Add your name as a column</span>
+scrap &lt;-<span class="st"> </span><span class="kw">mutate</span>(scrap, <span class="dt">scrap_finder =</span> <span class="st">&quot;BB8&quot;</span>)</code></pre></div>
+</div>
+<div id="add-several-columns" class="section level2 unnumbered">
+<h2>Add several columns</h2>
+<p>Let’s also add a new column to document the data measurement method.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#  Add your name as a column and</span>
+<span class="co">#  some information about the method</span>
+scrap &lt;-<span class="st"> </span><span class="kw">mutate</span>(scrap, 
+                <span class="dt">scrap_finder    =</span> <span class="st">&quot;BB8&quot;</span>,
+                <span class="dt">measure_method  =</span> <span class="st">&quot;REM-24&quot;</span>)
+
+## REM = Republic Equivalent Method</code></pre></div>
+</div>
+<div id="change-a-column" class="section level2 unnumbered">
+<h2>Change a column</h2>
+<hr>
+<p>Remember how the units of Tons was written two ways: “TONS” and “Tons”? We can use <code>mutate()</code> together with <code>tolower()</code> to make sure all of the scrap units are written in lower case. This will help prevent them from getting grouped separately in our plots and summaries.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set units to all lower-case</span>
+scrap &lt;-<span class="st"> </span><span class="kw">mutate</span>(scrap, <span class="dt">units =</span> <span class="kw">tolower</span>(units))
+
+<span class="co"># toupper() changes all of the letters to upper-case.</span></code></pre></div>
+</div>
+<div id="add-calculated-columns" class="section level2 unnumbered">
+<h2>Add calculated columns</h2>
+<p>In our work we often use <code>mutate</code> to convert units for measurements. In this case, let’s estimate the total pounds for the scrap items that are reported in tons.</p>
+<div id="tons-to-pounds-conversion" class="section level3 unnumbered">
+<h3>Tons <code>to</code> Pounds conversion</h3>
+<p>We can use <code>mutate()</code> to convert the <code>amount</code> column to pounds. Multiply the <code>amount</code> column by 2000 to get new values for a column named <code>amount_lbs</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scrap_pounds &lt;-<span class="st"> </span><span class="kw">mutate</span>(scrap, <span class="dt">amount_lbs =</span> amount <span class="op">*</span><span class="st"> </span><span class="dv">2000</span>)</code></pre></div>
+<p><br></p>
+</div>
+</div>
+<div id="final-stretch" class="section level2 unnumbered">
+<h2>Final stretch!</h2>
+<p><br></p>
+<p>It’s time to get off this dusty planet and Rey needs an <code>Ion engine</code>. Let’s <strong>filter</strong> the data to only that type of item.</p>
+<p><br></p>
+<p><details> <summary class = "btn_code_blue"><em>Show code</em></summary></p>
+<p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Grab only the items named &quot;Ion engine&quot;</span>
+scrap_pounds &lt;-<span class="st"> </span><span class="kw">filter</span>(scrap_pounds, item <span class="op">==</span><span class="st"> &quot;Ion engine&quot;</span>)</code></pre></div>
+</p>
+<p></details></p>
+<p><br></p>
+<p>Arrange the data in descending order of pounds so Rey knows where the highest amount of scrap comes from. Then she can go there, trade for some discounted parts and <strong>we’re free to FLY TO ENDOR!</strong></p>
+<p><br></p>
+<details> <summary class="btn_code_blue"> <em>Show code</em> </summary>
+<p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Arrange data</span>
+scrap_pounds &lt;-<span class="st"> </span><span class="kw">arrange</span>(scrap_pounds, <span class="kw">desc</span>(amount_lbs))
+
+<span class="co"># Return the origin of the highest amount_lbs of scrap</span>
+<span class="kw">head</span>(scrap_pounds, <span class="dv">1</span>)
+
+<span class="co"># Plot the total amount_lbs by origin</span>
+<span class="kw">ggplot</span>(scrap_pounds, <span class="kw">aes</span>(<span class="dt">x =</span> origin, <span class="dt">y =</span> amount_lbs)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_col</span>()</code></pre></div>
+</p>
+<p></details></p>
+<p><br></p>
+<div class="quiz">
+<h3 id="pop-quiz" class="unnumbered">Pop Quiz!</h3>
+<p><strong>For the item <code>Ion engine</code>, which origin has the highest <code>amount_lbs</code>?</strong></p>
+<p><input type="radio"> <em>Tuanul</em> <br> <input type="radio"> <em>Cratertown</em> <br> <input type="radio"> <em>Outskirts</em> <br> <input type="radio"> <em>Reestki</em> <br></p>
+<p><br></p>
+<p><details> <summary class = "btn_code"><em>Show solution</em></summary></p>
+<p>
+<p><i class="fa fa-check" aria-hidden="true" style="color: green;"></i> <code>Cratertown</code></p>
+<p><em>Yes!! You receive the ship parts to repair Rey’s Millennium Falcon. Onward!</em></p>
+</p>
+</details>
+</div>
+<div style="clear: both;">
+
+</div>
+</div>
+<div id="first-mission-complete" class="section level2 unnumbered">
+<h2>First mission complete!</h2>
+</div>
+</div>
+<div id="save-data" class="section level1">
+<h1><span class="header-section-number">8</span> | Save data</h1>
+<p>You can’t break your original dataset if you always name it something else. Let’s use the <code>readr</code> package to save our new CSV with the tons converted to pounds.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Save data as a CSV file </span>
+<span class="kw">write_csv</span>(scrap_pounds, <span class="st">&quot;scrap_in_pounds.csv&quot;</span>)</code></pre></div>
+<p><br></p>
+<blockquote>
+<p>Where did R save the file?</p>
+</blockquote>
+<p>Let’s create a new <code>results/</code> folder to keep our processed data separate from any raw data we receive.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Save data as a CSV file to results folder</span>
+<span class="kw">write_csv</span>(scrap_pounds, <span class="st">&quot;results/scrap_in_pounds.csv&quot;</span>)</code></pre></div>
+<p><br></p>
+<div id="time-to-get-off-this-dusty-planet-were-flying-to-endor" class="section level3 unnumbered">
+<h3>Time to get off this dusty planet, we’re flying to Endor!</h3>
+<p><br></p>
+<div class="figure">
+<img src="images/blast_off_ship_jakku.gif" style="margin-left: 13%; width: 72%;" />
+
+</div>
+<p><br></p>
+</div>
+<div id="bb8-has-a-new-mission" class="section level2 unnumbered">
+<h2>BB8 has a new mission</h2>
+<p>BB8 just received new data suggesting there was a large magnetic storm right before Site 1 burned down on Endor. Sounds like we’re going to be <strong>STORM CHASERS</strong>!</p>
+<p><strong>Get the dataset</strong></p>
+<p>While we’re relaxing and flying to Endor let’s get set up with our new data.</p>
+<p><a href="https://itep-r.netlify.com/data/air_endor.csv"> <span class="btn_code_blue" style="margin-bottom: 10px;"> <strong>DOWNLOAD</strong> </span></a> - Endor Air data</p>
+<ol style="list-style-type: decimal">
+<li>Download the data above.</li>
+<li>Create a new folder called “data” in your project folder.</li>
+<li>Move the Endor data to there.</li>
+<li>Open a new R script called <code>endor_air.R</code></li>
+</ol>
+<p>Now we can read in the data from the data folder with our favorite <code>read_csv</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(janitor)
+
+air_endor &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/air_endor.csv&quot;</span>)
+
+<span class="kw">names</span>(air_endor)
+
+<span class="co"># Clean the column names</span>
+air_endor &lt;-<span class="st"> </span><span class="kw">clean_names</span>(air_endor)
+
+<span class="kw">names</span>(air_endor)</code></pre></div>
+<pre><code>## [1] &quot;analyte&quot;        &quot;lab_code&quot;       &quot;units&quot;          &quot;start_run_date&quot;
+## [5] &quot;site_name&quot;      &quot;long_site_name&quot; &quot;planet&quot;         &quot;result&quot;</code></pre>
+<p><br></p>
+<div class="tip">
+<p><strong>NOTE</strong></p>
+<p>When your project is open, RStudio sets the working directory to your project folder. When reading files from a folder outside of your project, you’ll need to use the full file path location.</p>
+<p>For example: <code>X://Programs/Air_Quality/Ozone_data.csv</code></p>
+</div>
+</div>
+</div>
+<div id="welcome-to-endor" class="section level1 unnumbered">
+<h1>Welcome to Endor!</h1>
+<div class="figure">
+<img src="https://itep-r.netlify.com/images/planet_endor.jpg" style="width: 75%; margin-top: -4px; margin-left: 11%;" />
+
+</div>
+<p><br></p>
+<p><strong>Let’s get acquainted with our new Endor data set.</strong></p>
+<p><strong>Remember the different ways?</strong></p>
+<p><br></p>
+<p>Hint: <code>summary()</code>, <code>glimpse()</code>, <code>nrow()</code>, <code>distinct</code></p>
+<p><br></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(air_endor)</code></pre></div>
+<pre><code>## Observations: 1,190
+## Variables: 8
+## $ analyte        &lt;chr&gt; &quot;1-Methylnaphthalene&quot;, &quot;1-Methylnaphthalene&quot;, &quot;...
+## $ lab_code       &lt;chr&gt; &quot;HV-403&quot;, &quot;HV-408&quot;, &quot;HV-411&quot;, &quot;HV-415&quot;, &quot;HV-418...
+## $ units          &lt;chr&gt; &quot;ng/m3&quot;, &quot;ng/m3&quot;, &quot;ng/m3&quot;, &quot;ng/m3&quot;, &quot;ng/m3&quot;, &quot;n...
+## $ start_run_date &lt;chr&gt; &quot;7/11/2016&quot;, &quot;7/23/2016&quot;, &quot;8/5/2016&quot;, &quot;8/16/201...
+## $ site_name      &lt;chr&gt; &quot;battlesite1&quot;, &quot;battlesite1&quot;, &quot;battlesite1&quot;, &quot;b...
+## $ long_site_name &lt;chr&gt; &quot;Endor_Tana_forestmoon_battlesite1&quot;, &quot;Endor_Tan...
+## $ planet         &lt;chr&gt; &quot;Endor&quot;, &quot;Endor&quot;, &quot;Endor&quot;, &quot;Endor&quot;, &quot;Endor&quot;, &quot;E...
+## $ result         &lt;dbl&gt; 0.00291, 0.00000, 0.00000, 0.00608, 0.00000, 0....</code></pre>
+<p><br></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">distinct</span>(air_endor, analyte)</code></pre></div>
+<pre><code>## # A tibble: 27 x 1
+##    analyte             
+##    &lt;chr&gt;               
+##  1 1-Methylnaphthalene 
+##  2 2-Methylnaphthalene 
+##  3 5-Methylchrysene    
+##  4 Acenaphthene        
+##  5 Anthanthrene        
+##  6 Benz[a]anthracene   
+##  7 Benzo[a]pyrene      
+##  8 Benzo[c]fluorene    
+##  9 Benzo[e]pyrene      
+## 10 Benzo[g,h,i]perylene
+## # ... with 17 more rows</code></pre>
+<p><br></p>
+<p><strong>Woah. I see that there are many more analytes than we need. Lucky for us, we only want to know about <code>magnetic_field</code> data. Let’s filter the data down to only that analyte.</strong></p>
+<p><br></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mag_endor &lt;-<span class="st"> </span><span class="kw">filter</span>(air_endor, analyte <span class="op">==</span><span class="st"> &quot;magnetic_field&quot;</span>)</code></pre></div>
+<p><br></p>
+<blockquote>
+<p><strong>Boom!</strong> How many rows are left now?</p>
+</blockquote>
+<p><br></p>
+<div class="well">
+<p>With time series data it’s helpful for R to know which column is the <strong>date</strong> column. Dates come in many formats and the standard format in R is <code>2019-01-15</code>, also referred to as <em>Year-Month-Day</em> format.</p>
+<p>We’ll use the <code>lubridate</code> package to help modify and format dates.</p>
+</div>
+</div>
+<div id="dates" class="section level1">
+<h1><span class="header-section-number">9</span> | Dates</h1>
+<hr>
+<div id="the-lubridate-package" class="section level3 unnumbered">
+<h3>The <code>lubridate</code> package</h3>
+<div class="figure">
+<img src="images/lubridate.png" style="width: 21%; float: left; margin-right: 30px; margin-top: 8px; margin-bottom: 12px;" />
+
+</div>
+<p><br></p>
+<p>It’s about time! Lubridate makes working with dates easier.</p>
+<p>We can find how much time has elapsed, add or subtract days, and find seasonal and day of the week averages.</p>
+<p><br></p>
+<div style="clear: both;">
+
+</div>
+<p><br></p>
+</div>
+<div id="convert-text-to-a-date" class="section level3 unnumbered">
+<h3>Convert text to a <em>DATE</em></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th align="left">Order of date elements</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mdy()</code></td>
+<td align="left">Month-Day-Year :: <code>05-18-2019</code> or <code>05/18/2019</code></td>
+</tr>
+<tr class="even">
+<td><code>dmy()</code></td>
+<td align="left">Day-Month-Year (Euro dates) :: <code>18-05-2019</code> or <code>18/05/2019</code></td>
+</tr>
+<tr class="odd">
+<td><code>ymd()</code></td>
+<td align="left">Year-Month-Day (science dates) :: <code>2019-05-18</code> or <code>2019/05/18</code></td>
+</tr>
+<tr class="even">
+<td><code>ymd_hm()</code></td>
+<td align="left">Year-Month-Day Hour:Minutes :: <code>2019-05-18 8:35 AM</code></td>
+</tr>
+<tr class="odd">
+<td><code>ymd_hms()</code></td>
+<td align="left">Year-Month-Day Hour:Minutes:Seconds :: <code>2019-05-18 8:35:22 AM</code></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+</div>
+<div id="get-date-parts" class="section level3 unnumbered">
+<h3>Get date parts</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th align="left">Date element</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>year()</code></td>
+<td align="left">Year</td>
+</tr>
+<tr class="even">
+<td><code>month()</code></td>
+<td align="left">Month as <em>1,2,3</em>; For <em>Jan, Feb, Mar</em> use <code>label=TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>day()</code></td>
+<td align="left">Day of the month</td>
+</tr>
+<tr class="even">
+<td><code>wday()</code></td>
+<td align="left">Day of the week as <em>1,2,3</em>; For <em>Sun, Mon, Tue</em> use <code>label=TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><em>- Time -</em></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td><code>hour()</code></td>
+<td align="left">Hour of the day <em>(24hr)</em></td>
+</tr>
+<tr class="odd">
+<td><code>minute()</code></td>
+<td align="left">Minutes</td>
+</tr>
+<tr class="even">
+<td><code>second()</code></td>
+<td align="left">Seconds</td>
+</tr>
+<tr class="odd">
+<td><code>tz()</code></td>
+<td align="left">Time zone</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+</div>
+<div id="install-lubridate" class="section level2 unnumbered">
+<h2>Install <code>lubridate</code></h2>
+<p>First, type or copy and paste <code>install.packages(&quot;lubridate&quot;)</code> into RStudio.</p>
+</div>
+<div id="clean-the-dates" class="section level2 unnumbered">
+<h2><i class="fa fa-broom" aria-hidden="true"></i> Clean the dates</h2>
+<p>Let’s use the <code>mdy()</code> function to turn the <code>start_run_date</code> column into a nicely formatted date.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)
+
+mag_endor &lt;-<span class="st"> </span><span class="kw">mutate</span>(mag_endor, <span class="dt">date =</span> <span class="kw">mdy</span>(start_run_date),
+                               <span class="dt">year =</span> <span class="kw">year</span>(date))</code></pre></div>
+<p><br></p>
+<p><strong>According to the request we received, the Resistance is only interested in observations from the year <code>2017</code>. So let’s filter the data down to only dates within that year.</strong></p>
+<p><br></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mag_endor &lt;-<span class="st"> </span><span class="kw">filter</span>(mag_endor, year <span class="op">==</span><span class="st"> &quot;2017&quot;</span>)</code></pre></div>
+</div>
+<div id="time-series" class="section level2 unnumbered">
+<h2>Time series</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mag_endor, <span class="kw">aes</span>(<span class="dt">x =</span> date, <span class="dt">y =</span> result)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">color =</span> <span class="st">&quot;tomato&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">5</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)  <span class="co"># alpha changes transparency</span></code></pre></div>
+<p><img src="02_Day2_files/figure-html/endor-time-1.png" width="960" /></p>
+<p>Looks like the measurements definitely picked up a signal towards the end of the year. Let’s make a different chart to show when this occurred.</p>
+</div>
+<div id="heatmap-or-calendar-plot" class="section level2 unnumbered">
+<h2>Heatmap or calendar plot</h2>
+<p>Sometimes with air data we want to know if there is seasonality in the data, this is also true for magnetic storm data from Endor. Calendar plots are great for this.</p>
+<p>We will use <code>ggplot()</code> and bring out the <code>geom_tile()</code> to organize our data by dates and find when and if that storm happened.</p>
+<p>First, we’ll pull more information out of the dates.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mag_endor &lt;-<span class="st"> </span><span class="kw">mutate</span>(mag_endor, 
+                    <span class="dt">day_of_week   =</span> <span class="kw">wday</span>(date, <span class="dt">label =</span> <span class="ot">TRUE</span>),
+                    <span class="dt">day_of_month  =</span> <span class="kw">mday</span>(date),
+                    <span class="dt">week_of_month =</span> <span class="kw">day</span>(date)<span class="op">/</span><span class="dv">7</span>, 
+                    <span class="dt">month         =</span> <span class="kw">month</span>(date, <span class="dt">label =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mag_endor, <span class="kw">aes</span>(<span class="dt">x =</span> day_of_week, <span class="dt">y =</span> <span class="kw">desc</span>(week_of_month), <span class="dt">fill =</span> result)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_tile</span>(<span class="dt">color =</span> <span class="st">&quot;gray&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_label</span>(<span class="kw">aes</span>(<span class="dt">label =</span> day_of_month), <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="st">&quot;month&quot;</span>)</code></pre></div>
+<p><img src="02_Day2_files/figure-html/calendar_year-1.png" width="1248" /></p>
+<p><br></p>
+<div class="note">
+<h2 id="mission-complete" class="unnumbered">Mission complete!</h2>
+<p>Aha! There really were high magnetic field readings in November. Hopefully, the <em>Resistance</em> will reward us handsomely for this information.</p>
+</div>
+</div>
+</div>
+<div id="the-pipe-operator" class="section level1">
+<h1><span class="header-section-number">10</span> | The pipe operator</h1>
+<div id="i-wish-i-could-type-the-name-of-the-data-frame-less-often." class="section level4 unnumbered">
+<h4><em>…I wish I could type the name of the data frame less often.</em></h4>
+<p><br></p>
+<div class="figure">
+<img src="images/pipe.png" style="margin-right: 20px; width: 136px; float: left;" />
+
+</div>
+<p><strong>Now you can!</strong></p>
+<p>We use the <code>%&gt;%</code> to chain functions together and make our scripts more streamlined. We call it the <em>pipe</em>.</p>
+<p><br></p>
+<div style="clear: both;">
+
+</div>
+<p>Here are 2 examples of how the <code>%&gt;%</code> operator is helpful.</p>
+<p><br></p>
+<p><strong><code>#1:</code></strong> It eliminates the need for nested parentheses.</p>
+<p>Say you wanted to take the sum of 3 numbers and then take the log and then round the final result.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">round</span>(<span class="kw">log</span>(<span class="kw">sum</span>(<span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">30</span>,<span class="dv">40</span>))))</code></pre></div>
+<p><br></p>
+<p>The code doesn’t look much like the words we used to describe it. Let’s pipe it so we can read the code from left to right.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">30</span>,<span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">log10</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>()</code></pre></div>
+<p><br></p>
+<p><strong><code>#2:</code></strong> We can combine many processing steps into one cohesive chunk.</p>
+<p><br></p>
+<p>Here are some of the functions we’ve applied to the scrap data so far:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scrap &lt;-<span class="st"> </span><span class="kw">arrange</span>(scrap, <span class="kw">desc</span>(price_per_pound))
+
+scrap &lt;-<span class="st"> </span><span class="kw">filter</span>(scrap, origin <span class="op">!=</span><span class="st"> &quot;All&quot;</span>)
+
+scrap &lt;-<span class="st"> </span><span class="kw">mutate</span>(scrap, 
+                <span class="dt">scrap_finder    =</span> <span class="st">&quot;BB8&quot;</span>,
+                <span class="dt">measure_method  =</span> <span class="st">&quot;REM-24&quot;</span>)</code></pre></div>
+<p><br></p>
+<p>We can use the <code>%&gt;%</code> operator and write it this way.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scrap &lt;-<span class="st"> </span>scrap <span class="op">%&gt;%</span>
+<span class="st">           </span><span class="kw">arrange</span>(<span class="kw">desc</span>(price_per_pound)) <span class="op">%&gt;%</span>
+<span class="st">           </span><span class="kw">filter</span>(origin <span class="op">!=</span><span class="st"> &quot;All&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">           </span><span class="kw">mutate</span>(<span class="dt">scrap_finder    =</span> <span class="st">&quot;BB8&quot;</span>,
+                  <span class="dt">measure_method  =</span> <span class="st">&quot;REM-24&quot;</span>)</code></pre></div>
+<p><br></p>
+<div class="tip">
+<h3 id="exercise-2" class="unnumbered"><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise</h3>
+<p>Similar to above, use the <code>%&gt;%</code> to combine the two Endor lines below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mag_endor &lt;-<span class="st"> </span><span class="kw">filter</span>(air_endor, analyte <span class="op">==</span><span class="st"> &quot;magnetic_field&quot;</span>)
+
+mag_endor &lt;-<span class="st"> </span><span class="kw">mutate</span>(mag_endor, <span class="dt">date =</span> <span class="kw">mdy</span>(start_run_date))</code></pre></div>
+</div>
+</div>
+</div>
+<div id="go-to-day-3" class="section level1 unnumbered">
+<h1><i class="fa fa-rocket" aria-hidden="true"></i> Go to <a href="03_Day3.html">Day 3</a></h1>
+<p><br></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

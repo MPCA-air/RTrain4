@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R Training | Intro</title>
+
+<script src="00-Day1_intro_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="00-Day1_intro_files/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="00-Day1_intro_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="00-Day1_intro_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="00-Day1_intro_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="00-Day1_intro_files/navigation-1.1/tabsets.js"></script>
+<link href="00-Day1_intro_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="00-Day1_intro_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css\camp_style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R Training | Intro</h1>
+
+</div>
+
+
+<div id="welcome" class="section level1">
+<h1>Welcome!</h1>
+<hr>
+<div class="figure">
+<img src="images/day1_bb8_sq.png" style="float: left; margin-right: 60px; margin-top: -10px;" width="260" />
+
+</div>
+<p><br><br></p>
+<p><strong>Please connect to your droid</strong></p>
+<ul>
+<li>Open the <strong>Start menu</strong> (<em>Click the Windows logo on the bottom left of the screen</em>)</li>
+<li>Select <code>Remote Desktop Connection</code></li>
+<li>Enter <code>w7-your7digit#</code> or <code>R32-your7digit#</code></li>
+<li>Press <em>Connect</em></li>
+<li>Open RStudio</li>
+<li>Relax…</li>
+</ul>
+<p><br><br><br><br><br><br><br> <br><br><br></p>
+</div>
+<div id="good-morning" class="section level1">
+<h1>Good morning!</h1>
+<hr>
+<div class="row3">
+<div class="column4" style="border: 0px solid grey;">
+<p><img src="images/barbara.png" height="220" width="200"></a></p>
+</div>
+<div class="column4" style="border: 0px solid grey;">
+<p><img src="images/kristie.jpeg" height="240" width="200"></a></p>
+</div>
+<div class="column4" style="border: 0px solid grey;">
+<p><img src="images/dorian.jpg" height="220" width="200"></a></p>
+</div>
+<div class="column4" style="border: 0px solid grey;">
+<p><img src="images/derek.jpg" height="200" width="200"></a></p>
+</div>
+</div>
+<p><br></p>
+<p>We are <strong>Barbara</strong>, <strong>Kristie</strong>, <strong>Dorian</strong>, and <strong>Derek</strong>.</p>
+<p>We like <strong>R</strong>.</p>
+<p>We are not computer scientists.</p>
+<p>We make lots of mistakes. You will see us make mistakes. Feel free to laugh at them. It’s okay. Really.</p>
+<p>We aren’t related.</p>
+<p><br><br></p>
+<div id="you-are-the-great-cohort-of-2018" class="section level3 unnumbered">
+<h3>You are the great cohort of   <span style="font-size: 1.6em;"><i class="fa fa-group" aria-hidden="true" style="color: steelblue;"></i></span> <span style="font-size: 2em;">2018</span><span style="font-size: 1.6em;"><i class="fa fa-group" aria-hidden="true" style="color: steelblue;"></i></span></h3>
+<div class="figure">
+<img src="images/name_cloud.png" style="width:79.0%" />
+
+</div>
+</div>
+<div id="introductions" class="section level2 unnumbered">
+<h2>Introductions</h2>
+<hr>
+<p>Let’s introduce ourselves and the data we love or don’t.</p>
+<p><br></p>
+<div class="figure">
+<img src="images/robot_1.jpg" align="left" style="margin-right:34px;" width="272" />
+
+</div>
+<blockquote>
+<p><strong>Possible topics:</strong></p>
+<ul>
+<li>Your name<br />
+</li>
+<li>Your fave Star Wars character</li>
+<li>Type of data you have</li>
+<li>Messiest/weirdest/funniest part of your data? Or something you have to do over and over again? <strong>Hint!</strong> <em>This is something we can automate.</em></li>
+</ul>
+</blockquote>
+<p><br></p>
+<p>You are the all in this together. Use each other as a resource. Share ideas, share code, collaborate. Make bad jokes.</p>
+<p><br></p>
+<p><strong>Here’s one:</strong> <em>What program do Jedi use to open PDF files?</em></p>
+<p><br></p>
+<div class="figure">
+<img src="images/obi_wan.jpg" width="230" />
+
+</div>
+<blockquote>
+<p><strong>A:</strong> <em>Adobe Wan Kenobi?</em></p>
+</blockquote>
+</div>
+</div>
+<div id="why-r" class="section level1">
+<h1>Why R?</h1>
+<hr>
+<div id="data-analysis-in-7-steps" class="section level2">
+<h2>Data analysis in 7 steps</h2>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>Read the data</li>
+<li>Plot the data</li>
+<li>Clean the data</li>
+<li>View the data closer</li>
+<li>Summarize the data</li>
+<li>Save the results</li>
+<li><strong>Share</strong> your work with the world</li>
+</ol>
+</blockquote>
+</div>
+<div id="data-analysis-in-r" class="section level2">
+<h2>Data analysis in R</h2>
+<div id="read-the-data" class="section level3">
+<h3>1. Read the data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">air_data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/OZONE_samples.csv&quot;</span>)</code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   SITE = col_character(),
+##   Date = col_date(format = &quot;&quot;),
+##   Hour = col_double(),
+##   OZONE = col_double(),
+##   TEMP_F = col_double(),
+##   StateCode = col_double(),
+##   CountyCode = col_double(),
+##   SiteNum = col_double(),
+##   Latitude = col_double(),
+##   Longitude = col_double(),
+##   Time = col_datetime(format = &quot;&quot;),
+##   Parameter = col_double(),
+##   YEAR = col_double(),
+##   Month = col_double(),
+##   Day = col_character(),
+##   UNITS = col_character()
+## )</code></pre>
+</div>
+<div id="plot-the-data" class="section level3">
+<h3>2. Plot the data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(air_data, <span class="kw">aes</span>(<span class="dt">x =</span> TEMP_F, <span class="dt">y =</span> OZONE)) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)</code></pre></div>
+<p><img src="00-Day1_intro_files/figure-html/view-1.png" width="1152" /></p>
+</div>
+<div id="clean-the-data" class="section level3">
+<h3>3. Clean the data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Drop values out of range</span>
+air_data &lt;-<span class="st"> </span>air_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(OZONE <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, TEMP_F <span class="op">&lt;</span><span class="st"> </span><span class="dv">199</span>) 
+
+<span class="co"># Convert all samples to PPB</span>
+air_data &lt;-<span class="st"> </span>air_data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">            </span><span class="kw">mutate</span>(<span class="dt">OZONE =</span> <span class="kw">ifelse</span>(UNITS <span class="op">==</span><span class="st"> &quot;PPM&quot;</span>, OZONE <span class="op">*</span><span class="st"> </span><span class="dv">1000</span>, 
+                                  OZONE)) </code></pre></div>
+</div>
+<div id="view-the-data-closer" class="section level3">
+<h3>4. View the data closer</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(air_data, <span class="kw">aes</span>(<span class="dt">x =</span> TEMP_F, <span class="dt">y =</span> OZONE)) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>SITE) <span class="op">+</span>
+<span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Ozone increases with temperature&quot;</span>, 
+         <span class="dt">subtitle =</span> <span class="st">&quot;Observations from 2015-2017&quot;</span>)</code></pre></div>
+<p><img src="00-Day1_intro_files/figure-html/unnamed-chunk-2-1.png" width="1152" /></p>
+</div>
+<div id="summarize-the-data" class="section level3">
+<h3>5. Summarize the data</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">air_data &lt;-<span class="st"> </span>air_data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">            </span><span class="kw">group_by</span>(SITE, YEAR) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">            </span><span class="kw">summarize</span>(<span class="dt">AVG_OZONE =</span> <span class="kw">mean</span>(OZONE) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>),
+                      <span class="dt">AVG_TEMP  =</span> <span class="kw">mean</span>(TEMP_F) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dv">2</span>))</code></pre></div>
+</div>
+<div id="save-the-results" class="section level3">
+<h3>6. Save the results</h3>
+<p><strong>Save the final data table</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">air_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">write_csv</span>(<span class="st">&quot;results/2015-17_ozone_summary.csv&quot;</span>)</code></pre></div>
+<pre><code>## Warning in open.connection(path, &quot;wb&quot;): cannot open file &#39;results/
+## 2015-17_ozone_summary.csv&#39;: No such file or directory</code></pre>
+<pre><code>## Error in open.connection(path, &quot;wb&quot;): cannot open the connection</code></pre>
+<p><br></p>
+<p><strong>Save the site plot</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="st">&quot;results/2015-2017 - Ozone vs Temp.pdf&quot;</span>)</code></pre></div>
+<pre><code>## Error in grDevices::pdf(file = filename, ..., version = version): cannot open file &#39;results/2015-2017 - Ozone vs Temp.pdf&#39;</code></pre>
+</div>
+<div id="share-it-with-the-world" class="section level3">
+<h3>7. Share it with the world</h3>
+<p><a href = "https://github.com/dKvale/ex__OZONE__Project"> <img src="images/github_example_ozone.png" style="width: 95%;" /> </a></p>
+<p><br><br></p>
+</div>
+<div id="lets-go-jump-to-r-training" class="section level3">
+<h3>Let’s go! Jump to <a href="https://mpca-air.github.io/RTrain/">R Training</a></h3>
+</div>
+</div>
+<div id="section" class="section level2">
+<h2></h2>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

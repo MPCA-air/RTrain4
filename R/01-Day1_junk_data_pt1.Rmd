@@ -1,0 +1,143 @@
+---
+title: "R Training | Day 1 - part 2"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: readable
+    highlight: tango
+    css: css/camp_style.css
+    number_sections: true
+    self_contained: false
+fontsize: 15pt
+monofont: Source Code Pro
+monofontoptions: Scale = 1.2
+---
+
+
+```{r setup, include=FALSE}
+library("rmarkdown")
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+
+# Data exploration {-} 
+
+#| __dplyr__
+<hr>
+
+![](https://d33wubrfki0l68.cloudfront.net/071952491ec4a6a532a3f70ecfa2507af4d341f9/c167c/images/hex-dplyr.png){width="120" align="left" style="margin-right: 20px; margin-top: 8px"}
+
+<br>
+
+_You’ve unlocked a new package!_  
+
+The _dplyr_ package is the go-to tool for exploring, re-arranging, and summarizing data.  
+
+<br><br>
+
+Use `install.packages("dplyr")` to add _dplyr_ to your library.  
+
+<br>
+
+__Your new analysis toolbox__  
+The key _dplyr_ functions
+
+| Function      | Job                                             |  
+|:--------------|:----------------------------------------------------|  
+| `select()`    | Select individual columns to drop, keep, or reorder |  
+| `arrange()`   | Reorder or sort rows by value of a column           |  
+| `filter()`    | Pick a subset of rows by the value of a column      | 
+| `mutate()`    | Add new columns or update existing columns          | 
+| `group_by()`  | Split data into groups by values in a column        |  
+| `summarize()` | Calculate a single summary row for the entire table |   
+
+
+#| `select()`
+<hr>
+
+Use the `select()` function to drop a column you no longer need, to select a few columns to create a new sub-table, or rearrange the order of your table’s columns.
+
+```{r read-again, message=F, warning=F, include=F}
+library(readr)
+library(ggplot2)
+my_scrap_file <- "data/starwars_scrap_jakku.csv"
+scrap <- read_csv(my_scrap_file)
+```
+
+
+## Drop a single column with a minus sign: `-column_name` {-}
+```{r select, warning = F, message = F}
+library("dplyr")
+
+# Drop the destination column
+select(scrap, -Dest)
+```
+
+
+
+## Drop multiple columns with `-c(col_1, col_2)` or `-col1, -col2` {-}
+```{r arrange2, warning = F, message = F}
+
+# Drop the destination and units columns
+select(scrap, -c(Dest, Units))
+```
+
+
+## Keep only three columns {-}
+```{r arrange3, warning = F, message = F}
+
+# Keep the Salvage, Amount and Price_per_Ton columns
+select(scrap, c(Salvage, Amount, Price_per_Ton))
+```
+
+
+## `everything()` {-}
+
+`select()` also works to change the order of columns. The code below moves the `Units` and `Amount` columns directly after `Salvage`, and then keeps `evertyhing()` else the same. 
+
+```{r arrange4, warning = F, message = F}
+
+# Make the `Salvage`, `Units`, and `Amount` columns the first three columns
+# Leave `everything()` else in the same order
+select(scrap, c(Salvage, Units, Amount), everything())
+```
+
+
+
+#| `arrange()` 
+<hr>
+
+That’s helpful, but Rey wants to know what the highest priced Salvage items are. Use `arrange()` to find the origin city with the most highest priced Salvage item.
+
+```{r select arrange, warning = F, message = F}
+library("dplyr")
+
+# find the least expensive Salvage items
+scrap <- arrange(scrap, Price_per_Ton)
+
+# View the top 6 rows using head()
+head(scrap)
+
+#find the most expensive Salvage items
+scrap <- arrange(scrap, desc(Price_per_Ton))
+
+# View the top 6 rows using head()
+head(scrap)
+```
+
+<br>
+
+__Tell your neighbor the destination of the highest priced salvage items.__
+
+
+### <i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
+> When you save an arranged data table it maintains its order. This is perfect for sending people a quick __Top 10__ list of pollutants or sites.
+
+
+# <i class="fa fa-rocket" aria-hidden="true"></i> Blast off to [Part 3](01-Day1_junk_data_pt2.html) {-}
+
+<br>
