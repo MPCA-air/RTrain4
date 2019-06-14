@@ -27,46 +27,52 @@ Go to — [Install R](https://itep-r.netlify.com/page/install.html) — to get t
 
 <br>  
   
-#### Updates
 
-Go to — [Update R](https://itep-r.netlify.com/page/install.html#update-r) — if you already have R but haven't used it in awhile.  
-  
     
 ## Intro to R
 <hr>
 
-This series teaches the basics of importing data, using new packages, cleaning and summarizing data with __tidy__ tools, and using `ggplot2` to make charts, maps and other data visualizations. 
+This series of workshops teaches the basics of importing data, using new packages, cleaning and summarizing data with __tidy__ tools, and using `ggplot2` to create charts, maps and other data visualizations. 
 
 <div class="row3" style = "margin-top: 20px;">
 
-<div class="column3"><a href="01-Day1.html"><span style="margin-left: 32%;"><i class="fa fa-star" aria-hidden="true" style="color: #f17405;"></i> 
+<div class="column3"><a href="01-Day1.html"><span style="margin-left: 20%;"><i class="fa fa-star" aria-hidden="true" style="color: #f17405;"></i> 
 __Day 1__ 
 <i class="fa fa-star" aria-hidden="true" style="color: #f17405;"></i></span></a></div>
 
-<div class="column3"> <a href="02_Day2.html"><span style="margin-left: 32%;><i class="fa fa-star" aria-hidden="true" style="color: #2a5ea9;"></i> 
+<div class="column3"> <a href="02_Day2.html"><span style="margin-left: 20%;><i class="fa fa-star" aria-hidden="true" style="color: #2a5ea9;"></i> 
 __Day 2__ 
 <i class="fa fa-star" aria-hidden="true" style="color: #2a5ea9;"></i></span></a></div> 
 
-<div class="column3"> <a href="03_Day3.html"><span style="margin-left: 32%;><i class="fa fa-star" aria-hidden="true" style="color: #fa970c;"></i> 
+<div class="column3"> <a href="03_Day3.html"><span style="margin-left: 20%;><i class="fa fa-star" aria-hidden="true" style="color: #fa970c;"></i> 
 __Day 3__ 
 <i class="fa fa-star" aria-hidden="true" style="color: #fa970c;"></i></span></a></div>
+
+<div class="column3"> <a href="04_Day4.html"><span style="margin-left: 20%;><i class="fa fa-star" aria-hidden="true" style="color: #2a5ea9;"></i> 
+__Day 4__ 
+<i class="fa fa-star" aria-hidden="true" style="color: #2a5ea9;"></i></span></a></div>
+
 
 </div>
 
 <div class="row3">
 
-<div class="column3" style="border: 1px solid grey; height: 270px; max-height: 270px;">
+<div class="column3" style="border: 0px solid grey; height: 270px; max-height: 270px;">
 <a href="01-Day1.html"><img src="images/day1_bb8_sq.png"></a>
 </div>
 
 
-<div class="column3" style="border: 1px solid grey; height: 270px; max-height: 270px;">
+<div class="column3" style="border: 0px solid grey; height: 270px; max-height: 270px;">
 <a href="02_Day2.html"><img src="images/day2_bb8_sq.png"></a>
 </div>
 
 
-<div class="column3" style="border: 1px solid grey; height: 270px; max-height: 270px;">
+<div class="column3" style="border: 0px solid grey; height: 270px; max-height: 270px;">
 <a href="03_Day3.html"><img src="images/day3_sq.png"></a>
+</div>
+
+<div class="column3" style="border: 0px solid grey; height: 270px; max-height: 270px;">
+<a href="04_Day4.html"><img src="images/day4_sq.png"></a>
 </div>
 
 </div>

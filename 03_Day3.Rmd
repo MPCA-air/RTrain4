@@ -20,6 +20,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
 knitr::opts_chunk$set(fig.width = 11, fig.height = 6) 
 htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+library(tidyverse)
+library(ggplot2)
 ```
 
 # Welcome back Jedis! {-}
@@ -57,19 +59,14 @@ __Open a New script__
 <div class="well">
 
 - Review
+- Endor storm chasing
+    - Working w/ dates
 - Where's Finn?
 - Join 2 tables
-- Conditional mutate! 
-    - `ifelse()`
-    - Yes/No decisions
-- Summarize by group
-- More plots
-    - New geoms
-    - Reference lines
-    - Faceting
-    - Colors
-    - Titles 
-    
+- Add a new column calculated from other columns
+- Save data
+
+
 </div>   
     
 
@@ -89,6 +86,311 @@ cat(readLines("porg_tabs.txt"))
 ```
 
 <br>
+
+
+## BB8 has a new mission {-}
+
+BB8 just received new data suggesting there was a large magnetic storm right before Site 1 burned down on Endor. Sounds like we're going to be __STORM CHASERS__!
+
+
+__Get the dataset__
+
+While we're relaxing and flying to Endor let's get set up with our new data.
+
+<a href="https://itep-r.netlify.com/data/air_endor.csv">
+<span class="btn_code_blue" style="margin-bottom: 10px;"> __DOWNLOAD__  </span></a> -  Endor Air data
+
+1. Download the data above.
+1. Create a new folder called "data" in your project folder.
+1. Move the Endor data to there.
+1. Open a new R script called `endor_air.R`
+
+Now we can read in the data from the data folder with our favorite `read_csv` function.
+
+```{r, endor-air-read, eval=F}
+library(readr)
+library(dplyr)
+library(janitor)
+
+air_endor <- read_csv("data/air_endor.csv")
+
+names(air_endor)
+
+# Clean the column names
+air_endor <- clean_names(air_endor)
+
+names(air_endor)
+```
+
+```{r, endor-air-read2, echo=F, message=F}
+library(readr)
+library(dplyr)
+library(janitor)
+
+air_endor <- read_csv("https://itep-r.netlify.com/data/air_endor.csv")
+
+air_endor <- clean_names(air_endor)
+
+names(air_endor)
+```
+
+<br>
+
+<div class="tip">
+__NOTE__ 
+
+When your project is open, RStudio sets the working directory to your project folder. When reading files from a folder outside of your project, you'll need to use the full file path location. 
+
+For example: `X://Programs/Air_Quality/Ozone_data.csv`
+</div>
+
+
+# Welcome to Endor! {-}
+
+![](https://itep-r.netlify.com/images/planet_endor.jpg){style="width: 75%; margin-top: -4px; margin-left: 11%;"}
+
+<br>
+
+__Let's get acquainted with our new Endor data set.__ 
+
+__Remember the different ways?__
+
+<br>
+
+Hint: `summary()`, `glimpse()`, `nrow()`, `distinct`
+
+<br>
+
+
+```{r, endor-air2}
+
+glimpse(air_endor)
+```
+
+<br>
+```{r, dis}
+distinct(air_endor, analyte)
+```
+<br>
+
+__Woah. I see that there are many more analytes than we need. Lucky for us, we only want to know about `magnetic_field` data. Let's filter the data down to only that analyte.__ 
+
+<br>
+
+```{r, endor-air-filter}
+
+mag_endor <- filter(air_endor, analyte == "magnetic_field")
+```
+
+<br>
+
+> __Boom!__ How many rows are left now?
+
+<br>
+
+
+<div class="well">
+With time series data it's helpful for R to know which column is the __date__ column. Dates come in many formats and the standard format in R is `2019-01-15`, also referred to as _Year-Month-Day_ format.
+
+We'll use the `lubridate` package to help modify and format dates.
+</div>
+
+
+# | Dates 
+<hr>
+
+### The `lubridate` package {-}
+
+![](images/lubridate.png){style="width: 21%; float: left; margin-right: 30px; margin-top: 8px; margin-bottom: 12px;"}
+
+
+<br>
+
+It's about time! Lubridate makes working with dates easier. 
+
+We can find how much time has elapsed, add or subtract days, and find seasonal and day of the week averages. 
+
+<br>
+
+<div style="clear: both;"></div>
+
+<br>
+
+### Convert text to a *DATE* {-}
+
+| Function    |  Order of date elements                                 |   
+|----|:-----------------------------------------------------------------|  
+|`mdy()  `    | Month-Day-Year :: `05-18-2019` or `05/18/2019`                 |  
+|`dmy()  `    | Day-Month-Year (Euro dates) :: `18-05-2019` or `18/05/2019`    |  
+|`ymd()  `    | Year-Month-Day (science dates) :: `2019-05-18` or `2019/05/18` |  
+|`ymd_hm() `  | Year-Month-Day Hour:Minutes ::  `2019-05-18 8:35 AM`          |  
+|`ymd_hms() ` | Year-Month-Day Hour:Minutes:Seconds ::  `2019-05-18 8:35:22 AM`    | 
+
+<br>
+
+### Get date parts {-}
+
+| Function   |  Date element                                            |   
+|----|:-----------------------------------------------------------------|  
+|`year()  `  | Year          |  
+|`month()`   | Month as _1,2,3_; For _Jan, Feb, Mar_ use `label=TRUE`  |  
+|`day()`     | Day of the month  |  
+|`wday()`    | Day of the week as _1,2,3_; For _Sun, Mon, Tue_ use `label=TRUE` |  
+| _- Time -_   |            | 
+|`hour() `   |  Hour of the day _(24hr)_ |  
+|`minute() ` |  Minutes   |  
+|`second() ` |  Seconds   |  
+|`tz()  `    |  Time zone |  
+
+
+<br>
+
+
+## Install `lubridate` {-}
+
+First, type or copy and paste `install.packages("lubridate")` into RStudio.
+
+## <i class="fa fa-broom" aria-hidden="true"></i> Clean the dates {-}
+
+Let's use the `mdy()` function to turn the `start_run_date` column into a nicely formatted date.
+
+```{r endor-air-mutate, message=F}
+library(lubridate)
+
+mag_endor <- mutate(mag_endor, date = mdy(start_run_date),
+                               year = year(date))
+```
+
+
+<br>
+
+__According to the request we received, the Resistance is only interested in observations from the year `2017`. So let's filter the data down to only dates within that year.__ 
+
+<br>
+
+```{r endor-air-filter-year}
+mag_endor <- filter(mag_endor, year == "2017")
+```
+
+
+## Time series {-}
+```{r endor-time, message=F}
+ggplot(mag_endor, aes(x = date, y = result)) + 
+  geom_line(size = 2, color = "tomato") + 
+  geom_point(size = 5, alpha = 0.5)  # alpha changes transparency
+
+```
+
+Looks like the measurements definitely picked up a signal towards the end of the year. Let's make a different chart to show when this occurred. 
+
+<br>
+
+
+<div class="note">
+## Mission complete! {-}
+
+Aha! There really were high magnetic field readings in November. Hopefully, the _Resistance_ will reward us handsomely for this information.
+
+</div>
+
+
+
+# | The pipe operator
+
+<details>
+<summary class = "btn_code"> ** ...I wish I could type the name of the data frame less often. **</summary>
+<div class="quiz" style="margin-top: 0; background-color: white;">
+<p>
+<br>
+
+
+![](images/pipe.png){style="margin-right: 20px; width: 136px; float: left;"}
+
+__Now you can!__ 
+
+We use the `%>%` to chain functions together and make our scripts more streamlined. We call it the _pipe_.
+
+<br>
+
+<div style="clear: both;"></div>
+
+Here are 2 examples of how the `%>%` operator is helpful. 
+
+<br>
+
+__`#1:`__ It eliminates the need for nested parentheses. 
+
+Say you wanted to take the sum of 3 numbers and then take the log and then round the final result.
+```{r maths, eval=F}
+round(log(sum(c(10,20,30,40))))
+
+```
+
+<br>
+
+The code doesn't look much like the words we used to describe it. Let's pipe it so we can read the code from left to right.
+```{r maths_better, eval = F}
+c(10,20,30,50) %>% sum() %>% log10() %>% round()
+```
+
+<br>
+
+__`#2:`__ We can combine many processing steps into one cohesive chunk.
+
+<br>
+
+Here are some of the functions we've applied to the scrap data so far:
+
+```{r review, eval=F}
+
+scrap <- arrange(scrap, desc(price_per_pound))
+
+scrap <- filter(scrap, origin != "All")
+
+scrap <- mutate(scrap, 
+                scrap_finder    = "BB8",
+                measure_method  = "REM-24")
+```
+
+<br>
+
+
+We can use the `%>%` operator and write it this way.
+
+```{r review-better, eval=F}
+
+scrap <- scrap %>%
+           arrange(desc(price_per_pound)) %>%
+           filter(origin != "All") %>%
+           mutate(scrap_finder    = "BB8",
+                  measure_method  = "REM-24")
+
+```
+
+<br>
+
+<div class="tip">
+<i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise 
+
+Similar to above, use the `%>%` to combine the two Endor lines below.
+
+```{r better_endor, eval=F}
+
+mag_endor <- filter(air_endor, analyte == "magnetic_field")
+
+mag_endor <- mutate(mag_endor, date = mdy(start_run_date))
+
+```
+
+
+</div>
+</div>
+
+<br>
+
+
+
+
 
 
 __So where were we? Oh right, we we're enjoying our time on beautiful lush Endor. But aren't we missing somebody?__
@@ -679,564 +981,6 @@ write_csv(mean_prices, "results/prices_by_origin.csv")
 By default, when saving files R will overwrite a file if the file already exists in the same folder. It will not ask for confirmation. To be safe, save processed data to a new folder called `results/` and not to your raw `data/` folder.
 
 </div>
-
-
-# | `ifelse()`
-
-### `[If this thing is true]`, `"Do this"`, `"Otherwise do this"` {-}
-
-<br>
-
-
-![](images/yoda_lightsaber.jpg){style="width: 46%; margin-left: 26.5%; margin-top: -8px; margin-bottom: 12px;"}
-
-<br>
-
-Here's a handy `ifelse` statement to help you identify lightsabers.
-
-<div class="well" style="margin-top: 10px:">
-`ifelse( `__Is lightsaber__ <span style="color: green;">__GREEN__?</span>, __Yes!__ ` Then it's Yoda's,` __No!__ ` Then it's not Yoda's)`
-
-</div>
-
-<br>
-
-Say you want to label all the porgs over _60 cm_ as tall, and everyone else as short. In other words, we want to add a column where the value depends on the value found in the height column. We use `ifelse()` for this.
-
-Or maybe you have a list of prices for scrap, and you want to flag only the ones that cost less than 500 credits. 
-
-## `mutate()` + `ifelse()` is powerful! {-}
-
-![](images/yoda_rise_sm.png){style="width: 74%; margin-left: 12%"}
-
-<br>
-
-
-### On the cheap {-}
-
-Bad news. We're on a budget people. Rey can't afford anything over 500 credits per item. 
-
-Let's add a column that labels the items as "Cheap" __if__ the price is less than 500.
-
-__Add an affordable column__
-```{r ifelse, message=F, warning=F}
-library(dplyr)
-library(readr)
-
-# Add an affordable column
-scrap <- scrap %>% 
-         mutate(affordable = ifelse(price_per_unit < 500, "Cheap", "Expensive"))
-
-```
-
-
-
-<div class="tip">
-
-#### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
-
-Use `filter()` to create a new `cheap_scrap` table.
-
-</div>
-
-
-
-<div class="quiz">
-### Pop Quiz! {-}
-
-__What is the cheapest item?__
-
-<input type="radio"> _Black box_         <br> 
-<input type="radio"> _Electrotelescope_  <br> 
-<input type="radio"> _Atomic drive_      <br> 
-<input type="radio"> _Enviro filter_     <br> 
-<input type="radio"> _Main drive_        <br>
-<br>
-
-<details>
-<summary class = "btn_code">_Show solution_</summary>
-
-<p>
-<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `Black box`  
-
-_You win! _
-
-</p>
-</details></div>
-
-
-
-<br>
-
-> __CONGRATULATIONS__ of galactic proportions to you. 
->
->We now have a clean and tidy data set. If BB8 receives new data to append, we can re-run this script and in 5 seconds we'll have cleaned up data again!
->
-
-<br>
-
-# | Plots with _ggplot2_
-<hr>
-
-#### _Plot the data, Plot the data, Plot the data_ {-}
-
-<br>
-
-![](images/ggplot2_hex.png){align="right" width="180" style="margin-right: 70px; margin-top: -124px;"}
-
-
-## The `ggplot()` sandwich {-}
-
-
-![](images/auto_plot.gif){style="margin-top: -22px; margin-left: -40px; max-width: 110%;"}
-
-<h5 style="font-size: 28px; font-weight: bold; margin-top: -42px;"> A `ggplot` has 3 ingredients. </h5>
-
-
-## 1. The base plot {-}
-```{r, echo = T, eval = T}
-library(ggplot2)
-```
-
-
-```{r, echo=F}
-library(dplyr)
-library(readr)
-
-# Read in the conversion data
-convert <- read_csv("https://rtrain.netlify.com/data/conversion_table.csv")
-
-# Read in scrap data
-scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv")
-
-# Join the scrap to the conversion table
-scrap <- left_join(scrap, convert)
-
-# Calculate the total price
-scrap <- scrap %>% 
-         mutate(total_pounds = amount * pounds_per_unit,
-                credits      = total_pounds * price_per_pound)
-
-# Calculate the price per unit
-scrap <- scrap %>% 
-         mutate(price_per_unit = credits / amount)
-
-
-```
-
-```{r, echo=T, eval=T}
-ggplot(scrap)
-```
-
-<br>
-
-> we load the package `library (ggplot2)`, but the function to make a plot is `ggplot(scrap)`. 
-
-
-## 2. The the X, Y _aesthetics_  {-}
-
-The _aesthetics_ assign the components from the data that you want to use in the chart. These also determine the dimensions of the plot.
-
-```{r, eval = T}
-ggplot(scrap, aes(x = origin, y = credits)) 
-```
-
-
-## 3. The layers or _geometries_  {-}
-```{r, eval = T}
-ggplot(scrap, aes(x = origin, y = credits)) + geom_point()
-```
-
-<br>
-
-<div class="tip">
-#### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
-
-Try making a scatterplot of any two columns.
-
-_Hint: Numeric variables will be more informative._
-
-```{r, eval = F, echo = T}
-ggplot(scrap, aes(x = column1, y = column2 )) + geom_point()
-```
-</div>
-
-
-## Colors {-}
-<hr>
-
-
-Now let's use color to show the destination of the scrap
-```{r, eval = T}
-ggplot(scrap, aes(x = origin, y = credits, color = destination)) +
-  geom_point()
-```
-
-
-## Columns charts {-}
-
-Yikes! That point chart had too much detail. Let's make a column chart and add up the sales to make it easier to understand. Note that we used `fill =` instead of `color =`. Try using color instead and see what happens.
-
-
-```{r, eval = T, echo = T}
-ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
-  geom_col()
-```
-
-<br>
-
-We can change the position of the bars to make it easier to compare sales by destination for each origin. For that we'll use the -- _drum roll please_ -- `position` argument. Remember, you can use `help(geom_col)` to learn about the different options for that type of plot. 
-
-```{r, eval = T, echo = T}
-ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
-  geom_col(position = "dodge")
-```
-
-
-
-<div class="tip">
-
-### <i class="fa fa-user-bicycle" aria-hidden="true" style="color:#040707;"></i> EXERCISE {-}
-
-An easy way to experiment with colors is to add layers like `+ scale_fill_viridis()` or `+ scale_fill_brewer()` to your plot, which will link to RcolorBrewer so you can have accessible color schemes.
-
-Try adding one of thse to your column plot above.
-
-</div>
-
-
-## Facet wrap {-}
-
-Does the chart feel crowded to you? Let's use `facet wrap` to put each origin in a separate chart.
-
-```{r, eval = T, echo = T}
-ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
-  geom_col(position = "dodge") +
-  facet_wrap("destination")
-```
-
-
-# It's Finn time
-
-Seriously. Let's pay that ransom already. 
-
-> __Where should we go to get our 10,000 Black boxes?__
-
-<br>
-
-__Step 1:__ Filter the scrap data to only `Black box`.
-
-```{r, eval=F}
-cheap_scrap <- filter(scrap, ______    ==   _____   )
-
-```
-
-```{r, echo=F}
-cheap_scrap <- filter(scrap,item    ==   "Black box"  )
-```
-
-<br>
-
-__Step 2:__ Make a `geom_col()` plot of the total pounds of Black boxes shipped to each destination. 
-
-```{r, eval=F}
-
-ggplot(cheap_scrap, aes(x =   , y =    ) ) + 
-   geom_
-
-```
-
-<details>
-<summary class = "btn_code">_Show code_</summary>
-
-<div class="quiz" style="margin-top: -9px;">
-<p>
-
-```{r}
-ggplot(cheap_scrap, aes(x = destination, y = total_pounds) ) + 
-   geom_col()
-
-```
-
-</p></div></details>
-
-
-
-<div class="quiz">
-### Pop Quiz! {-}
-
-__Which destination has the most pounds of the cheapest item?__
-
-<input type="radio"> _Trade caravan_  <br> 
-<input type="radio"> _Niima Outpost_  <br> 
-<input type="radio"> _Raiders_        <br> 
-<br>
-
-<details>
-<summary class = "btn_code">_Show solution_</summary>
-
-<p>
-<i class="fa fa-check" aria-hidden="true" style="color: green;"></i> `Raiders`  
-
-_Woop! Go get em! So long Jakku - see you never!_
-
-</p>
-</details></div>
-
-
-<br><br>
-
-
-# <i class="fa fa-star" aria-hidden="true" style="color: gold"></i> CONCATULATIONS! <i class="fa fa-star" aria-hidden="true" style="color: gold"></i> {-}
-<hr>
-
-> __Clap your hands. You have earned a great award.__
-
-
-<br>
-
-
-# | Plot extras
-<hr>
-
-## Themes {-}
-
-Want to shake up the appearance of your plots? `ggplot2` uses `theme` functions to change the general appearance of a plot. Try some different themes out. Here's `theme_dark()`.
-
-```{r, eval = T, echo = T}
-ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
-  geom_col(position = "dodge") +
-  facet_wrap("destination") +
-  theme_dark()
-```
-
-
-## Labels {-}
-
-You can set the axis and title labels using the `labs` function.
-
-```{r, eval = T, echo = T}
-ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
-  geom_col(position = "dodge") +
-  facet_wrap("destination") +
-  labs(title    = "Scrap sales by origin and destination", 
-       subtitle = "Planet Jakku",
-       x        = "Origin", 
-       y        = "Total sales",
-       caption  = "Data gracefully provided by BB8")
-```
-
-<br>
-
-
-## Drop ` 1.0e+10` scientific notation {-}
-
-Is your boss scared of scientific notation? To hide it we can use `options(scipen = 999)`. Note that this is a general setting in R. Once you use `options(scipen = 999)` in your current session you won't have to use it again. Like loading a package, you only need to run the line once when you start RStudio.
-
-<br>
-
-```{r, eval = T, echo = T}
-options(scipen = 999)
-
-ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
-  geom_col(position = "dodge") +
-  facet_wrap("destination") +
-  theme_bw() +
-  labs(title = "Scrap sales by origin and destination", 
-       x     = "Origin", 
-       y     = "Total sales")
-```
-
-<br>
-
-<div class="note">
-__CHALLENGE__
-
-Let's say we don't like printing so many zeros and want the labels to be in __Millions__ of credits. How can you make it happen?
-
-<br>
-
-<details><summary> [Click here for a HINT] </summary>
-<p>
-
-_Sorry, the hint is missing. You're on your own._
-
-</p>
-</details>
-
-</div>
-
-
-<br>
-
-
-<div class="tip">
-
-### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE {-}
-
-Be brave and make a boxplot. We've covered how to do a scatterplot with `geom_point` and a bar chart with `geom_col`, but how would you make a boxplot showing the prices at each destination? You're on your own here. Feel free to add `color` ,`facet_wrap`, `theme`, and `labs` to your boxplots. 
-
-_May the force be with you._
-</div>
-
-
-## Save plots {-}
-
-You've hopefully made some plots you're proud of, so let's learn to save them so we can cherish them forever. There's a function called `ggsave` to do just that. How do we `ggsave` our plots? HELP! Let's type `help(ggsave)`.
-
-```{r ggsave, eval = F, echo = T}
-# Get help
-help(ggsave)
-?ggsave
-
-# Copy and paste the r code of your favorite plot here
-ggplot(data, aes()) +
-   .... +
-   ....
-
-
-# Save your plot to a png file of your choosing
-ggsave("your_results_folder/plot_name.png")
-```
-
-
-<br>
-
-
-### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
-<div class="note">
-
-Sometimes you may want to make a plot and save it for later. For that, you give your plot a name. Any name will do.
-
-```{r ggsave-objects, eval = F, echo = T}
-
-# The ggplot you want to save
-my_plot <- ggplot(...)
-  
-# The name of the file the chart will be saved to.
-where_to_save_it <- "___.png"
-
-# Save it!
-ggsave(filename = where_to_save_it, plot = my_plot)
-```
-
-<br>
-
-_Learn more about saving plots at_ [http://stat545.com/](http://stat545.com/block017_write-figure-to-file.html)
-
-<br>
-
-</div>
-
-
-
-
-# | Glossary
-
-__Table of `aesthetics`__
-
-| aes()         |    
-|:--------------|  
-| `x = `        |     
-| `y = `        |      
-| `alpha = `    |     
-| `fill = `     |      
-| `color = `    |    
-| `size = `     |     
-| `linetype = ` |      
-
-
-<br>
-
-__Table of `geoms`__
-
-![](images/geoms_1var.png)
-
-![](images/geoms_diagram.png)
-
-<br>
-
-__Table of `themes`__
-
-You can customize the look of your plot by adding a `theme()` function.
-
-![](images/ggplot_themes.png)
-
-
-
-# Homeworld training {-}
-
-![](images/porg.png){style="float: right; margin-top: -34px;"}
-
-1. Load one of the data sets below into R
-    - Porg contamination on Ahch-To
-        - `https://rtrain.netlify.com/data/porg_samples.csv`
-    - Planet Endor air samples
-        - `https://rtrain.netlify.com/data/air_endor.csv`
-    - Or use data from a recent project of yours   
-
-
-2. Create 2 plots using the data.
-
-
-3. _If you make something really_ __strange__. _Feel free to share! Consider it art and keep going._ 
-
-
-<div class="note">
-
-### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
-
-When you add more layers using `+` remember to place it at the end of each line.
-
-```{r, eval=F, echo=T}
-# This will work
-ggplot(scrap, aes(x = origin, y = credits)) +
-  geom_point()
-
-# So will this
-ggplot(scrap, aes(x = origin, y = credits)) + geom_point()
-
-# But this won't
-ggplot(scrap, aes(x = origin, y = credits))
-  + geom_point()
-
-```
-
-</div>
-
-<br><br>
-
-<details>
-<summary class = "btn_code"><h4> <i class="far fa-question-circle" aria-hidden="true"></i> Plots Q+A </h4> </summary>
-<div class="quiz" style="margin-top: -9px; background-color: white; font-size: 16px;">
-<p>
-<br>
-
-- How to modify the gridlines behind your chart?
-    - Try the different themes at the end of this lesson: `theme_light()` or `theme_bw()`
-    - Or modify the color and size with `theme(panel.grid.minor = element_line(colour = "white", size = 0.5))`
-    - There's even `theme_excel()`
-- How do you set the x and y scale manually?
-    - Here is an example with a scatter plot: `ggplot() + geom_point() + xlim(beginning, end) + ylim(beginning, end)`
-    - __Warning:__ Values above or below the limits you set will not be shown. This is another great way to lie with data. 
-- How do you get rid of the legend if you don't need it?
-    - `geom_point(aes(color = facility_name), show.legend = FALSE)`
-    - The [R Cookbook](http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/) shows a number of ways to get rid of legends.
-- I only like dashed lines. How do you change the linetype to a _dashed_ line? 
-    - `geom_line(aes(color = facility_name), linetype = "dashed")`
-    - You can also try `"dotted"` and `"dotdash"`, or even`"twodash"`
-  
-- How many colors are there in R? How does R know `hotpink` is a color?
-    - There is an [R color cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf)  
-    - As well as a list of [R color names](http://www.r-graph-gallery.com/42-colors-names/)
-    - `library(viridis)` provides some great default color palettes for charts and maps.
-    - This [Color web tool](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) has palette ideas and color codes you can use in your plots
-- Keyboard shortcuts for RStudio
-    - There is a [Shortcut cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf)
-    - In RStudio you can go to _Help_ > _Keyboard Shortcuts Help_
-
-</p>
-</div></details>
 
 
 <br>
