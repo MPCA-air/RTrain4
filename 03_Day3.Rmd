@@ -63,7 +63,7 @@ __Open a New script__
     - Working w/ dates
 - Where's Finn?
 - Join 2 tables
-- Add a new column calculated from other columns
+- Calculate new columns from existing columns
 - Save data
 
 

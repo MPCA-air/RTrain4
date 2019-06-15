@@ -29,10 +29,9 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 ### Schedule  {-}
 
     - Review
-    - Example work flow
+    - The `ggplot` sandwich
     - Explore your data tables
     - Arrange and filter data
-    - Join two tables together - by one or more variables
 
 
 <br><br>
@@ -236,13 +235,6 @@ Having an exact record of what you did can be great documentation for yourself a
 </p>
 </div></details>
 
-<br>
-
-<div class="well">
-<h4> <i class="fa fa-mitten" aria-hidden="true"></i> QUESTIONS</h4>
-
-Any questions? No matter how large or small... Going once, going twice...
-</div>
 
 <br>
 
@@ -253,9 +245,15 @@ Any questions? No matter how large or small... Going once, going twice...
 
 It's time to jump back in to where we left off on __Day 1__.
 ```{r starwars_csv_name, eval=T, message=F}
+library(readr)
+
 # Read in scrap data and set name to "scrap"
 scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku.csv")
 ```
+
+
+
+
 
 ## Plot scrap data {-}
 
@@ -268,6 +266,84 @@ ggplot(scrap, aes(y = amount, x = origin)) +
   theme_gray()
 
 ```
+
+
+
+# | Plots with _ggplot2_
+<hr>
+
+#### _Plot the data, Plot the data, Plot the data_ {-}
+
+<br>
+
+![](images/ggplot2_hex.png){align="right" width="180" style="margin-right: 70px; margin-top: -124px;"}
+
+
+## The `ggplot()` sandwich {-}
+
+
+![](images/auto_plot.gif){style="margin-top: -22px; margin-left: -40px; max-width: 110%;"}
+
+<h5 style="font-size: 28px; font-weight: bold; margin-top: -42px;"> A `ggplot` has 3 ingredients. </h5>
+
+
+## 1. The base plot {-}
+```{r, echo = T, eval = T}
+library(ggplot2)
+```
+
+
+
+```{r, echo=T, eval=T}
+ggplot(scrap)
+```
+
+<br>
+
+> we load the package `library (ggplot2)`, but the function to make a plot is `ggplot(scrap)`. 
+
+
+## 2. The the X, Y _aesthetics_  {-}
+
+The _aesthetics_ assign the components from the data that you want to use in the chart. These also determine the dimensions of the plot.
+
+```{r, eval = T}
+ggplot(scrap, aes(x = origin, y = amount)) 
+```
+
+
+## 3. The layers or _geometries_  {-}
+```{r, eval = T}
+ggplot(scrap, aes(x = origin, y = amount)) + geom_col()
+```
+
+<br>
+
+<div class="tip">
+#### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
+
+Try making a scatterplot of any two columns.
+
+_Hint: Numeric variables will be more informative._
+
+```{r, eval = F, echo = T}
+ggplot(scrap, aes(x = column1, y = column2 )) + geom_col()
+```
+</div>
+
+
+## Colors {-}
+<hr>
+
+
+Now let's use a new theme to change the overall look of the chart
+```{r, eval = T}
+ggplot(scrap, aes(x = origin, y = amount)) +
+  geom_col() +
+  theme_minimal()
+```
+
+
 
 
 # Data exploration {-} 
@@ -861,6 +937,13 @@ write_csv(scrap_pounds, "results/scrap_in_pounds.csv")
 ## BB8 has a new mission {-}
 
 BB8 just received new data suggesting there was a large magnetic storm right before Site 1 burned down on Endor. Sounds like we're going to be __STORM CHASERS__!
+
+
+<div class="well">
+<h4> <i class="fa fa-mitten" aria-hidden="true"></i> QUESTIONS</h4>
+
+Any questions? No matter how large or small... Going once, going twice...
+</div>
 
 
 

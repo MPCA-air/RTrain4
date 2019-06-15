@@ -100,7 +100,7 @@ This is a temporary solution to get `R` + `RStudio` on your computer for the tra
 
 ### Test for success {-}
 
-- Open `RStudio.exe` in the _RStudio\bin_ folder
+- Open `RStudio.exe` in the _`RStudio\bin`_ folder
 
 ![](images/install/rstudio_exe.png){style="margin-left: 7%; width: 74%"}
 
@@ -108,7 +108,7 @@ This is a temporary solution to get `R` + `RStudio` on your computer for the tra
 
 - If you see the screen below - Great work!  You're ready to go.
 
-![](images/install/rstudio_open.png){style="margin-left: 7%; width: 85%"}
+![](images/install/rstudio_open1.png){style="margin-left: 7%; width: 85%"}
 
 </p></div></details>
 

@@ -2,10 +2,10 @@
 code {color: #535353;}
 
 hr {
-  margin-top: -32px;
+  margin-top: -30px;
   margin-bottom: 24px;
   color: #2a5ea9;
-  height: 0.2em;
+  height: 0.12em;
   background-color: #2a5ea9;
 }
 
@@ -32,8 +32,8 @@ two-line {
 {
     float: left;
     margin-right: 1%;
-    margin-left: 1.4%;
-    width: 22%;
+    margin-left: 2%;
+    width: 30%;
     overflow: hidden;
 }
 
@@ -41,17 +41,29 @@ two-line {
 {
     float: left;
     margin-right: 1%;
-    margin-left: 0;
-    width: 24%;
+    margin-left: 1.3%;
+    width: 22.6%;
     overflow: hidden;
+    max-height: 208px !important;
 }
 
 .column3-txt
 {
     float: left;
+    font-size: 16px;
     margin-right: 1.3%;
     margin-left: 0;
     width: 32%;
+    overflow: hidden;
+}
+
+.column4-txt
+{
+    font-size: 15px;
+    float: left;
+    margin-right: 1.7%;
+    margin-left: 0;
+    width: 23%;
     overflow: hidden;
 }
 

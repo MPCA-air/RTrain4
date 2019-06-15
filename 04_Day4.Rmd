@@ -29,7 +29,7 @@ scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv
 # Welcome back Jedis! {-}
 <hr>
 
-![](images/day3_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: 8px;"}
+![](images/day4_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: 8px;"}
 
 <br>
 
@@ -61,7 +61,7 @@ __Open a New script__
 <div class="well">
 
 - Review
-- - Conditional mutate! 
+- - Conditional mutate
     - `ifelse()`
     - Yes/No decisions
 - Summarize by group
@@ -92,6 +92,34 @@ cat(readLines("porg_tabs.txt"))
 
 <br>
 
+
+
+# | Reload the _scrap_ data
+
+
+```{r, echo=T}
+library(readr)
+library(dplyr)
+
+# Read in the conversion data
+convert <- read_csv("https://rtrain.netlify.com/data/conversion_table.csv")
+
+# Read in scrap data
+scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv")
+
+# Join the scrap to the conversion table
+scrap <- left_join(scrap, convert)
+
+# Calculate the total price
+scrap <- scrap %>% 
+         mutate(total_pounds = amount * pounds_per_unit,
+                credits      = total_pounds * price_per_pound)
+
+# Calculate the price per unit
+scrap <- scrap %>% 
+         mutate(price_per_unit = credits / amount)
+
+```
 
 
 
@@ -213,30 +241,6 @@ library(ggplot2)
 ```
 
 
-```{r, echo=F}
-library(dplyr)
-library(readr)
-
-# Read in the conversion data
-convert <- read_csv("https://rtrain.netlify.com/data/conversion_table.csv")
-
-# Read in scrap data
-scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv")
-
-# Join the scrap to the conversion table
-scrap <- left_join(scrap, convert)
-
-# Calculate the total price
-scrap <- scrap %>% 
-         mutate(total_pounds = amount * pounds_per_unit,
-                credits      = total_pounds * price_per_pound)
-
-# Calculate the price per unit
-scrap <- scrap %>% 
-         mutate(price_per_unit = credits / amount)
-
-
-```
 
 ```{r, echo=T, eval=T}
 ggplot(scrap)
@@ -330,9 +334,9 @@ ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
 ```
 
 
-# It's Finn time
+# It's Finn time {-}
 
-Seriously. Let's pay that ransom already. 
+Seriously, let's pay that ransom already. 
 
 > __Where should we go to get our 10,000 Black boxes?__
 
