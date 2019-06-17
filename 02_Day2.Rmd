@@ -262,9 +262,7 @@ Last time we made a column plot showing the amount of scrap coming from each tow
 library(ggplot2)
 
 ggplot(scrap, aes(y = amount, x = origin)) + 
-  geom_col() +
-  theme_gray()
-
+  geom_col() 
 ```
 
 
@@ -319,6 +317,18 @@ ggplot(scrap, aes(x = origin, y = amount)) + geom_col()
 
 <br>
 
+## Colors {-}
+<hr>
+
+
+Now let's change the fill color to match the origin.
+```{r, eval = T}
+ggplot(scrap, aes(x = origin, y = amount, fill = origin)) +
+  geom_col() 
+```
+
+
+
 <div class="tip">
 #### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
 
@@ -327,23 +337,9 @@ Try making a scatterplot of any two columns.
 _Hint: Numeric variables will be more informative._
 
 ```{r, eval = F, echo = T}
-ggplot(scrap, aes(x = column1, y = column2 )) + geom_col()
+ggplot(scrap, aes(x = column1, y = column2 )) + geom_point()
 ```
 </div>
-
-
-## Colors {-}
-<hr>
-
-
-Now let's use a new theme to change the overall look of the chart
-```{r, eval = T}
-ggplot(scrap, aes(x = origin, y = amount)) +
-  geom_col() +
-  theme_minimal()
-```
-
-
 
 
 # Data exploration {-} 

@@ -27,7 +27,7 @@ Go to — [Install R](https://itep-r.netlify.com/page/install.html) — to get t
 
 
     
-## Intro to R
+## R Camp
 <hr>
 
 This series of workshops teaches the basics of importing data, using new packages, cleaning and summarizing data with __tidy__ tools, and using `ggplot2` to create charts, maps and other data visualizations. 
@@ -146,7 +146,7 @@ Planets visited: `Ahch-To`
 </div>
  
  
-## Workshops
+## R Workshops
 <hr>
 
 Each of these workshops dives into more detail on a common data anlaysis task. 

@@ -78,8 +78,6 @@ We are not computer scientists.
 
 We make lots of mistakes. You will see us make mistakes. Feel free to laugh at them. It's okay. Really.
 
-We aren't related.
-
 <br><br>
 
 
@@ -94,25 +92,19 @@ library("dplyr")
 
 set.seed(2)
 
-names <- c("Derek", "Kristie", "Barbara", "Dorian", "Daniel", "Nate", 
-           "Kristen", "Mark", "Bruce", "Eric", "Katie", "Hongming", 
-           "Jean", "Scott", "David", "James", "R", "2018")
+class <- c("Derek", "Kristie", "Laurie", "Sophie", 
+           "Shannon", "Joseph", "Jesse", "Dan", "Lad", "Andrew", 
+           "Angus", "Jeffrey", "Jenny", "Kevin", "Barbara", "Dorian", "Casey", "Ashley", "Rey", "R","2019", "BB8", "Porgs!", "Jakku")
 
-frequency <- c(as.numeric(sample(8:12, 16, replace = T)), 24,18)
+frequency <- c(as.numeric(sample(7:11, length(class)-5, replace = T)), 24,25,16,26,14)
 
-pirates <- piratepal("info2") 
+# Add 10 random Star Wars names as small text, size = 4
+frequency <- c(frequency, rep(4, 13))
 
-wordcloud(names, 
-          random.order = F, 
-          random.color = TRUE, 
-          scale        = c(4,1), 
-          freq         = frequency, 
-          colors       = pirates, 
-          vfont        = c("sans serif","bold"), 
-          rot.per      = 0.2,
-          size         = 0.1)
+class <- c(class, sample_n(starwars, 13)$name)  
 
-wordcloud2(data.frame(word = names, freq = frequency), size = 1, color = 'random-dark')
+
+wordcloud2(data.frame(word = class, freq = frequency), size = .6, color = 'random-dark')
 
 #letterCloud(data.frame(word = names, freq = frequency), word = "R", color = 'random-light', wordSize = 10)
 

@@ -90,12 +90,12 @@ blockquote
      border-left: solid 4px #3498db;
      border-radius: 25px;
      font-size: 17px;
-     line-height: 19px;
+     line-height: 23px;
      overflow: hidden;
      padding: 10px;
      padding-top: 14px;
      padding-bottom: 14px;
-     margin-top: 18px;
+     margin-top: -6px;
      margin-bottom: 15px;
      padding-left: 22px;
 }
@@ -126,7 +126,7 @@ blockquote
      line-height: 19px;
      overflow: hidden;
      padding: 10px;
-     padding-top: 12px;
+     padding-top: 0px;
      padding-bottom: 14px;
      margin-top: 20px;
      margin-bottom: 12px;

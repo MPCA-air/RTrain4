@@ -27,8 +27,6 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 _The <code style="color: hotpink;"> force </code> is strong with you. Join us, learn <code style="color: hotpink;">R</code>, and use your powers for good._
 </div>
 
-<br>
-
 
 ## Power on your droids {-}
 
@@ -118,25 +116,24 @@ __Still no R?__ _No worries. You can use R online at [RStudio Cloud](https://rst
 
 
 
-# Introductions {-}
+# <i class="fa fa-group" aria-hidden="true" style="color: steelblue;"></i> Introductions {-}
 
-![](images/name_cloud_mpca.png){style="width: 90%; margin-left: 4%; margin-bottom: -10px; margin-top: -24px;"}
+![](images/class_cloud.png){style="width: 87%; margin-left: 6%; margin-bottom: 20px; margin-top: -37px;"}
 
-<br>
-
-Let's introduce ourselves and the data we love. Find a __partner__ and get to know 3 things about them.
+Let's introduce ourselves and the data we love. Chat with your breakout __partner__ and get to know 3 things about them.
 
 <br>
 
 __Things to share__  
 
-![](images/starwars_group.jpg){align="right" style="width: 54%; margin-left: 26px; margin-top: 10px;"}
+![](images/starwars_group.jpg){align="right" style="width: 50%; margin-left: 26px; margin-top: 8px;"}
 
-<div class="note" style="margin-top: -2px;">
+<div class="note" style="margin-top: 0px;">
 
 - Your name or Star Wars alias 
+- What planet you are from
 - Types of data you have
-- Who you share it with
+    - Who you share it with
 - What you want to get from the workshop
 - The messiest & funniest part of your data
 - Something you get to do over and over again
@@ -147,7 +144,31 @@ __Hint:__ _Maybe this is something you can automate with R_
 
 <br>
 
-### What's my name? {-}
+<div class="well">
+__Teamwork.__ You're going to need to work together to help Rey get off the dusty planet Jakku. Use each other as a resource. Share ideas, share code, collaborate. Make bad jokes.
+</div>
+
+**Here's one:**
+
+<details>
+<summary class = "btn_code">   __What Jedi is best at opening PDF files?__
+ </summary>
+<div class="quiz" style="margin-top: -6px; border-radius: 0;">
+<p>
+
+<br>
+
+__A:__ `Adobe Wan Kenobi`?
+ 
+![](images/obi_wan.jpg){width="238"}
+
+</div>
+</p></details>
+
+
+<br>
+
+### What's your name again? {-}
 
 <div class="row3">
 
@@ -171,11 +192,11 @@ __Hint:__ _Maybe this is something you can automate with R_
 
 <br>
 
-We are __Barbara__, __Kristie__, __Dorian__, and __Derek__. Yes, we look exactly like our profile photos above.   
+We are __Barbara__, __Dorian__,  __Kristie__ and __Derek__. Yes, we look exactly like our profile photos above.   
 
 We aren't computer scientists and that's okay! 
 
-We make lots of mistakes. Mistakes are funny. You can laugh with us. 
+We make lots of mistakes. Mistakes are funny. Feel free to laugh at them. 
 
 
 
@@ -208,13 +229,13 @@ Lucky for us, programming doesn't have to be a bunch of math equations. R allows
 
 <div style="clear: both;"></div>
 
-<br><hr>
+<br>
 
 <h2 style="font-size: 34px; margin-top: 12px;"> Blast off! </h2>
 
-<hr>
+<br>
 
-# | RStudio - The grand tour 
+# | RStudio - the Grand Tour 
 <hr>
 
 ![](images/rstudio.png){style="width: 85%;"}
@@ -265,16 +286,15 @@ Let's add a little style so R Studio feels like home. Follow these steps to chan
 
 <br><br>
 
-<div class="well">
-Now that we're ready, let's go forth and make some trouble. While BB8 works on tracking down some data for us from his droid friends, we'll get to know our way around his internal computer. 
-</div>
 
 ### Data awaits us... {-}
 
 ![](images/rey_bb8_sand_dunes.gif){style="width: 70%; margin-left: 10%;"}
 
 
-
+<div class="well">
+Now that we're ready, let's go forth and make some trouble. While BB8 works on tracking down some data for us from his droid friends, we'll get to know his internal computer. 
+</div>
 
 ## Start an R project {-}
 
@@ -329,7 +349,7 @@ wookie <- Chewbacca
 ```
 
 
-<div class="red-note" style="width: 63%;">
+<div class="red-note" style="width: 93%;">
 __ERROR__
 
 Without quotes, R looks for an object called Chewbacca, and then lets you know that it couldn't find one. 
@@ -373,9 +393,9 @@ rm(wookie2)
 <div class="tip">
 ### <i class="fa fa-user-astronaut" aria-hidden="true" style="color: green"></i> Exercise! {-}
 
-How can we get the 'wookie' object back?
+How can we get the `wookie` object back?
 
-__HINT:__ The UP arrow in the Console is your friend.
+__HINT:__ _You are allowed to re-run code._
 </div>
 
 
@@ -423,6 +443,8 @@ all_the_wookies! <- "Everyone on Kashyyyk"
 <br>
 
 <div class="tip">
+###  
+
 ```{r, eval = F}
 # You can add one wookie
 n_wookies <- n_wookies + 1
@@ -449,14 +471,14 @@ bb8 <- "droid"
 
 <details>
 <summary class = "btn_code_blue"> __EXPLORE:__ What happens when we re-created __n_wookies__ the 2nd time? </summary>
+<div class="note">
 <p>
+When we create a new object with the same name as something that already exists, the new object replaces the old one. Sometimes we want to update an existing object and replace the old version. Other times we may want to copy an object to a new name to preserve the original. 
 
-> When we create a new object with the same name as something that already exists, the new object replaces the old one. Sometimes we want to update an existing object and replace the old version. Other times we may want to copy an object to a new name to preserve the original. 
->
-> This is similar to choosing between `Save` and `Save As` when saving a file.
->
+This is similar to choosing between `Save` and `Save As` when saving a file.
 
-</p></details>
+</p></div></details>
+
 
 ## Multiple items {-}
 
@@ -901,13 +923,16 @@ You can also install packages from the `Packages` tab in the lower right window 
 
 
 ## A column plot {-}
-Here's a simple chart showing the total amount of scrap for each origin location.
+Here's a simple chart showing the total amount of scrap sold from each origin location.
+
+```{r, warning=F}
+library(ggplot2)
+```
 
 ```{r, fig.width=12}
-library(ggplot2)
-
 ggplot(scrap, aes(y = amount, x = origin)) + 
   geom_col() +
+  labs(title = "Which origin sold the most scrap?") + 
   theme_gray()
 
 ```
@@ -916,7 +941,7 @@ Well, well, well, it looks like there is an **All** category we should look into
 
 <div class="tip">
 
-#### <i class="fa fa-bicycle" aria-hidden="true" style="color: darkgreen"></i> Exercise {-}
+### <i class="fa fa-bicycle" aria-hidden="true" style="color: darkgreen"></i> Exercise {-}
 
 Try changing `theme_gray()` to `theme_dark()`. What changes on the chart? What stays the same?
 
@@ -1038,13 +1063,10 @@ starwars_ages
 </div></p></details>
 
 
-
-
 <br>
 
 <details>
-<summary class="btn_code_blue"> 
-__EXPLORE:__ Does the order of arguments matter? </summary>
+<summary class="btn_code_blue"> __EXPLORE:__ Does the order of arguments matter? </summary>
 
 <div class="note" style="margin-top: -14px;">
 <p>
@@ -1085,17 +1107,6 @@ R assumes that the first argument (the data file) is `scrap_file` and that the 2
 
 <br>
 
-
-# <i class="fas fa-key fa-xs" style="color: #c81888;" aria-hidden="true"> </i> Key terms {-} 
-
-|           |  |                                                                  |   
-|-----------|--|:-----------------------------------------------------------------|  
-|`package  `|  | An add-on for R that contains new functions that someone created to help you. It's like an App for R.  |  
-|`library  `|  |The name of the folder that stores all your packages, and the function used to load a package.  |  
-|`function  `|  | Functions perform an operation on your data and returns a result. The function `sum()` takes a series of values and returns the sum for you.  |  
-|`argument  `|  | Arguments are options or inputs that you pass to a function to change how it behaves. The argument `skip = 1` tells the `read_csv()` function to ignore the first row when reading in a data file. To see the default values for a function you can type `?read_csv` in the console.  |  
-
-<br>
 
 <details>
 <summary class = "btn_code" style="font-size: 15px;"> <i class="fa fa-star"></i> BONUS <i class="fa fa-star"></i> &nbsp; &nbsp; Build your own Word Cloud </summary>
@@ -1179,13 +1190,22 @@ wordcloud2(data.frame(word = names(class), freq = class),
 ![](images/rstudio_viewer_wordcloud.png){width="75%"}
 
 <br>
+<br>
 
-<div class="tip" style="margin-top: 12px; padding-top: 0px; padding-bottom: 4px;">
 <h3> Congrats rebel droid! <i class="fa fa-android" style="font-size: 44px;"></i>  </h3>
 
-</div>
-
 </p></div></details>
+
+<br>
+
+# <i class="fas fa-key fa-xs" style="color: #c81888;" aria-hidden="true"> </i> Key terms {-} 
+
+|           |  |                                                                  |   
+|-----------|--|:-----------------------------------------------------------------|  
+|`package  `|  | An add-on for R that contains new functions that someone created to help you. It's like an App for R.  |  
+|`library  `|  |The name of the folder that stores all your packages, and the function used to load a package.  |  
+|`function  `|  | Functions perform an operation on your data and returns a result. The function `sum()` takes a series of values and returns the sum for you.  |  
+|`argument  `|  | Arguments are options or inputs that you pass to a function to change how it behaves. The argument `skip = 1` tells the `read_csv()` function to ignore the first row when reading in a data file. To see the default values for a function you can type `?read_csv` in the console.  |  
 
 <br>
 

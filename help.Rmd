@@ -81,7 +81,7 @@ __Email us!__
 
 These are a few of the things we personally forget to do all the time and cause 90% of our errors. They're good first checks if R starts throwing errors or behaving strangely.
   
-- Make sure all parentheses are balanced so that every opening `(` has a corresponding closing `)`.
+- Check that all parentheses are balanced so that every opening `(` has a corresponding closing `)`.
 - R doesn't love `\` backward slashes like _Windows_, check that they didn't sneak into your expression somewhere. When in doubt use the `/` forward slash.
 - If you think you have completed typing your code, and instead of seeing the `>` command prompt at the console you see the `+` character instead. That's a good sign that either R is still thinking very-very hard, or it is still waiting for you to complete your expression. You can hit `Esc` or `Ctrl-C` to force your way back to the console and try typing your code again. 
 

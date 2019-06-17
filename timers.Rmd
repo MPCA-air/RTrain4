@@ -1,0 +1,31 @@
+---
+title: "It's the final countdown"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(countdown)
+```
+
+
+<div style="float: left;">
+
+`r countdown(minutes = 0, seconds = 120, color_text = "darkgrey", top = T, left = T)`
+</div>
+
+<div style="margin-left: 200px;">
+`r countdown(minutes = 0, seconds = 180, color_text = "#FF4500", top = T, left = T)`
+</div>
+
+<div style="margin-left: 400px; color_text: #FF4500;">
+`r countdown(minutes = 0, seconds = 300, color_text = "#FF4500", top = T, left = T)`
+</div>
+
+<div style="margin-left: 600px;">
+`r countdown(minutes = 0, seconds = 420, color_text = "#FF4500", top = T, left = T)`
+</div>
+
+<div style="margin-left: 800px;">
+`r countdown(minutes = 0, seconds = 600, color_text = "#FF4500", top = T, left = T)`
+</div>
