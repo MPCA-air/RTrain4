@@ -26,6 +26,12 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 Go to — [Install R](https://itep-r.netlify.com/page/install.html) — to get the latest version of R and RStudio.  
 
 
+## Get Help!
+<hr>
+
+Go to [Help!](help.html) for some troubleshooting options, cheatsheets, and other learning resources.  
+ 
+
     
 ## R Camp
 <hr>

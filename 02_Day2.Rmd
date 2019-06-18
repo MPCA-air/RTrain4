@@ -26,17 +26,23 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 ![](images/day2_bb8_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: -4px;"}
 
 
-### Schedule  {-}
 
-    - Review
-    - The `ggplot` sandwich
-    - Explore your data tables
-    - Arrange and filter data
+## Schedule  {-}
+
+<div class="well" style="margin-left: 322px;">
+
+- Review Day 1
+- The `ggplot()` sandwich
+- Explore your `data frame`
+- Arrange and filter data
+- **Guess Who!** - The Star Wars edition
+
+</div>
 
 
-<br><br>
+<br>
 
-## Review Day 1 {-}
+## Review  {-}
 <hr>
 
 - We kicked off with a tour of RStudio.
@@ -46,9 +52,13 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 <br>
 
-- And jumped into storing values, naming objects, and how to remove objects from the environment.
-- We made lists with `c()`
-- We brought lists together into a table, also known as a `data frame` or `tibble`.
+- Then learned to:
+    - Store values
+    - Name objects
+    - Remove objects 
+- Made lists with `c("item 1", "item 2", "item 3")`
+- Combined multiple lists into a tidy table
+    - R calls these `data frames`
   
 <br>
   
@@ -58,25 +68,30 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 <br>
 
-![](images/readr-hexbin-sticker-from-rstudio.png){width="145" style="float: left; margin-right: 0; margin-bottom: 12px;"}
+- Installed **NEW** packages
+
+![](images/readr-hexbin-sticker-from-rstudio.png){width="145" style="float: left; margin-right: 12px; margin-left: 8%; margin-bottom: 12px;"}
 ![](images/ggplot2_hex.png){width="140" style="float: left; margin-right: 22px; margin-top: 10px;  margin-left: 6px;"}
 
 <br>
 
-- We installed new packages
-- Read in scrap data from online using `read_csv()`
-- And made our first plot with the `ggplot()` function from the **ggplot2** package
-  
-
 <div style="clear: both;"></div>
+
+- Read data from online using `read_csv()`
+- Used the `ggplot()` function to make our first plot 
+
+  
+<br>
 
 
 ## Example workflow {-}
 
 Here's an example air monitoring project from start to finish. 
 
+<br>
+
 <details>
-<summary class = "btn_code"> __EXAMPLE__  Ozone data project </summary>
+<summary class = "btn_code"> __EXAMPLE__ - Ozone data project </summary>
 <div class="quiz" style="margin-top: 0; background-color: white;">
 <p>
 <br>
@@ -236,36 +251,57 @@ Having an exact record of what you did can be great documentation for yourself a
 </div></details>
 
 
-<br>
+<br><br><br>
+
+## Back to Jakku! {-}
 
 ![](images/moving_on.jpg){style="margin-left: 12%; margin-bottom: 10px; width: 75%"}
 
 
-# Read scrap data {-}
+# A new day {-}
+<hr>
 
-It's time to jump back in to where we left off on __Day 1__.
-```{r starwars_csv_name, eval=T, message=F}
+Let's start fresh with a new R script.
+
+__OPEN a new R script__
+
+- __File > New File > R Script__
+- Click the _floppy disk_ save icon
+- Give it a name: `day2.R` will work well
+
+<br>
+
+__Load the `readr` package from our library__
+```{r, eval=T, message=F}
 library(readr)
+```
 
+<br>
+
+__Read the scrap data from the web__
+```{r starwars_csv_name, eval=T, message=F}
 # Read in scrap data and set name to "scrap"
 scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku.csv")
 ```
 
 
 
+## Plot the scrap data {-}
 
-
-## Plot scrap data {-}
-
-Last time we made a column plot showing the amount of scrap coming from each town.
+Last time we made a column plot showing the amount of scrap coming from each origin city.
 ```{r, fig.width=12}
 library(ggplot2)
 
 ggplot(scrap, aes(y = amount, x = origin)) + 
-  geom_col() 
+  geom_col() +
+  labs(title = "Which origin sold the most scrap?") 
 ```
 
+<br>
 
+<div class="well">
+Let's break this down into its main ingredients and get to know `ggplot()`.
+</div>
 
 # | Plots with _ggplot2_
 <hr>
@@ -327,10 +363,10 @@ ggplot(scrap, aes(x = origin, y = amount, fill = origin)) +
   geom_col() 
 ```
 
-
+<br>
 
 <div class="tip">
-#### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
+### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
 
 Try making a scatterplot of any two columns.
 
@@ -340,6 +376,14 @@ _Hint: Numeric variables will be more informative._
 ggplot(scrap, aes(x = column1, y = column2 )) + geom_point()
 ```
 </div>
+
+
+<br>
+
+> 
+> It's officially time to solve our "All" city issue.
+>
+
 
 
 # Data exploration {-} 
@@ -375,15 +419,12 @@ Use the `summary()` function to get a quick report on your numeric data.
 
 <br><br>
 
-### Let's read the data into R and give these a whirl. {-}
+### Let's give these a whirl. {-}
 
 ```{r glimpse, warning = F, message = F}
 library(dplyr)
-library(readr)
 
-scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku.csv")
-
-# View your whole dataframe and the types of data it contains
+# View the first few values & the type of data each column contains
 glimpse(scrap)
 ```
 
@@ -394,7 +435,7 @@ summary(scrap)
 
 ```{r summary-try, eval=F}
 
-# Try the rest on your own, I dare you!
+# Try the rest on your own - be BRAVE!
 
 nrow()
 
@@ -406,9 +447,9 @@ names()
 
 <br>
 
-## More dplyr {-}
+## More `dplyr` {-}
 
-Dplyr is our go-to package for most analysis tasks. With the six functions below you can accomplish just about anything you'd want to do with data.
+`dplyr` is our go-to package for most analysis tasks. With the six functions below you can accomplish just about anything you'd want to do with data.
 
 <br>
 
@@ -473,7 +514,7 @@ select(scrap, c(item, amount, price_per_pound))
 
 # Make the `item`, `units`, and `amount` columns the first three columns
 # Leave `everything()` else in the same order
-select(scrap, item, units, amount, everything()) %>% head()
+select(scrap, item, units, amount, everything()) 
 ```
 
 
@@ -496,7 +537,8 @@ head(scrap)
 ### Only `145 credits`! That's not very much at all, oh wait... {-}
 
 
-## Big things first: `desc()`  {-}
+## Put **BIG** things first: `desc()` {-}
+<hr>
 
 To arrange a column in descending order with the biggest numbers on top, we use: `desc(price_per_pound)`
 
@@ -511,18 +553,21 @@ head(scrap, 8)
 
 <br>
 
-<div class="data">
+<div class="tip">
 ### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise {-}
 
 Try arranging by more than one column, such as `price_per_pound` and `amount`. What happens?
 
 __HINT:__ You can view the entire table by clicking on it in the upper-right _Environment_ tab.
+
+<br>
 </div>
 
 <br>
 
-### <i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
 <div class="well">
+### <i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
 
 When you save an arranged data table it maintains its order. This is perfect for sending people a quick __Top 10__ list of pollutants or sites.
 
@@ -542,9 +587,10 @@ filter(scrap, origin == "All")
 
 <br>
 
-### <i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
 
-<div class="data">
+
+<div class="well">
+### <i class="fas fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
 
 Use a `==` (double equals sign) for comparing values. A `==` makes the comparison "is it equal to?" and returns a True or False answer. So the code above returns all the rows where the condition `origin == "All"` is TRUE.
 
@@ -556,6 +602,8 @@ A single equals sign `=` is used within functions to set options, for example `r
 <hr>
 
 Processing data requires many types of filtering. You'll want to know how to select observations in your table by making various comparisons.
+
+<br>
 
 __Key comparison operators__
 
@@ -570,7 +618,10 @@ __Key comparison operators__
 | `%in%`| is value in a list: `X %in% c(1,3,5)` |
 | `is.na(...)`  | Is the value missing? |
 
-## <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise {-}
+<br>
+
+<div class="tip">
+### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise {-}
 
 Try comparing some things in the console and see if you get what you'd expect. R doesn't always think like we do.
 
@@ -592,6 +643,7 @@ Try comparing some things in the console and see if you get what you'd expect. R
 
 2 == NA
 ```
+</div>
 
 
 ## Dropping rows {-}
@@ -630,7 +682,7 @@ ggplot(scrap, aes(x = origin, y = amount)) + geom_col()
 
 
 
-## Multiple filters 
+## Multiple filters {-}
 <hr>
 
 We can add multiple comparisons to `filter()` to further restrict the data we pull from a larger data set. Only the records that pass the conditions of all the comparisons will be pulled into the new data frame. 
@@ -646,15 +698,19 @@ outskirts_to_niima <- filter(scrap,
 
 
 <br>
+<br>
 
-
+<hr>
+<br>
+<br>
+<hr>
 
 # Guess Who? {-}
 <h2 style="margin-top: -24px;"> _Star Wars edition_ </h2>
 
 ![](images/sw_guesswho.jpg){width="280" align="right" style="margin-top: -65px; margin-left: 24px; margin-right: 8px;"}
 
-> Are you the best Jedi detective out there? Let's play a game to find out. 
+> Are you the best Jedi detective out there? Let's play a game and find out. 
 
 <br>
 
@@ -727,39 +783,30 @@ The winner is the first to guess their neighbor's character.
 
 <div class="note">
 
-#### Want to rematch? {-}
+### Want to rematch? {-}
 
-How about make it best of __3__ games? Or switch partners and try again.
+How about make it best of __3__ games? 
 
 </div>
 
-<br>
-
-
-## <i class="far fa-question-circle"></i> Mystery messenger {-}
-
-An unknown someone was sent to Jakku to deliver Rey a message, but unfortunately we only have a few clues about what they look like. Work with your partner and the starwars data to find the messenger's name. And with that, BB8 can track down where our messenger is.  
-
-<br>
-
-Are you ready? The clock starts... ticking... now.
-
-- __Step 1:__ Ask Derek for the clues.
-
 <br><br>
 
-> __Back to Jakku__
->
-> Let's calculate some new columns to help focus Rey's scavenging work.
 
+<div class="well">
+
+### __Back to Jakku__
+
+Let's calculate some new columns to help focus Rey's scavenging work.
+
+</div>
 
 # | `mutate()`
 <hr>
 
-`mutate() ` can edit existing columns in a data frame or add new columns calculated from neighboring columns.
+`mutate() ` can edit existing columns in a data frame or add new values that are calculated from existing columns.
+
 
 ## Add a column {-}
-<hr>
 
 First, let's add a column with our names. That way Rey can thank us personally when her ship is finally up and running. 
 ```{r mutate-1, warning=F, message=F}
@@ -817,9 +864,11 @@ scrap_pounds <- mutate(scrap, amount_lbs = amount * 2000)
 
 ## Final stretch! {-}
 
-<br>
+We now have all the tools we need. To get her ship working, Rey is trying to track down more of the scrap item: `Ion engine`. 
 
-It's time to get off this dusty planet and Rey needs an `Ion engine`. Let's __filter__ the data to only that type of item.
+__Step 1:__
+
+- __filter__ the data to only `Ion engine`
 
 <br>
 
@@ -837,12 +886,18 @@ scrap_pounds <- filter(scrap_pounds, item == "Ion engine")
 </p>
 </details>
 
+<br><br>
+
+<hr>
+
+Now, arrange the data in descending order of pounds so Rey knows where the highest amount of `Ion engine` scrap comes from. 
+
+__Step 2:__
+
+- __arrange__ in descending order by `amount_lbs`
+
+
 <br>
-
-Arrange the data in descending order of pounds so Rey knows where the highest amount of scrap comes from. Then she can go there, trade for some discounted parts and __we're free to FLY TO ENDOR!__
-
-<br>
-
 
 <details>
 <summary class="btn_code_blue"> _Show code_ </summary>
@@ -862,8 +917,6 @@ ggplot(scrap_pounds, aes(x = origin, y = amount_lbs)) +
 ```
 </p>
 </details>
-
-<br>
 
 
 <div class="quiz">
@@ -893,6 +946,19 @@ _Yes!! You receive the ship parts to repair Rey's Millennium Falcon. Onward!_
 
 
 ## First mission complete! {-}
+Nice work! 
+
+Rey got a great deal on her engines and even traded in some scrap for spending cash.
+
+<br>
+
+
+> __Time to get off this dusty planet, we're flying to Endor!__ 
+
+![](images/blast_off_ship_jakku.gif){style="margin-left: 13%; width: 72%;"}
+
+
+<br>
 
 
 # | Save data
@@ -918,29 +984,13 @@ write_csv(scrap_pounds, "results/scrap_in_pounds.csv")
 
 <br>
 
-### Time to get off this dusty planet, we're flying to Endor! {-}
+
+# New mission available {-}
+<hr>
+
+BB8 received new data from the wookies suggesting there was a large magnetic storm before `Site 1` burned down on Endor. Sounds like we're going to be __STORM CHASERS__ tomorrow. Mission accepted.
 
 <br>
-
-
-
-![](images/blast_off_ship_jakku.gif){style="margin-left: 13%; width: 72%;"}
-
-
-<br>
-
-
-## BB8 has a new mission {-}
-
-BB8 just received new data suggesting there was a large magnetic storm right before Site 1 burned down on Endor. Sounds like we're going to be __STORM CHASERS__!
-
-
-<div class="well">
-<h4> <i class="fa fa-mitten" aria-hidden="true"></i> QUESTIONS</h4>
-
-Any questions? No matter how large or small... Going once, going twice...
-</div>
-
 
 
 # <i class="fa fa-rocket" aria-hidden="true"></i> Return to [Homebase](index.html) {-}
