@@ -351,15 +351,6 @@ div.tocify {
 
 </div>
 <p><br></p>
-<div id="please-connect-to-your-droid" class="section level3 unnumbered">
-<h3>Please connect to your droid</h3>
-<ul>
-<li>Open the <strong>Start menu</strong> (<em>Click the Windows logo on the bottom left of the screen</em>)</li>
-<li>Select <code>Remote Desktop Connection</code></li>
-<li>Enter <code>R32-your7digit#</code> or <code>w7-your7digit#</code></li>
-<li>Press <em>Connect</em></li>
-</ul>
-<p><br></p>
 <p><strong>Open your RStudio project</strong></p>
 <ul>
 <li><strong>Open</strong> your project folder from last week</li>
@@ -369,22 +360,20 @@ div.tocify {
 <ul>
 <li><p><strong>File &gt; New File &gt; R Script</strong></p></li>
 <li>Click the <em>floppy disk</em> save icon</li>
-<li><p>Give it a name: <code>03_day.R</code> or <code>jakku_plots.R</code> will work well</p></li>
+<li><p>Give it a name: <code>03_day.R</code> will work well</p></li>
 </ul>
-</div>
 <div id="schedule" class="section level2 unnumbered">
 <h2>Schedule</h2>
 <div class="well">
 <ul>
 <li>Review</li>
-<li>Endor storm chasing
-<ul>
-<li>Working w/ dates</li>
-</ul></li>
+<li>Endor storm chasing: <strong>dates</strong></li>
+<li>The magic pipe <code>%&gt;%</code></li>
 <li>Where’s Finn?</li>
-<li>Join 2 tables</li>
-<li>Add a new column calculated from other columns</li>
-<li>Save data</li>
+<li>Join 2 tables: <code>left_join</code> to the rescue</li>
+<li>Calculate summary stats for <strong>entire table</strong></li>
+<li><code>group_by</code>: Calculate stats for each group or category</li>
+<li><strong>Save</strong> / export data</li>
 </ul>
 </div>
 </div>
@@ -442,12 +431,15 @@ porgs &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class
 </div>
 <p><br></p>
 </div>
-<div id="bb8-has-a-new-mission" class="section level2 unnumbered">
-<h2>BB8 has a new mission</h2>
-<p>BB8 just received new data suggesting there was a large magnetic storm right before Site 1 burned down on Endor. Sounds like we’re going to be <strong>STORM CHASERS</strong>!</p>
+</div>
+<div id="new-mission" class="section level1 unnumbered">
+<h1>New mission!</h1>
+<hr>
+<p>BB8 received new data from the wookies suggesting there was a large magnetic storm just before <code>Site 1</code> burned down on Endor. Sounds like we’re going to be <strong>STORM CHASERS</strong>!</p>
 <p><strong>Get the dataset</strong></p>
 <p>While we’re relaxing and flying to Endor let’s get set up with our new data.</p>
-<p><a href="https://itep-r.netlify.com/data/air_endor.csv"> <span class="btn_code_blue" style="margin-bottom: 10px;"> <strong>DOWNLOAD</strong> </span></a> - Endor Air data</p>
+<p><br></p>
+<p><a href="https://itep-r.netlify.com/data/air_endor.csv"> <span class="btn_code_blue" style="margin-bottom: 10px;"> <strong>DOWNLOAD</strong> </span></a> - Get the Endor Air data</p>
 <ol style="list-style-type: decimal">
 <li>Download the data above.</li>
 <li>Create a new folder called “data” in your project folder.</li>
@@ -471,10 +463,9 @@ air_endor &lt;-<span class="st"> </span><span class="kw">clean_names</span>(air_
 ## [5] &quot;site_name&quot;      &quot;long_site_name&quot; &quot;planet&quot;         &quot;result&quot;</code></pre>
 <p><br></p>
 <div class="tip">
-<p><strong>NOTE</strong></p>
+<h3 id="note">Note</h3>
 <p>When your project is open, RStudio sets the working directory to your project folder. When reading files from a folder outside of your project, you’ll need to use the full file path location.</p>
-<p>For example: <code>X://Programs/Air_Quality/Ozone_data.csv</code></p>
-</div>
+<p>For example, for a file on the <strong>X-drive</strong>: <code>X://Programs/Air_Quality/Ozone_data.csv</code> <br></p>
 </div>
 </div>
 <div id="welcome-to-endor" class="section level1 unnumbered">
@@ -485,9 +476,10 @@ air_endor &lt;-<span class="st"> </span><span class="kw">clean_names</span>(air_
 </div>
 <p><br></p>
 <p><strong>Let’s get acquainted with our new Endor data set.</strong></p>
-<p><strong>Remember the different ways?</strong></p>
-<p><br></p>
-<p>Hint: <code>summary()</code>, <code>glimpse()</code>, <code>nrow()</code>, <code>distinct</code></p>
+<blockquote>
+<p>Remember the different ways?</p>
+<p><em>Hint:</em> <code>summary()</code>, <code>glimpse()</code>, <code>nrow()</code>, <code>distinct()</code></p>
+</blockquote>
 <p><br></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(air_endor)</code></pre></div>
 <pre><code>## Observations: 1,190
@@ -521,13 +513,11 @@ air_endor &lt;-<span class="st"> </span><span class="kw">clean_names</span>(air_
 <p><br></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mag_endor &lt;-<span class="st"> </span><span class="kw">filter</span>(air_endor, analyte <span class="op">==</span><span class="st"> &quot;magnetic_field&quot;</span>)</code></pre></div>
 <p><br></p>
-<blockquote>
 <p><strong>Boom!</strong> How many rows are left now?</p>
-</blockquote>
 <p><br></p>
 <div class="well">
-<p>With time series data it’s helpful for R to know which column is the <strong>date</strong> column. Dates come in many formats and the standard format in R is <code>2019-01-15</code>, also referred to as <em>Year-Month-Day</em> format.</p>
-<p>We’ll use the <code>lubridate</code> package to help modify and format dates.</p>
+<p>With time series data it’s helpful for R to know which columns are <strong>date</strong> columns. Dates come in many formats and the standard format in R is <code>2019-01-15</code>, also referred to as <em>Year-Month-Day</em> format.</p>
+<p>We use the <code>lubridate</code> package to help format our dates.</p>
 </div>
 </div>
 <div id="dates" class="section level1">
@@ -655,34 +645,18 @@ mag_endor &lt;-<span class="st"> </span><span class="kw">mutate</span>(mag_endor
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">5</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)  <span class="co"># alpha changes transparency</span></code></pre></div>
 <p><img src="03_Day3_files/figure-html/endor-time-1.png" width="1056" /></p>
 <p>Looks like the measurements definitely picked up a signal towards the end of the year. Let’s make a different chart to show when this occurred.</p>
-</div>
-<div id="heatmap-or-calendar-plot" class="section level2 unnumbered">
-<h2>Heatmap or calendar plot</h2>
-<p>Sometimes with air data we want to know if there is seasonality in the data, this is also true for magnetic storm data from Endor. Calendar plots are great for this.</p>
-<p>We will use <code>ggplot()</code> and bring out the <code>geom_tile()</code> to organize our data by dates and find when and if that storm happened.</p>
-<p>First, we’ll pull more information out of the dates.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mag_endor &lt;-<span class="st"> </span><span class="kw">mutate</span>(mag_endor, 
-                    <span class="dt">day_of_week   =</span> <span class="kw">wday</span>(date, <span class="dt">label =</span> <span class="ot">TRUE</span>),
-                    <span class="dt">day_of_month  =</span> <span class="kw">mday</span>(date),
-                    <span class="dt">week_of_month =</span> <span class="kw">day</span>(date)<span class="op">/</span><span class="dv">7</span>, 
-                    <span class="dt">month         =</span> <span class="kw">month</span>(date, <span class="dt">label =</span> <span class="ot">TRUE</span>))</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mag_endor, <span class="kw">aes</span>(<span class="dt">x =</span> day_of_week, <span class="dt">y =</span> <span class="kw">desc</span>(week_of_month), <span class="dt">fill =</span> result)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_tile</span>(<span class="dt">color =</span> <span class="st">&quot;gray&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_label</span>(<span class="kw">aes</span>(<span class="dt">label =</span> day_of_month), <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="st">&quot;month&quot;</span>)</code></pre></div>
-<p><img src="03_Day3_files/figure-html/calendar_year-1.png" width="1248" /></p>
 <p><br></p>
 <div class="note">
-<h2 id="mission-complete" class="unnumbered">Mission complete!</h2>
-<p>Aha! There really were high magnetic field readings in November. Hopefully, the <em>Resistance</em> will reward us handsomely for this information.</p>
+<h3 id="mission-complete" class="unnumbered">Mission complete!</h3>
+<p>Aha! There really was a spike in the magnetic field in November. Hopefully, the <em>Resistance</em> will reward us handsomely for this information.</p>
 </div>
 </div>
 </div>
 <div id="the-pipe-operator" class="section level1">
 <h1><span class="header-section-number">2</span> | The pipe operator</h1>
-<details> <summary class = "btn_code"> ** …I wish I could type the name of the data frame less often. **</summary>
-<div class="quiz" style="margin-top: 0; background-color: white;">
-<p>
+<blockquote>
+<p><strong>I wish I could type the name of the data frame less often. </strong></p>
+</blockquote>
 <p><br></p>
 <div class="figure">
 <img src="images/pipe.png" style="margin-right: 20px; width: 136px; float: left;" />
@@ -722,15 +696,19 @@ scrap &lt;-<span class="st"> </span><span class="kw">mutate</span>(scrap,
                   <span class="dt">measure_method  =</span> <span class="st">&quot;REM-24&quot;</span>)</code></pre></div>
 <p><br></p>
 <div class="tip">
-<p><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise</p>
+<h3 id="exercise" class="unnumbered"><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE</h3>
 <p>Similar to above, use the <code>%&gt;%</code> to combine the two Endor lines below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mag_endor &lt;-<span class="st"> </span><span class="kw">filter</span>(air_endor, analyte <span class="op">==</span><span class="st"> &quot;magnetic_field&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Filter to only magnetic_field measurements</span>
+mag_endor &lt;-<span class="st"> </span><span class="kw">filter</span>(air_endor, analyte <span class="op">==</span><span class="st"> &quot;magnetic_field&quot;</span>)
 
+<span class="co"># Add a date column to the filtered data</span>
 mag_endor &lt;-<span class="st"> </span><span class="kw">mutate</span>(mag_endor, <span class="dt">date =</span> <span class="kw">mdy</span>(start_run_date))</code></pre></div>
 </div>
-</div>
 <p><br></p>
-<p><strong>So where were we? Oh right, we we’re enjoying our time on beautiful lush Endor. But aren’t we missing somebody?</strong></p>
+<blockquote>
+<p><strong>So where were we?</strong></p>
+<p><strong>Oh right, we we’re enjoying our time on beautiful lush Endor. Aren’t we missing somebody…?</strong></p>
+</blockquote>
 </div>
 <div id="finn-needs-us" class="section level1 unnumbered">
 <h1>| Finn needs us!</h1>
@@ -897,7 +875,7 @@ convert &lt;-<span class="st"> </span><span class="kw">read_csv</span>(convert_u
 </div>
 <div id="total-pounds-per-shipment" class="section level2 unnumbered">
 <h2>Total pounds per shipment</h2>
-<p>Let’s mutate!</p>
+<p>Let’s <code>mutate()</code>!</p>
 <p>Now that we have pounds per unit we can use <code>mutate</code> to calculate the total pounds for each shipment.</p>
 <p><br></p>
 <p><strong>Fill in the blank</strong></p>
@@ -912,8 +890,8 @@ convert &lt;-<span class="st"> </span><span class="kw">read_csv</span>(convert_u
 </div>
 <div id="total-price-per-shipment" class="section level2 unnumbered">
 <h2>Total price per shipment</h2>
-<div class="note">
-<h3 id="exercise" class="unnumbered"><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE</h3>
+<div class="tip">
+<h3 id="exercise-1" class="unnumbered"><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE</h3>
 <ul class="nav nav-pills" id="myTab" role="tablist" style="margin-top: 18px;">
 <li class="nav-item active">
 <a class="nav-link" id="totalprice-tab" data-toggle="tab" href="#totalprice" role="tab" aria-controls="totalprice" aria-selected="true">Total price</a>
@@ -933,7 +911,6 @@ Total price
 <p>We need to do some serious multiplication. We now have the total amount shipped in pounds, and the price per pound, but we want to know the total price for each transaction.</p>
 <p>How do we calculate that?</p>
 <pre class="sourceCode r">
-
 # Calculate the total price for each shipment
 scrap <- scrap %>% 
          mutate(credits = ________ * ________ )
@@ -947,7 +924,6 @@ Total price
 <p>We need to do some serious multiplication. We now have the total amount shipped in pounds, and the price per pound, but we want to know the total price for each transaction.</p>
 <p>How do we calculate that?</p>
 <pre class="sourceCode r">
-
 # Calculate the total price for each shipment
 scrap <- scrap %>% 
          mutate(credits = total_pounds  * ________ )
@@ -961,7 +937,6 @@ Total price
 <p>We need to do some serious multiplication. We now have the total amount shipped in pounds, and the price per pound, but we want to know the total price for each transaction.</p>
 <p>How do we calculate that?</p>
 <pre class="sourceCode r">
-
 # Calculate the total price for each shipment
 scrap <- scrap %>% 
          mutate(credits = total_pounds * price_per_pound)
@@ -1048,7 +1023,7 @@ scrap &lt;-<span class="st"> </span>scrap <span class="op">%&gt;%</span><span cl
 <p><strong>Hint:</strong> Add <code>na.rm = T</code> to <code>quantile()</code>.</p>
 <p><br></p>
 <div class="tip">
-<h3 id="exercise-1" class="unnumbered"><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE</h3>
+<h3 id="exercise-2" class="unnumbered"><i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE</h3>
 <p>Create a summary of the scrap data that includes 3 of the summary functions above. The following is one example.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">summary &lt;-<span class="st"> </span>scrap <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">             </span><span class="kw">summarize</span>(<span class="dt">max_credits      =</span>  __________ ,
@@ -1138,7 +1113,7 @@ scrap &lt;-<span class="st"> </span>scrap <span class="op">%&gt;%</span><span cl
 </div>
 <p></details></p>
 <p><br></p>
-<div class="tip">
+<div class="well">
 <h3 id="pro-tip" class="unnumbered"><i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
 <p>Ending with <code>ungroup()</code> is good practice. This prevents your data from staying grouped after the summarizing has been completed.</p>
 </div>

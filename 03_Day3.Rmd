@@ -31,14 +31,6 @@ library(ggplot2)
 
 <br>
 
-### Please connect to your droid {-}
-
-- Open the __Start menu__  (_Click the Windows logo on the bottom left of the screen_)
-- Select ` Remote Desktop Connection `
-- Enter ` R32-your7digit# ` or ` w7-your7digit# `
-- Press _Connect_
-
-<br>
 
 __Open your RStudio project__
 
@@ -50,7 +42,7 @@ __Open a New script__
 - __File > New File > R Script__
 
 - Click the _floppy disk_ save icon
-- Give it a name: `03_day.R` or `jakku_plots.R` will work well
+- Give it a name: `03_day.R` will work well
 
 
 
@@ -59,16 +51,17 @@ __Open a New script__
 <div class="well">
 
 - Review
-- Endor storm chasing
-    - Working w/ dates
+- Endor storm chasing: __dates__
+- The magic pipe `%>%`
 - Where's Finn?
-- Join 2 tables
-- Calculate new columns from existing columns
-- Save data
-
+- Join 2 tables: `left_join` to the rescue
+- Calculate summary stats for __entire table__
+- `group_by`: Calculate stats for each group or category
+- __Save__ / export data
 
 </div>   
     
+
 
 ## Porg review {-}
 
@@ -88,17 +81,21 @@ cat(readLines("porg_tabs.txt"))
 <br>
 
 
-## BB8 has a new mission {-}
 
-BB8 just received new data suggesting there was a large magnetic storm right before Site 1 burned down on Endor. Sounds like we're going to be __STORM CHASERS__!
+# New mission! {-}
+<hr>
+
+BB8 received new data from the wookies suggesting there was a large magnetic storm just before `Site 1` burned down on Endor. Sounds like we're going to be __STORM CHASERS__!
 
 
 __Get the dataset__
 
 While we're relaxing and flying to Endor let's get set up with our new data.
 
+<br>
+
 <a href="https://itep-r.netlify.com/data/air_endor.csv">
-<span class="btn_code_blue" style="margin-bottom: 10px;"> __DOWNLOAD__  </span></a> -  Endor Air data
+<span class="btn_code_blue" style="margin-bottom: 10px;"> __DOWNLOAD__  </span></a> -  Get the Endor Air data
 
 1. Download the data above.
 1. Create a new folder called "data" in your project folder.
@@ -137,11 +134,14 @@ names(air_endor)
 <br>
 
 <div class="tip">
-__NOTE__ 
+
+### Note 
 
 When your project is open, RStudio sets the working directory to your project folder. When reading files from a folder outside of your project, you'll need to use the full file path location. 
 
-For example: `X://Programs/Air_Quality/Ozone_data.csv`
+For example, for a file on the __X-drive__: `X://Programs/Air_Quality/Ozone_data.csv`
+<br>
+
 </div>
 
 
@@ -153,11 +153,11 @@ For example: `X://Programs/Air_Quality/Ozone_data.csv`
 
 __Let's get acquainted with our new Endor data set.__ 
 
-__Remember the different ways?__
-
-<br>
-
-Hint: `summary()`, `glimpse()`, `nrow()`, `distinct`
+>
+> Remember the different ways?
+>
+> _Hint:_ `summary()`, `glimpse()`, `nrow()`, `distinct()`
+>
 
 <br>
 
@@ -184,15 +184,15 @@ mag_endor <- filter(air_endor, analyte == "magnetic_field")
 
 <br>
 
-> __Boom!__ How many rows are left now?
+__Boom!__ How many rows are left now?
 
 <br>
 
 
 <div class="well">
-With time series data it's helpful for R to know which column is the __date__ column. Dates come in many formats and the standard format in R is `2019-01-15`, also referred to as _Year-Month-Day_ format.
+With time series data it's helpful for R to know which columns are __date__ columns. Dates come in many formats and the standard format in R is `2019-01-15`, also referred to as _Year-Month-Day_ format.
 
-We'll use the `lubridate` package to help modify and format dates.
+We use the `lubridate` package to help format our dates.
 </div>
 
 
@@ -287,9 +287,9 @@ Looks like the measurements definitely picked up a signal towards the end of the
 
 
 <div class="note">
-## Mission complete! {-}
+### Mission complete! {-}
 
-Aha! There really were high magnetic field readings in November. Hopefully, the _Resistance_ will reward us handsomely for this information.
+Aha! There really was a spike in the magnetic field in November. Hopefully, the _Resistance_ will reward us handsomely for this information.
 
 </div>
 
@@ -297,14 +297,14 @@ Aha! There really were high magnetic field readings in November. Hopefully, the 
 
 # | The pipe operator
 
-<details>
-<summary class = "btn_code"> ** ...I wish I could type the name of the data frame less often. **</summary>
-<div class="quiz" style="margin-top: 0; background-color: white;">
-<p>
+>
+> **I wish I could type the name of the data frame less often. **
+>
+
 <br>
 
-
 ![](images/pipe.png){style="margin-right: 20px; width: 136px; float: left;"}
+
 
 __Now you can!__ 
 
@@ -370,30 +370,31 @@ scrap <- scrap %>%
 <br>
 
 <div class="tip">
-<i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> Exercise 
+
+### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE {-}
 
 Similar to above, use the `%>%` to combine the two Endor lines below.
 
 ```{r better_endor, eval=F}
-
+# Filter to only magnetic_field measurements
 mag_endor <- filter(air_endor, analyte == "magnetic_field")
 
+# Add a date column to the filtered data
 mag_endor <- mutate(mag_endor, date = mdy(start_run_date))
 
 ```
 
-
-</div>
 </div>
 
 <br>
 
 
 
-
-
-
-__So where were we? Oh right, we we're enjoying our time on beautiful lush Endor. But aren't we missing somebody?__
+>
+> __So where were we?__ 
+>
+> __Oh right, we we're enjoying our time on beautiful lush Endor. Aren't we missing somebody...?__
+>
 
 
 # | Finn needs us! {-}
@@ -583,7 +584,7 @@ You can type `?left_join` to see all the arguments and options.
 
 ## Total pounds per shipment {-}
 
-Let's mutate! 
+Let's `mutate()`! 
 
 Now that we have pounds per unit we can use `mutate` to calculate the total pounds for each shipment.
 
@@ -615,7 +616,7 @@ scrap <- scrap %>%
 
 ## Total price per shipment {-}
 
-<div class="note">
+<div class="tip">
 
 ### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE {-}
 
@@ -631,7 +632,6 @@ We need to do some serious multiplication. We now have the total amount shipped 
 How do we calculate that? 
 
 code_start
-
 # Calculate the total price for each shipment
 scrap <- scrap %>% 
          mutate(credits = ________ * ________ )
@@ -645,7 +645,6 @@ We need to do some serious multiplication. We now have the total amount shipped 
 How do we calculate that?
 
 code_start
-
 # Calculate the total price for each shipment
 scrap <- scrap %>% 
          mutate(credits = total_pounds  * ________ )
@@ -659,7 +658,6 @@ We need to do some serious multiplication. We now have the total amount shipped 
 How do we calculate that?
 
 code_start
-
 # Calculate the total price for each shipment
 scrap <- scrap %>% 
          mutate(credits = total_pounds * price_per_pound)
@@ -953,7 +951,7 @@ The `round()` function in R does not automatically round values ending in 5 up. 
 <br>
 
 
-<div class="tip">
+<div class="well">
 ### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
 
 Ending with `ungroup()` is good practice. This prevents your data from staying grouped after the summarizing has been completed.

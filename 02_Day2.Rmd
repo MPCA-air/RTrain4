@@ -368,12 +368,10 @@ ggplot(scrap, aes(x = origin, y = amount, fill = origin)) +
 <div class="tip">
 ### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
 
-Try making a scatterplot of any two columns.
-
-_Hint: Numeric variables will be more informative._
+Try making a column plot showing the total amount of scrap for each `destination` or for each `item`.
 
 ```{r, eval = F, echo = T}
-ggplot(scrap, aes(x = column1, y = column2 )) + geom_point()
+ggplot(scrap, aes(x = destination, y = amount )) + geom_col()
 ```
 </div>
 
@@ -699,6 +697,7 @@ outskirts_to_niima <- filter(scrap,
 
 <br>
 <br>
+<br><br>
 
 <hr>
 <br>
@@ -988,7 +987,7 @@ write_csv(scrap_pounds, "results/scrap_in_pounds.csv")
 # New mission available {-}
 <hr>
 
-BB8 received new data from the wookies suggesting there was a large magnetic storm before `Site 1` burned down on Endor. Sounds like we're going to be __STORM CHASERS__ tomorrow. Mission accepted.
+BB8 received new data from the wookies suggesting there was a large magnetic storm just before `Site 1` burned down on Endor. Sounds like we're going to be __STORM CHASERS__ tomorrow. Mission accepted.
 
 <br>
 

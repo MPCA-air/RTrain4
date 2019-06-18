@@ -343,22 +343,13 @@ div.tocify {
 </div>
 
 
-<div id="welcome-back-jedis" class="section level1 unnumbered">
-<h1>Welcome back Jedis!</h1>
+<div id="the-final-day" class="section level1 unnumbered">
+<h1>The final day</h1>
 <hr>
 <div class="figure">
 <img src="images/day4_sq.png" style="float: left; margin-right: 60px; margin-top: 8px;" width="260" />
 
 </div>
-<p><br></p>
-<div id="please-connect-to-your-droid" class="section level3 unnumbered">
-<h3>Please connect to your droid</h3>
-<ul>
-<li>Open the <strong>Start menu</strong> (<em>Click the Windows logo on the bottom left of the screen</em>)</li>
-<li>Select <code>Remote Desktop Connection</code></li>
-<li>Enter <code>R32-your7digit#</code> or <code>w7-your7digit#</code></li>
-<li>Press <em>Connect</em></li>
-</ul>
 <p><br></p>
 <p><strong>Open your RStudio project</strong></p>
 <ul>
@@ -371,18 +362,16 @@ div.tocify {
 <li>Click the <em>floppy disk</em> save icon</li>
 <li><p>Give it a name: <code>04_day.R</code> will work well</p></li>
 </ul>
-</div>
 <div id="schedule" class="section level2 unnumbered">
 <h2>Schedule</h2>
 <div class="well">
 <ul>
 <li>Review</li>
-<li><ul>
-<li>Conditional mutate</li>
+<li>Conditional mutate
+<ul>
 <li><code>ifelse()</code></li>
 <li>Yes/No decisions</li>
 </ul></li>
-<li>Summarize by group</li>
 <li>More plots
 <ul>
 <li>New geoms</li>
@@ -391,6 +380,8 @@ div.tocify {
 <li>Colors</li>
 <li>Titles</li>
 </ul></li>
+<li>Break out Finn</li>
+<li>Concatulations!</li>
 </ul>
 </div>
 </div>
@@ -615,9 +606,9 @@ A <code>ggplot</code> has 3 ingredients.
 <p><img src="04_Day4_files/figure-html/unnamed-chunk-11-1.png" width="1056" /></p>
 </div>
 </div>
-<div id="its-finn-time" class="section level1">
-<h1><span class="header-section-number">4</span> It’s Finn time</h1>
-<p>Seriously. Let’s pay that ransom already.</p>
+<div id="its-finn-time" class="section level1 unnumbered">
+<h1>It’s Finn time</h1>
+<p>Seriously, let’s pay that ransom already.</p>
 <blockquote>
 <p><strong>Where should we go to get our 10,000 Black boxes?</strong></p>
 </blockquote>
@@ -659,7 +650,7 @@ A <code>ggplot</code> has 3 ingredients.
 <p><br></p>
 </div>
 <div id="plot-extras" class="section level1">
-<h1><span class="header-section-number">5</span> | Plot extras</h1>
+<h1><span class="header-section-number">4</span> | Plot extras</h1>
 <hr>
 <div id="themes" class="section level2 unnumbered">
 <h2>Themes</h2>
@@ -752,7 +743,7 @@ where_to_save_it &lt;-<span class="st"> &quot;___.png&quot;</span>
 </div>
 </div>
 <div id="glossary" class="section level1">
-<h1><span class="header-section-number">6</span> | Glossary</h1>
+<h1><span class="header-section-number">5</span> | Glossary</h1>
 <p><strong>Table of <code>aesthetics</code></strong></p>
 <table>
 <thead>
@@ -801,44 +792,7 @@ where_to_save_it &lt;-<span class="st"> &quot;___.png&quot;</span>
 <img src="images/ggplot_themes.png" />
 
 </div>
-</div>
-<div id="homeworld-training" class="section level1 unnumbered">
-<h1>Homeworld training</h1>
-<div class="figure">
-<img src="images/porg.png" style="float: right; margin-top: -34px;" />
-
-</div>
-<ol style="list-style-type: decimal">
-<li>Load one of the data sets below into R
-<ul>
-<li>Porg contamination on Ahch-To
-<ul>
-<li><code>https://rtrain.netlify.com/data/porg_samples.csv</code></li>
-</ul></li>
-<li>Planet Endor air samples
-<ul>
-<li><code>https://rtrain.netlify.com/data/air_endor.csv</code></li>
-</ul></li>
-<li>Or use data from a recent project of yours</li>
-</ul></li>
-<li><p>Create 2 plots using the data.</p></li>
-<li><p><em>If you make something really</em> <strong>strange</strong>. <em>Feel free to share! Consider it art and keep going.</em></p></li>
-</ol>
-<div class="note">
-<h3 id="pro-tip-1" class="unnumbered"><i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
-<p>When you add more layers using <code>+</code> remember to place it at the end of each line.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This will work</span>
-<span class="kw">ggplot</span>(scrap, <span class="kw">aes</span>(<span class="dt">x =</span> origin, <span class="dt">y =</span> credits)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>()
-
-<span class="co"># So will this</span>
-<span class="kw">ggplot</span>(scrap, <span class="kw">aes</span>(<span class="dt">x =</span> origin, <span class="dt">y =</span> credits)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
-
-<span class="co"># But this won&#39;t</span>
-<span class="kw">ggplot</span>(scrap, <span class="kw">aes</span>(<span class="dt">x =</span> origin, <span class="dt">y =</span> credits))
-  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
-</div>
-<p><br><br></p>
+<p><br></p>
 <details> <summary class = "btn_code">
 <h4>
 <i class="far fa-question-circle" aria-hidden="true"></i> Plots Q+A
@@ -887,6 +841,44 @@ where_to_save_it &lt;-<span class="st"> &quot;___.png&quot;</span>
 </div>
 <p></details></p>
 <p><br></p>
+</div>
+<div id="homeworld-training" class="section level1 unnumbered">
+<h1>Homeworld training</h1>
+<div class="figure">
+<img src="images/porg.png" style="float: right; margin-top: -34px;" />
+
+</div>
+<ol style="list-style-type: decimal">
+<li>Load one of the data sets below into R
+<ul>
+<li>Porg contamination on Ahch-To
+<ul>
+<li><code>https://rtrain.netlify.com/data/porg_samples.csv</code></li>
+</ul></li>
+<li>Planet Endor air samples
+<ul>
+<li><code>https://rtrain.netlify.com/data/air_endor.csv</code></li>
+</ul></li>
+<li>Or use data from a recent project of yours</li>
+</ul></li>
+<li><p>Create 2 plots using the data.</p></li>
+<li><p><em>If you make something really</em> <strong>strange</strong>. <em>Feel free to share! Consider it art and keep going.</em></p></li>
+</ol>
+<div class="note">
+<h3 id="pro-tip-1" class="unnumbered"><i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip!</h3>
+<p>When you add more layers using <code>+</code> remember to place it at the end of each line.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This will work</span>
+<span class="kw">ggplot</span>(scrap, <span class="kw">aes</span>(<span class="dt">x =</span> origin, <span class="dt">y =</span> credits)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()
+
+<span class="co"># So will this</span>
+<span class="kw">ggplot</span>(scrap, <span class="kw">aes</span>(<span class="dt">x =</span> origin, <span class="dt">y =</span> credits)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
+
+<span class="co"># But this won&#39;t</span>
+<span class="kw">ggplot</span>(scrap, <span class="kw">aes</span>(<span class="dt">x =</span> origin, <span class="dt">y =</span> credits))
+  <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+</div>
+<p><br> <br></p>
 </div>
 <div id="return-to-homebase" class="section level1 unnumbered">
 <h1><i class="fa fa-rocket" aria-hidden="true"></i> Return to <a href="index.html">Homebase</a></h1>

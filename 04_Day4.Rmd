@@ -26,19 +26,11 @@ library(readr)
 scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv")
 ```
 
-# Welcome back Jedis! {-}
+# The final day {-}
 <hr>
 
 ![](images/day4_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: 8px;"}
 
-<br>
-
-### Please connect to your droid {-}
-
-- Open the __Start menu__  (_Click the Windows logo on the bottom left of the screen_)
-- Select ` Remote Desktop Connection `
-- Enter ` R32-your7digit# ` or ` w7-your7digit# `
-- Press _Connect_
 
 <br>
 
@@ -61,16 +53,17 @@ __Open a New script__
 <div class="well">
 
 - Review
-- - Conditional mutate
+- Conditional mutate
     - `ifelse()`
     - Yes/No decisions
-- Summarize by group
 - More plots
     - New geoms
     - Reference lines
     - Faceting
     - Colors
     - Titles 
+- Break out Finn
+- Concatulations!
     
 </div>   
     
@@ -581,6 +574,42 @@ You can customize the look of your plot by adding a `theme()` function.
 ![](images/ggplot_themes.png)
 
 
+<br>
+
+
+<details>
+<summary class = "btn_code"><h4> <i class="far fa-question-circle" aria-hidden="true"></i> Plots Q+A </h4> </summary>
+<div class="quiz" style="margin-top: -9px; background-color: white; font-size: 16px;">
+<p>
+<br>
+
+- How to modify the gridlines behind your chart?
+    - Try the different themes at the end of this lesson: `theme_light()` or `theme_bw()`
+    - Or modify the color and size with `theme(panel.grid.minor = element_line(colour = "white", size = 0.5))`
+    - There's even `theme_excel()`
+- How do you set the x and y scale manually?
+    - Here is an example with a scatter plot: `ggplot() + geom_point() + xlim(beginning, end) + ylim(beginning, end)`
+    - __Warning:__ Values above or below the limits you set will not be shown. This is another great way to lie with data. 
+- How do you get rid of the legend if you don't need it?
+    - `geom_point(aes(color = facility_name), show.legend = FALSE)`
+    - The [R Cookbook](http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/) shows a number of ways to get rid of legends.
+- I only like dashed lines. How do you change the linetype to a _dashed_ line? 
+    - `geom_line(aes(color = facility_name), linetype = "dashed")`
+    - You can also try `"dotted"` and `"dotdash"`, or even`"twodash"`
+  
+- How many colors are there in R? How does R know `hotpink` is a color?
+    - There is an [R color cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf)  
+    - As well as a list of [R color names](http://www.r-graph-gallery.com/42-colors-names/)
+    - `library(viridis)` provides some great default color palettes for charts and maps.
+    - This [Color web tool](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) has palette ideas and color codes you can use in your plots
+- Keyboard shortcuts for RStudio
+    - There is a [Shortcut cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf)
+    - In RStudio you can go to _Help_ > _Keyboard Shortcuts Help_
+
+</p>
+</div></details>
+
+<br>
 
 # Homeworld training {-}
 
@@ -622,41 +651,7 @@ ggplot(scrap, aes(x = origin, y = credits))
 
 </div>
 
-<br><br>
-
-<details>
-<summary class = "btn_code"><h4> <i class="far fa-question-circle" aria-hidden="true"></i> Plots Q+A </h4> </summary>
-<div class="quiz" style="margin-top: -9px; background-color: white; font-size: 16px;">
-<p>
 <br>
-
-- How to modify the gridlines behind your chart?
-    - Try the different themes at the end of this lesson: `theme_light()` or `theme_bw()`
-    - Or modify the color and size with `theme(panel.grid.minor = element_line(colour = "white", size = 0.5))`
-    - There's even `theme_excel()`
-- How do you set the x and y scale manually?
-    - Here is an example with a scatter plot: `ggplot() + geom_point() + xlim(beginning, end) + ylim(beginning, end)`
-    - __Warning:__ Values above or below the limits you set will not be shown. This is another great way to lie with data. 
-- How do you get rid of the legend if you don't need it?
-    - `geom_point(aes(color = facility_name), show.legend = FALSE)`
-    - The [R Cookbook](http://www.cookbook-r.com/Graphs/Legends_(ggplot2)/) shows a number of ways to get rid of legends.
-- I only like dashed lines. How do you change the linetype to a _dashed_ line? 
-    - `geom_line(aes(color = facility_name), linetype = "dashed")`
-    - You can also try `"dotted"` and `"dotdash"`, or even`"twodash"`
-  
-- How many colors are there in R? How does R know `hotpink` is a color?
-    - There is an [R color cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf)  
-    - As well as a list of [R color names](http://www.r-graph-gallery.com/42-colors-names/)
-    - `library(viridis)` provides some great default color palettes for charts and maps.
-    - This [Color web tool](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) has palette ideas and color codes you can use in your plots
-- Keyboard shortcuts for RStudio
-    - There is a [Shortcut cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf)
-    - In RStudio you can go to _Help_ > _Keyboard Shortcuts Help_
-
-</p>
-</div></details>
-
-
 <br>
 
 # <i class="fa fa-rocket" aria-hidden="true"></i> Return to [Homebase](index.html) {-}

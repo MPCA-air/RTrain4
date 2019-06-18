@@ -123,7 +123,7 @@ blockquote
      border-left: solid 5px #86af49;
      border-radius: 25px;
      font-size: 17px;
-     line-height: 19px;
+     line-height: 20px;
      overflow: hidden;
      padding: 10px;
      padding-top: 0px;
@@ -138,7 +138,7 @@ blockquote
      background-color: #d2f0c6;
      border-left: solid 5px #86af49;
      font-size: 17px;
-     line-height: 18px;
+     line-height: 20px;
      overflow: hidden;
      padding: 5px;
      padding-top: 5px;
@@ -154,7 +154,7 @@ blockquote
      border-left: solid 8px #ff3860; /* #00d1b2; */
      border-radius: 25px;
      font-size: 15px;
-     line-height: 17px;
+     line-height: 20px;
      overflow: hidden;
      padding: 10px;
      padding-top: 0px;
@@ -186,7 +186,7 @@ blockquote
       display: inline-block;
       padding: 6px 12px;
       margin-bottom: 0;
-      font-size: 12px;
+      font-size: 15px;
       color: #fff;
       background-color: #e53256;  /* #00d1b2; #ff3860; */
       border-color: #992139;
@@ -200,7 +200,7 @@ blockquote
       display: inline-block;
       padding: 6px 12px;
       margin-bottom: 0;
-      font-size: 12px;
+      font-size: 15px;
       color: #fff;
       background-color: #86af49;
       border-color: #a0af49;
@@ -214,7 +214,7 @@ blockquote
       display: inline-block;
       padding: 11px 12px;
       margin-bottom: 0;
-      font-size: 12px;
+      font-size: 15px;
       color: #fff;
       background-color: #337ab7;
       border-color: #2e6da4;
