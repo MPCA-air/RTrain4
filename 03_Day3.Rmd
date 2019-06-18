@@ -51,7 +51,7 @@ __Open a New script__
 <div class="well">
 
 - Review
-- Endor storm chasing: __dates__
+- Endor storm chasing: <i class="fa fa-calendar" aria-hidden="true"></i> __dates__
 - The magic pipe `%>%`
 - Where's Finn?
 - Join 2 tables: `left_join` to the rescue
@@ -173,7 +173,7 @@ distinct(air_endor, analyte)
 ```
 <br>
 
-__Woah. I see that there are many more analytes than we need. Lucky for us, we only want to know about `magnetic_field` data. Let's filter the data down to only that analyte.__ 
+__Woah. There are definitely more analytes than we need. We only want to know about `magnetic_field` data. Let's filter down to only that analyte.__ 
 
 <br>
 
@@ -186,8 +186,13 @@ mag_endor <- filter(air_endor, analyte == "magnetic_field")
 
 __Boom!__ How many rows are left now?
 
+
 <br>
 
+
+__How do we filter on the date column?__
+
+<br>
 
 <div class="well">
 With time series data it's helpful for R to know which columns are __date__ columns. Dates come in many formats and the standard format in R is `2019-01-15`, also referred to as _Year-Month-Day_ format.
@@ -196,7 +201,7 @@ We use the `lubridate` package to help format our dates.
 </div>
 
 
-# | Dates 
+# | <i class="fa fa-calendar" aria-hidden="true"></i> Dates 
 <hr>
 
 ### The `lubridate` package {-}
@@ -206,7 +211,7 @@ We use the `lubridate` package to help format our dates.
 
 <br>
 
-It's about time! Lubridate makes working with dates easier. 
+It's about time! Lubridate makes working with dates much easier. 
 
 We can find how much time has elapsed, add or subtract days, and find seasonal and day of the week averages. 
 
@@ -430,7 +435,7 @@ scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv
 # | Jakku re-visited
 <hr>
 
-Okay, so we're back on the ol' dust bucket. Let's try not to forget anything while were here this time. We're quickly running out of friends on this planet.
+Okay, so we're back on this ol' dust bucket. Let's try not to forget anything this time. We're quickly running out of friends on this planet.
 
 ## A scrappy ransom {-}
 
@@ -442,6 +447,8 @@ Take a look at our __NEW__ scrap data and see if we have the weight of all the i
 # What unit types are in the data?
 unique(scrap$units)
 ```
+
+<br>
 
 __Or return results as a data frame__
 ```{r distinct-units, eval=T}
@@ -460,13 +467,16 @@ I think we're going to need some more data.
 <br>
 
 <div class="tip">
+<br>
+
 __"Hey BB8!"__ 
 
-__"Please do your magic data finding thing."__
+__"Do your magic data finding thing."__
 
 </div>
 
-## Get the weights {-}
+
+## Weight conversion {-}
 
 ![](images/rey_bb8.jpg){align="right" style="width: 35%; margin-top: 0px; margin-left: 15px; margin-right: 0px;"}
 
@@ -493,11 +503,12 @@ __Say "Hello" to `left_join()`!__
 
 
 # | Join tables
+<hr>
 
 ![](images/leftjoin_scrap.png){style="width: 55%; margin-left: 18%;"}
 
-<br><br>
-<hr>
+<br><br><br>
+
 
 `left_join()` works like a zipper and combines two tables based on one or more variables. It's called "left"-join because the entire table on the left side is retained. Anything that matches from the right table gets to join the party, but the rest will be ignored.
 
@@ -735,8 +746,13 @@ summarize(scrap, mean_price = mean(price_per_pound, na.rm = T))
 
 <br>
 
-> Note the `na.rm = TRUE` in the `mean()` function. This tells R to ignore empty cells or missing values that show up in R as `NA`. If you leave `na.rm` out, the _mean_ function will return 'NA' if it finds a missing value in the data.
+<div class="tip">
 
+<br>
+
+__Note__ the `na.rm = TRUE` in the `mean()` function. This tells R to ignore empty cells or missing values that show up in R as `NA`. If you leave `na.rm` out, the _mean_ function will return 'NA' if it finds a missing value in the data.
+
+</div>
 
 ## `median()` {-}
 Use summarize to calculate the _median_ price_per_pound in the scrap report.

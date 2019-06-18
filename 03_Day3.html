@@ -367,7 +367,7 @@ div.tocify {
 <div class="well">
 <ul>
 <li>Review</li>
-<li>Endor storm chasing: <strong>dates</strong></li>
+<li>Endor storm chasing: <i class="fa fa-calendar" aria-hidden="true"></i> <strong>dates</strong></li>
 <li>The magic pipe <code>%&gt;%</code></li>
 <li>Where’s Finn?</li>
 <li>Join 2 tables: <code>left_join</code> to the rescue</li>
@@ -509,11 +509,13 @@ air_endor &lt;-<span class="st"> </span><span class="kw">clean_names</span>(air_
 ## 10 Benzo[g,h,i]perylene
 ## # ... with 17 more rows</code></pre>
 <p><br></p>
-<p><strong>Woah. I see that there are many more analytes than we need. Lucky for us, we only want to know about <code>magnetic_field</code> data. Let’s filter the data down to only that analyte.</strong></p>
+<p><strong>Woah. There are definitely more analytes than we need. We only want to know about <code>magnetic_field</code> data. Let’s filter down to only that analyte.</strong></p>
 <p><br></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mag_endor &lt;-<span class="st"> </span><span class="kw">filter</span>(air_endor, analyte <span class="op">==</span><span class="st"> &quot;magnetic_field&quot;</span>)</code></pre></div>
 <p><br></p>
 <p><strong>Boom!</strong> How many rows are left now?</p>
+<p><br></p>
+<p><strong>How do we filter on the date column?</strong></p>
 <p><br></p>
 <div class="well">
 <p>With time series data it’s helpful for R to know which columns are <strong>date</strong> columns. Dates come in many formats and the standard format in R is <code>2019-01-15</code>, also referred to as <em>Year-Month-Day</em> format.</p>
@@ -521,7 +523,7 @@ air_endor &lt;-<span class="st"> </span><span class="kw">clean_names</span>(air_
 </div>
 </div>
 <div id="dates" class="section level1">
-<h1><span class="header-section-number">1</span> | Dates</h1>
+<h1><span class="header-section-number">1</span> | <i class="fa fa-calendar" aria-hidden="true"></i> Dates</h1>
 <hr>
 <div id="the-lubridate-package" class="section level3 unnumbered">
 <h3>The <code>lubridate</code> package</h3>
@@ -530,7 +532,7 @@ air_endor &lt;-<span class="st"> </span><span class="kw">clean_names</span>(air_
 
 </div>
 <p><br></p>
-<p>It’s about time! Lubridate makes working with dates easier.</p>
+<p>It’s about time! Lubridate makes working with dates much easier.</p>
 <p>We can find how much time has elapsed, add or subtract days, and find seasonal and day of the week averages.</p>
 <p><br></p>
 <div style="clear: both;">
@@ -738,7 +740,7 @@ scrap &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class
 <div id="jakku-re-visited" class="section level1">
 <h1><span class="header-section-number">3</span> | Jakku re-visited</h1>
 <hr>
-<p>Okay, so we’re back on the ol’ dust bucket. Let’s try not to forget anything while were here this time. We’re quickly running out of friends on this planet.</p>
+<p>Okay, so we’re back on this ol’ dust bucket. Let’s try not to forget anything this time. We’re quickly running out of friends on this planet.</p>
 <div id="a-scrappy-ransom" class="section level2 unnumbered">
 <h2>A scrappy ransom</h2>
 <p>Mr. Baddy Plutt is demanding <strong>10,000 items</strong> of scrap for Finn. Sounds expensive, but lucky for us he didn’t clarify the exact items. Let’s find the scrap that weighs the least per shipment and try to make this transaction as light as possible.</p>
@@ -746,6 +748,7 @@ scrap &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># What unit types are in the data?</span>
 <span class="kw">unique</span>(scrap<span class="op">$</span>units)</code></pre></div>
 <pre><code>## [1] &quot;Cubic Yards&quot; &quot;Items&quot;       &quot;Tons&quot;</code></pre>
+<p><br></p>
 <p><strong>Or return results as a data frame</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">distinct</span>(scrap, units)</code></pre></div>
 <pre><code>## # A tibble: 3 x 1
@@ -760,12 +763,13 @@ scrap &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class
 <p>I think we’re going to need some more data.</p>
 <p><br></p>
 <div class="tip">
+<p><br></p>
 <p><strong>“Hey BB8!”</strong></p>
-<p><strong>“Please do your magic data finding thing.”</strong></p>
+<p><strong>“Do your magic data finding thing.”</strong></p>
 </div>
 </div>
-<div id="get-the-weights" class="section level2 unnumbered">
-<h2>Get the weights</h2>
+<div id="weight-conversion" class="section level2 unnumbered">
+<h2>Weight conversion</h2>
 <div class="figure">
 <img src="images/rey_bb8.jpg" align="right" style="width: 35%; margin-top: 0px; margin-left: 15px; margin-right: 0px;" />
 
@@ -795,12 +799,12 @@ convert &lt;-<span class="st"> </span><span class="kw">read_csv</span>(convert_u
 </div>
 <div id="join-tables" class="section level1">
 <h1><span class="header-section-number">4</span> | Join tables</h1>
+<hr>
 <div class="figure">
 <img src="images/leftjoin_scrap.png" style="width: 55%; margin-left: 18%;" />
 
 </div>
-<br><br>
-<hr>
+<p><br><br><br></p>
 <p><code>left_join()</code> works like a zipper and combines two tables based on one or more variables. It’s called “left”-join because the entire table on the left side is retained. Anything that matches from the right table gets to join the party, but the rest will be ignored.</p>
 <div id="join-2-tables" class="section level2 unnumbered">
 <h2>Join 2 tables</h2>
@@ -989,9 +993,10 @@ scrap &lt;-<span class="st"> </span>scrap <span class="op">%&gt;%</span><span cl
 <p>Use <code>summarize()</code> and <code>mean()</code> to calculate the <em>mean</em> <code>price_per_pound</code> in the scrap report.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summarize</span>(scrap, <span class="dt">mean_price =</span> <span class="kw">mean</span>(price_per_pound, <span class="dt">na.rm =</span> T))</code></pre></div>
 <p><br></p>
-<blockquote>
-<p>Note the <code>na.rm = TRUE</code> in the <code>mean()</code> function. This tells R to ignore empty cells or missing values that show up in R as <code>NA</code>. If you leave <code>na.rm</code> out, the <em>mean</em> function will return ‘NA’ if it finds a missing value in the data.</p>
-</blockquote>
+<div class="tip">
+<p><br></p>
+<p><strong>Note</strong> the <code>na.rm = TRUE</code> in the <code>mean()</code> function. This tells R to ignore empty cells or missing values that show up in R as <code>NA</code>. If you leave <code>na.rm</code> out, the <em>mean</em> function will return ‘NA’ if it finds a missing value in the data.</p>
+</div>
 </div>
 <div id="median" class="section level2 unnumbered">
 <h2><code>median()</code></h2>
