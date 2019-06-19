@@ -351,7 +351,8 @@ div.tocify {
 
 </div>
 <p><br></p>
-<p><strong>Open your RStudio project</strong></p>
+<div id="open-your-rstudio-project" class="section level3 unnumbered">
+<h3>Open your RStudio project</h3>
 <ul>
 <li><strong>Open</strong> your project folder from last week</li>
 <li>Double click the <strong>.Rproj</strong> file to open RStudio</li>
@@ -362,18 +363,19 @@ div.tocify {
 <li>Click the <em>floppy disk</em> save icon</li>
 <li><p>Give it a name: <code>03_day.R</code> will work well</p></li>
 </ul>
+</div>
 <div id="schedule" class="section level2 unnumbered">
 <h2>Schedule</h2>
 <div class="well">
 <ul>
 <li>Review</li>
-<li>Endor storm chasing: <i class="fa fa-calendar" aria-hidden="true"></i> <strong>dates</strong></li>
-<li>The magic pipe <code>%&gt;%</code></li>
+<li>Working with <i class="fa fa-calendar" aria-hidden="true"></i> <strong>dates</strong> - Endor Storm Chasing</li>
+<li>The magic <strong>pipe</strong> <code>%&gt;%</code></li>
 <li>Where’s Finn?</li>
 <li>Join 2 tables: <code>left_join</code> to the rescue</li>
-<li>Calculate summary stats for <strong>entire table</strong></li>
-<li><code>group_by</code>: Calculate stats for each group or category</li>
-<li><strong>Save</strong> / export data</li>
+<li>Calculate summary stats for your <strong>entire table</strong></li>
+<li><code>group_by</code>: Calculate stats for each group and category (for each monitoring site, each pollutant, each year, or every thingymajig in your data)</li>
+<li><strong>Save</strong> <strong>&amp;</strong> <strong>Export</strong> data</li>
 </ul>
 </div>
 </div>
@@ -439,12 +441,15 @@ porgs &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class
 <p><strong>Get the dataset</strong></p>
 <p>While we’re relaxing and flying to Endor let’s get set up with our new data.</p>
 <p><br></p>
-<p><a href="https://itep-r.netlify.com/data/air_endor.csv"> <span class="btn_code_blue" style="margin-bottom: 10px;"> <strong>DOWNLOAD</strong> </span></a> - Get the Endor Air data</p>
+<p><strong>Endor Setup</strong></p>
 <ol style="list-style-type: decimal">
-<li>Download the data above.</li>
-<li>Create a new folder called “data” in your project folder.</li>
-<li>Move the Endor data to there.</li>
-<li>Open a new R script called <code>endor_air.R</code></li>
+<li>Download the data.
+<ul>
+<li><a href="https://itep-r.netlify.com/data/air_endor.csv"><span class="btn_code_blue" style="margin-bottom: 10px; margin-top: 12px;"> <strong>DOWNLOAD</strong> </span></a> - Get the Endor monitoring data</li>
+</ul></li>
+<li>Create a new folder called <code>data</code> in your project folder.</li>
+<li>Move the downloaded Endor file to there.</li>
+<li>Create a new R script called <code>endor.R</code></li>
 </ol>
 <p>Now we can read in the data from the data folder with our favorite <code>read_csv</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
@@ -1061,8 +1066,8 @@ scrap &lt;-<span class="st"> </span>scrap <span class="op">%&gt;%</span><span cl
 <div id="group_by" class="section level1">
 <h1><span class="header-section-number">6</span> | <code>group_by()</code></h1>
 <hr>
-<div id="the-junk-capital-of-jakku" class="section level2">
-<h2><span class="header-section-number">6.1</span> The junk Capital of Jakku</h2>
+<div id="the-junk-capital-of-jakku" class="section level2 unnumbered">
+<h2>The junk Capital of Jakku</h2>
 <blockquote>
 <p>Which origin city had the most shipments of junk?</p>
 </blockquote>
@@ -1112,8 +1117,6 @@ scrap &lt;-<span class="st"> </span>scrap <span class="op">%&gt;%</span><span cl
 <span class="st">                 </span><span class="kw">arrange</span>(mean_price_round) <span class="op">%&gt;%</span>
 <span class="st">                 </span><span class="kw">ungroup</span>()</code></pre></div>
 <p><br></p>
-<p><strong>Special note</strong></p>
-<p>The <code>round()</code> function in R does not automatically round values ending in 5 up. Instead it uses scientific rounding, which rounds values ending in 5 to the nearest even number. So 2.5 rounded to the nearest whole number rounds down to 2, and 3.5 rounded to the nearest whole number rounds up 4.</p>
 </p>
 </div>
 <p></details></p>

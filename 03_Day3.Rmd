@@ -32,7 +32,7 @@ library(ggplot2)
 <br>
 
 
-__Open your RStudio project__
+### Open your RStudio project {-}
 
 - __Open__ your project folder from last week
 - Double click the __.Rproj__ file to open RStudio
@@ -51,13 +51,13 @@ __Open a New script__
 <div class="well">
 
 - Review
-- Endor storm chasing: <i class="fa fa-calendar" aria-hidden="true"></i> __dates__
-- The magic pipe `%>%`
+- Working with <i class="fa fa-calendar" aria-hidden="true"></i> __dates__ - Endor Storm Chasing
+- The magic __pipe__ `%>%`
 - Where's Finn?
 - Join 2 tables: `left_join` to the rescue
-- Calculate summary stats for __entire table__
-- `group_by`: Calculate stats for each group or category
-- __Save__ / export data
+- Calculate summary stats for your __entire table__
+- `group_by`: Calculate stats for each group and category (for each monitoring site, each pollutant, each year, or every thingymajig in your data)
+- __Save__ __&__ __Export__ data
 
 </div>   
     
@@ -94,13 +94,13 @@ While we're relaxing and flying to Endor let's get set up with our new data.
 
 <br>
 
-<a href="https://itep-r.netlify.com/data/air_endor.csv">
-<span class="btn_code_blue" style="margin-bottom: 10px;"> __DOWNLOAD__  </span></a> -  Get the Endor Air data
+__Endor Setup__
 
-1. Download the data above.
-1. Create a new folder called "data" in your project folder.
-1. Move the Endor data to there.
-1. Open a new R script called `endor_air.R`
+1. Download the data.
+    - <a href="https://itep-r.netlify.com/data/air_endor.csv"><span class="btn_code_blue" style="margin-bottom: 10px; margin-top: 12px;"> __DOWNLOAD__  </span></a> -  Get the Endor monitoring data
+1. Create a new folder called `data` in your project folder.
+1. Move the downloaded Endor file to there.
+1. Create a new R script called `endor.R`
 
 Now we can read in the data from the data folder with our favorite `read_csv` function.
 
@@ -860,7 +860,7 @@ Ok. That was fun. Now let's do a summary for Cratertown. And then for Blowback T
 # | `group_by()`
 <hr>
 
-## The junk Capital of Jakku
+## The junk Capital of Jakku {-}
 
 > Which origin city had the most shipments of junk?
 
@@ -953,11 +953,6 @@ mean_prices <- group_by(scrap, origin) %>%
 ```
 
 <br>
-
-
-__Special note__ 
-
-The `round()` function in R does not automatically round values ending in 5 up. Instead it uses scientific rounding, which rounds values ending in 5 to the nearest even number. So 2.5 rounded to the nearest whole number rounds down to 2, and 3.5 rounded to the nearest whole number rounds up 4.
 
 </p>
 </div>
