@@ -29,8 +29,6 @@ library(ggplot2)
 
 ![](images/day3_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: 8px;"}
 
-<br>
-
 
 ### Open your RStudio project {-}
 

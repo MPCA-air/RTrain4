@@ -29,12 +29,12 @@ scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv
 # The final day {-}
 <hr>
 
-![](images/day4_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: 8px;"}
+![](images/day4_sq.png){width="260" style="float: left; margin-right: 60px; margin-top: 18px;"}
 
 
 <br>
 
-__Open your RStudio project__
+### Open your RStudio project {-}
 
 - __Open__ your project folder from last week
 - Double click the __.Rproj__ file to open RStudio
@@ -42,7 +42,6 @@ __Open your RStudio project__
 __Open a New script__
 
 - __File > New File > R Script__
-
 - Click the _floppy disk_ save icon
 - Give it a name: `04_day.R` will work well
 
@@ -52,18 +51,17 @@ __Open a New script__
 
 <div class="well">
 
-- Review
+- Your `dpylr` toolbox
 - Conditional mutate
-    - `ifelse()`
-    - Yes/No decisions
+    - Use `ifelse()` for _Yes/No_ decisions
 - More plots
     - New geoms
     - Reference lines
-    - Faceting
+    - Faceting or Splitting by group
     - Colors
     - Titles 
 - Break out Finn
-- Concatulations!
+- __Concatulations!__
     
 </div>   
     
@@ -93,20 +91,26 @@ cat(readLines("porg_tabs.txt"))
 ```{r, echo=T}
 library(readr)
 library(dplyr)
+library(ggplot2)
+
+
+# Read in full scrap data
+scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv")
+
 
 # Read in the conversion data
 convert <- read_csv("https://rtrain.netlify.com/data/conversion_table.csv")
 
-# Read in scrap data
-scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv")
 
 # Join the scrap to the conversion table
 scrap <- left_join(scrap, convert)
+
 
 # Calculate the total price
 scrap <- scrap %>% 
          mutate(total_pounds = amount * pounds_per_unit,
                 credits      = total_pounds * price_per_pound)
+
 
 # Calculate the price per unit
 scrap <- scrap %>% 
@@ -115,6 +119,17 @@ scrap <- scrap %>%
 ```
 
 
+
+
+<div class="red-note">
+
+###  Bad news <i class="fas fa-coins"></i> {-}
+
+We're shopping on a budget people. Sounds like Rey can't afford anything over 500 credits per item. 
+
+Let's add a column that labels the items as "Cheap" __if__ the price is less than 500.
+
+</div>
 
 # | `ifelse()`
 
@@ -130,15 +145,15 @@ scrap <- scrap %>%
 Here's a handy `ifelse` statement to help you identify lightsabers.
 
 <div class="well" style="margin-top: 10px:">
-`ifelse( `__Is lightsaber__ <span style="color: green;">__GREEN__?</span>, __Yes!__ ` Then it's Yoda's,` __No!__ ` Then it's not Yoda's)`
+`ifelse( `__Lightsaber__ <span style="color: green;">__GREEN__ is?</span>, __Yes!__ ` Then it's Yoda's,` __No!__ ` Then Yoda's it is not)`
 
 </div>
 
 <br>
 
-Say you want to label all the porgs over _60 cm_ as tall, and everyone else as short. In other words, we want to add a column where the value depends on the value found in the height column. We use `ifelse()` for this.
+Or say we wanted to label all the porgs over _60 cm_ as tall, and everyone else as short.  Whenever we want to add a column where the value depends on the value found in another column. We can use `ifelse()`.
 
-Or maybe you have a list of prices for scrap, and you want to flag only the ones that cost less than 500 credits. 
+Ok, say we have a list of prices for scrap and we want to flag the ones that cost less than 500 credits. How? 
 
 ## `mutate()` + `ifelse()` is powerful! {-}
 
@@ -147,16 +162,12 @@ Or maybe you have a list of prices for scrap, and you want to flag only the ones
 <br>
 
 
+
 ### On the cheap {-}
 
-Bad news. We're on a budget people. Rey can't afford anything over 500 credits per item. 
+Let's use `mutate()` and `ifelse()` to add a column named `affordable` to our scrap data.
 
-Let's add a column that labels the items as "Cheap" __if__ the price is less than 500.
-
-__Add an affordable column__
 ```{r ifelse, message=F, warning=F}
-library(dplyr)
-library(readr)
 
 # Add an affordable column
 scrap <- scrap %>% 
@@ -168,9 +179,9 @@ scrap <- scrap %>%
 
 <div class="tip">
 
-#### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
+### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
 
-Use `filter()` to create a new `cheap_scrap` table.
+Use your new column and `filter()` to create a new `cheap_scrap` table.
 
 </div>
 
@@ -205,7 +216,7 @@ _You win! _
 
 > __CONGRATULATIONS__ of galactic proportions to you. 
 >
->We now have a clean and tidy data set. If BB8 receives new data to append, we can re-run this script and in 5 seconds we'll have cleaned up data again!
+> We now have a clean and tidy data set. If BB8 ever receives new data again, we can re-run this script and in 5 seconds we'll have it all cleaned up.
 >
 
 <br>
@@ -213,11 +224,19 @@ _You win! _
 # | Plots with _ggplot2_
 <hr>
 
-#### _Plot the data, Plot the data, Plot the data_ {-}
+### _Plot the data, Plot the data, Plot the data_ {-}
 
 <br>
 
 ![](images/ggplot2_hex.png){align="right" width="180" style="margin-right: 70px; margin-top: -124px;"}
+
+<br><br>
+
+>
+> <i class="far fa-question-circle" aria-hidden="true"></i> Who remembers how to plot???
+>
+
+<br><br><br><br><br><br>
 
 
 ## The `ggplot()` sandwich {-}
@@ -241,8 +260,6 @@ ggplot(scrap)
 
 <br>
 
-> we load the package `library (ggplot2)`, but the function to make a plot is `ggplot(scrap)`. 
-
 
 ## 2. The the X, Y _aesthetics_  {-}
 
@@ -260,18 +277,6 @@ ggplot(scrap, aes(x = origin, y = credits)) + geom_point()
 
 <br>
 
-<div class="tip">
-#### <i class="fa fa-cogs" aria-hidden="true" style="color: green"></i> EXERCISE {-}
-
-Try making a scatterplot of any two columns.
-
-_Hint: Numeric variables will be more informative._
-
-```{r, eval = F, echo = T}
-ggplot(scrap, aes(x = column1, y = column2 )) + geom_point()
-```
-</div>
-
 
 ## Colors {-}
 <hr>
@@ -286,7 +291,7 @@ ggplot(scrap, aes(x = origin, y = credits, color = destination)) +
 
 ## Columns charts {-}
 
-Yikes! That point chart had too much detail. Let's make a column chart and add up the sales to make it easier to understand. Note that we used `fill =` instead of `color =`. Try using color instead and see what happens.
+Yikes! That point chart has too much detail. Let's make a column chart and add up the sales to make it easier to understand. Note that we used `fill =` instead of `color =` below. Go ahead and try using color instead and see what happens.
 
 
 ```{r, eval = T, echo = T}
@@ -303,22 +308,22 @@ ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
   geom_col(position = "dodge")
 ```
 
-
+<br>
 
 <div class="tip">
 
-### <i class="fa fa-user-bicycle" aria-hidden="true" style="color:#040707;"></i> EXERCISE {-}
+### <i class="fa fa-cogs" aria-hidden="true" style="color:#040707;"></i> EXERCISE {-}
 
 An easy way to experiment with colors is to add layers like `+ scale_fill_viridis()` or `+ scale_fill_brewer()` to your plot, which will link to RcolorBrewer so you can have accessible color schemes.
 
-Try adding one of thse to your column plot above.
+Try adding one of these to your column plot.
 
 </div>
 
 
 ## Facet wrap {-}
 
-Does the chart feel crowded to you? Let's use `facet wrap` to put each origin in a separate chart.
+Does the chart feel crowded to you? Let's use `facet wrap` to put each destination in a separate chart.
 
 ```{r, eval = T, echo = T}
 ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
@@ -331,28 +336,30 @@ ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
 
 Seriously, let's pay that ransom already. 
 
-> __Where should we go to get our 10,000 Black boxes?__
+>
+> __Q:__  __Where should we go to get our 10,000 Black boxes?__
+>
 
 <br>
 
 __Step 1:__ Filter the scrap data to only `Black box`.
 
 ```{r, eval=F}
-cheap_scrap <- filter(scrap, ______    ==   _____   )
+cheap_scrap <- filter(scrap,   ______   ==   "_________"  )
 
 ```
 
 ```{r, echo=F}
-cheap_scrap <- filter(scrap,item    ==   "Black box"  )
+cheap_scrap <- filter(scrap,   item     ==   "Black box"  )
 ```
 
 <br>
 
-__Step 2:__ Make a `geom_col()` plot of the total pounds of Black boxes shipped to each destination. 
+__Step 2:__ Make a `geom_col()` plot showing the total pounds of Black boxes shipped to each destination. 
 
 ```{r, eval=F}
 
-ggplot(cheap_scrap, aes(x =   , y =    ) ) + 
+ggplot(cheap_scrap, aes(x =  ______ , y =  ______ ) ) + 
    geom_
 
 ```
@@ -398,10 +405,15 @@ _Woop! Go get em! So long Jakku - see you never!_
 <br><br>
 
 
-# <i class="fa fa-star" aria-hidden="true" style="color: gold"></i> CONCATULATIONS! <i class="fa fa-star" aria-hidden="true" style="color: gold"></i> {-}
+## <i class="fa fa-star" aria-hidden="true" style="color: gold"></i> 😻   CONCATULATIONS! 😻  <i class="fa fa-star" aria-hidden="true" style="color: gold"></i> {-}
 <hr>
 
-> __Clap your hands. You have earned a great award.__
+>
+> __Woop! Honestly, most people don't survive this long.__ 
+>
+> Super-serious kudos to you. You have earned yourself a great award. 
+>
+> Stay tuned for something to arrive by snail-<i class="fas fa-envelope"></i>.
 
 
 <br>
@@ -409,6 +421,7 @@ _Woop! Go get em! So long Jakku - see you never!_
 
 # | Plot extras
 <hr>
+
 
 ## Themes {-}
 
@@ -426,7 +439,7 @@ ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
 
 You can set the axis and title labels using the `labs` function.
 
-```{r, eval = T, echo = T}
+```{r, eval = F, echo = T}
 ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
   geom_col(position = "dodge") +
   facet_wrap("destination") +
@@ -435,6 +448,20 @@ ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
        x        = "Origin", 
        y        = "Total sales",
        caption  = "Data gracefully provided by BB8")
+```
+
+```{r, eval = T, echo = F}
+ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
+  geom_col(position = "dodge") +
+  facet_wrap("destination") +
+  labs(title    = "Scrap sales by origin and destination", 
+       subtitle = "Planet Jakku",
+       x        = "Origin", 
+       y        = "Total sales",
+       caption  = "Data gracefully provided by BB8") +
+  theme_gray(base_size = 14)
+  #theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
 ```
 
 <br>
@@ -467,10 +494,10 @@ Let's say we don't like printing so many zeros and want the labels to be in __Mi
 
 <br>
 
-<details><summary> [Click here for a HINT] </summary>
+<details><summary> _[Click here for a HINT]_ </summary>
 <p>
 
-_Sorry, the hint is missing. You're on your own._
+_This hint intentionally left blank. Sorry, you're on your own._
 
 </p>
 </details>
@@ -514,28 +541,26 @@ ggsave("your_results_folder/plot_name.png")
 <br>
 
 
-### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
 <div class="note">
 
-Sometimes you may want to make a plot and save it for later. For that, you give your plot a name. Any name will do.
+### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
+
+Sometimes you'll make a plot and want to save it for later. For that, you give can your plot a name. Any name will do.
 
 ```{r ggsave-objects, eval = F, echo = T}
 
-# The ggplot you want to save
-my_plot <- ggplot(...)
-  
-# The name of the file the chart will be saved to.
-where_to_save_it <- "___.png"
+# Name the ggplot you want to save
+my_plot <- ggplot(...) + geom_point(...)
 
 # Save it!
-ggsave(filename = where_to_save_it, plot = my_plot)
+ggsave(filename = "Save my plot here.png", plot = my_plot)
 ```
 
 <br>
 
 _Learn more about saving plots at_ [http://stat545.com/](http://stat545.com/block017_write-figure-to-file.html)
 
-<br>
 
 </div>
 
@@ -629,11 +654,14 @@ You can customize the look of your plot by adding a `theme()` function.
 3. _If you make something really_ __strange__. _Feel free to share! Consider it art and keep going._ 
 
 
+<br>
+<br>
+
 <div class="note">
 
 ### <i class="fa fa-user-astronaut" aria-hidden="true" style="color:#040707;"></i> Pro-tip! {-}
 
-When you add more layers using `+` remember to place it at the end of each line.
+When you add more layers using `+` remember to place it at the __end__ of each line.
 
 ```{r, eval=F, echo=T}
 # This will work
@@ -651,7 +679,6 @@ ggplot(scrap, aes(x = origin, y = credits))
 
 </div>
 
-<br>
 <br>
 
 # <i class="fa fa-rocket" aria-hidden="true"></i> Return to [Homebase](index.html) {-}
