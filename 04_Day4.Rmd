@@ -41,7 +41,7 @@ scrap <- read_csv("https://itep-r.netlify.com/data/starwars_scrap_jakku_full.csv
 
 __Open a New script__
 
-- __File > New File > R Script__
+- `File > New File > R Script`
 - Click the _floppy disk_ save icon
 - Give it a name: `04_day.R` will work well
 
@@ -56,12 +56,13 @@ __Open a New script__
     - Use `ifelse()` for _Yes/No_ decisions
 - More plots
     - New geoms
-    - Reference lines
-    - Faceting or Splitting by group
     - Colors
+    - Faceting/Splitting by groups
     - Titles 
 - Break out Finn
 - __Concatulations!__
+- <i class="fa fa-globe" aria-hidden="true"></i>
+ Earth data
     
 </div>   
     
@@ -443,6 +444,7 @@ You can set the axis and title labels using the `labs` function.
 ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
   geom_col(position = "dodge") +
   facet_wrap("destination") +
+  scale_fill_viridis_d() +
   labs(title    = "Scrap sales by origin and destination", 
        subtitle = "Planet Jakku",
        x        = "Origin", 
@@ -454,6 +456,7 @@ ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
 ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
   geom_col(position = "dodge") +
   facet_wrap("destination") +
+  scale_fill_viridis_d() +
   labs(title    = "Scrap sales by origin and destination", 
        subtitle = "Planet Jakku",
        x        = "Origin", 
@@ -479,10 +482,11 @@ options(scipen = 999)
 ggplot(scrap, aes(x = origin, y = credits, fill = destination)) +
   geom_col(position = "dodge") +
   facet_wrap("destination") +
-  theme_bw() +
+  scale_fill_viridis_d() +
   labs(title = "Scrap sales by origin and destination", 
        x     = "Origin", 
-       y     = "Total sales")
+       y     = "Total sales") +
+  theme_bw()
 ```
 
 <br>
@@ -512,7 +516,7 @@ _This hint intentionally left blank. Sorry, you're on your own._
 
 ### <i class="fa fa-bicycle" aria-hidden="true" style="color: green"></i> EXERCISE {-}
 
-Be brave and make a boxplot. We've covered how to do a scatterplot with `geom_point` and a bar chart with `geom_col`, but how would you make a boxplot showing the prices at each destination? You're on your own here. Feel free to add `color` ,`facet_wrap`, `theme`, and `labs` to your boxplots. 
+Venture forth and make a boxplot. We've covered how to do a scatterplot with `geom_point` and a column chart with `geom_col`, but how would you make a boxplot showing the prices at each destination? You're on your own here. Feel free to seek help and to spice things up with `color` ,`facet_wrap`, `theme`, and `labs`. 
 
 _May the force be with you._
 </div>
@@ -636,7 +640,7 @@ You can customize the look of your plot by adding a `theme()` function.
 
 <br>
 
-# Homeworld training {-}
+# | Homeworld training {-}
 
 ![](images/porg.png){style="float: right; margin-top: -34px;"}
 
